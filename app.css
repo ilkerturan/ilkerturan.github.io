@@ -1,11 +1,5 @@
-.sidebar-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-}
-
-.note-item a.active {
-    background-color: #000;
+.nav-link.active-note {
+    font-weight: 600;
+    background-color: #000 !important;
     color: #fff !important;
 }
