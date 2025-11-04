@@ -1,78 +1,63 @@
-const sidebarContent = document.getElementById('sidebarContent');
+const navbarCategories = document.getElementById('navbarCategories');
 const content = document.getElementById('content');
+
 let notesData = null;
 
-async function loadNotesConfig() {
+async function loadNotesConfig(){
     try {
-        const response = await fetch('notes.json');
-        if (!response.ok) throw new Error('notes.json yüklenemedi');
-
-        notesData = await response.json();
-        renderSidebar();
-    } catch (error) {
-        sidebarContent.innerHTML = `
-        <div class="alert alert-warning mt-2">
-          <strong>Hata:</strong> notes.json dosyası okunamadı.
-        </div>`;
+        const r = await fetch('notes.json');
+        if(!r.ok) throw new Error();
+        notesData = await r.json();
+        renderNavbar();
+    } catch {
+        navbarCategories.innerHTML = `<li class="nav-item"><span class="nav-link text-danger">notes.json yok</span></li>`;
     }
 }
 
-function renderSidebar() {
-    if (!notesData || !notesData.categories) {
-        sidebarContent.innerHTML = `<div class="alert alert-warning">Kategori yok</div>`;
-        return;
-    }
-
-    let html = '';
-    notesData.categories.forEach(cat => {
+function renderNavbar(){
+    let html = "";
+    notesData.categories.forEach((cat, idx)=>{
+        const dropdownId = "cat" + idx;
         html += `
-        <div class="mb-3">
-          <div class="fw-bold text-uppercase small mb-1">${cat.name}</div>
-          <ul class="list-unstyled">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="${dropdownId}" data-bs-toggle="dropdown">
+            ${cat.name}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="${dropdownId}">
         `;
-        cat.notes.forEach(note => {
+        cat.notes.forEach(n=>{
             html += `
-            <li class="note-item mb-1">
-              <a href="#" data-path="${note.path}" class="d-block py-1 px-2 text-decoration-none text-secondary rounded">
-                ${note.title}
+            <li>
+              <a class="dropdown-item note-link" href="#" data-path="${n.path}">
+                ${n.title}
               </a>
             </li>`;
         });
-
-        html += `</ul></div>`;
+        html += `</ul></li>`;
     });
 
-    sidebarContent.innerHTML = html;
+    navbarCategories.innerHTML = html;
 
-    document.querySelectorAll('.note-item a').forEach(link => {
-        link.addEventListener('click', (e) => {
+    document.querySelectorAll('.note-link').forEach(a=>{
+        a.onclick = e => {
             e.preventDefault();
-            loadNote(link.getAttribute('data-path'), link);
-        });
+            loadNote(a.getAttribute('data-path'), a);
+        };
     });
 }
 
-async function loadNote(path, linkElement) {
-    try {
-        content.innerHTML = `<div class="text-center text-muted py-3">Not yükleniyor...</div>`;
-        const response = await fetch(path);
-        if (!response.ok) throw new Error('Dosya yüklenemedi');
-
-        const markdown = await response.text();
-        const html = marked.parse(markdown);
-        content.innerHTML = html;
-
-        document.querySelectorAll('.note-item a').forEach(a => a.classList.remove('active'));
-        linkElement.classList.add('active');
-
-        window.scrollTo(0, 0);
-    } catch (error) {
-        content.innerHTML = `
-          <div class="alert alert-warning">
-            <strong>Hata:</strong> Not yüklenemedi.
-            <br>Yol: ${path}
-          </div>`;
+async function loadNote(path, el){
+    content.innerHTML = `<div class="py-5 text-center text-muted">yükleniyor...</div>`;
+    const r = await fetch(path);
+    if(!r.ok){
+        content.innerHTML = `<div class="alert alert-warning">dosya okunamadı</div>`;
+        return;
     }
+    const md = await r.text();
+    content.innerHTML = marked.parse(md);
+
+    document.querySelectorAll('.note-link').forEach(x=>x.classList.remove('active-note'));
+    el.classList.add('active-note');
 }
 
 loadNotesConfig();
