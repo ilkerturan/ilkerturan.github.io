@@ -1,0 +1,47 @@
+{
+  "categories": [
+    {
+      "name": "Veri Yapıları",
+      "notes": [
+        {
+          "title": "Stack (Yığın)",
+          "path": "notlar/veri-yapilari/stack.md"
+        },
+        {
+          "title": "Queue (Kuyruk)",
+          "path": "notlar/veri-yapilari/queue.md"
+        },
+        {
+          "title": "Linked List",
+          "path": "notlar/veri-yapilari/linked-list.md"
+        }
+      ]
+    },
+    {
+      "name": "Algoritmalar",
+      "notes": [
+        {
+          "title": "Sıralama Algoritmaları",
+          "path": "notlar/algoritmalar/siralama.md"
+        },
+        {
+          "title": "Arama Algoritmaları",
+          "path": "notlar/algoritmalar/arama.md"
+        }
+      ]
+    },
+    {
+      "name": "Veritabanı",
+      "notes": [
+        {
+          "title": "SQL Temelleri",
+          "path": "notlar/veritabani/sql.md"
+        },
+        {
+          "title": "NoSQL Veritabanları",
+          "path": "notlar/veritabani/nosql.md"
+        }
+      ]
+    }
+  ]
+}
