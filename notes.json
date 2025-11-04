@@ -12,6 +12,35 @@
           "path": "prompt/guide.md"
         }
       ]
+    },
+    {
+      "name": "SQL",
+      "notes": [
+        {
+          "title": "Giriş ve Temel Kavramlar",
+          "path": "sql/temel/part1.md"
+        },
+        {
+          "title": "SELECT Sorguları ve Veri Filtreleme",
+          "path": "sql/temel/part2.md"
+        },
+        {
+          "title": "Sıralama, Gruplama ve Agregasyon Fonksiyonları",
+          "path": "sql/temel/part3.md"
+        },
+        {
+          "title": "JOIN İşlemleri ve Tablo İlişkileri",
+          "path": "sql/temel/part4.md"
+        },
+        {
+          "title": "Veri Ekleme, Güncelleme ve Silme",
+          "path": "sql/temel/part5.md"
+        },
+        {
+          "title": "Tablo Oluşturma, Değiştirme ve Veri Tipleri",
+          "path": "sql/temel/part6.md"
+        }
+      ]
     }
   ]
 }
