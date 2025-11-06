@@ -1,17 +1,4 @@
-# C# Döngüleri - Ders Notları
-
-## 📚 İçindekiler
-1. [Döngü Nedir?](#döngü-nedir)
-2. [for Döngüsü](#for-döngüsü)
-3. [while Döngüsü](#while-döngüsü)
-4. [do-while Döngüsü](#do-while-döngüsü)
-5. [foreach Döngüsü](#foreach-döngüsü)
-6. [Döngü Kontrol İfadeleri](#döngü-kontrol-ifadeleri)
-7. [İç İçe Döngüler](#iç-içe-döngüler)
-8. [Sonsuz Döngüler](#sonsuz-döngüler)
-9. [Teknik Terimler Sözlüğü](#teknik-terimler-sözlüğü)
-
----
+# C# Döngüleri
 
 ## Döngü Nedir?
 
