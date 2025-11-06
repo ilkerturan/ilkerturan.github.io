@@ -1,4 +1,4 @@
-# C# Karar Mekanizmaları Ders Notu
+# C# Karar Mekanizmaları
 
 ## Giriş
 
