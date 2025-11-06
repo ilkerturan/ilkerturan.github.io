@@ -1,8 +1,4 @@
-# Prompt Engineering: İş Hayatı Rehberi
-
-## Prompt Engineering Nedir?
-
-Yapay zekadan daha iyi sonuçlar almak için doğru soruları sorma ve talimatlar verme sanatıdır. Tıpkı bir çalışana görev verirken net olmak gibi - ne kadar açık olursanız, sonuç o kadar iyi olur.
+# İş Hayatı Rehberi
 
 ## Temel İlkeler
 
