@@ -1,15 +1,4 @@
-# C# SOLID Prensipleri Ders Notu
-
-## İçindekiler
-1. [Giriş](#giriş)
-2. [Single Responsibility Principle (SRP)](#single-responsibility-principle-srp)
-3. [Open/Closed Principle (OCP)](#openclosed-principle-ocp)
-4. [Liskov Substitution Principle (LSP)](#liskov-substitution-principle-lsp)
-5. [Interface Segregation Principle (ISP)](#interface-segregation-principle-isp)
-6. [Dependency Inversion Principle (DIP)](#dependency-inversion-principle-dip)
-7. [Teknik Terimler Sözlüğü](#teknik-terimler-sözlüğü)
-
----
+# C# SOLID Prensipleri
 
 ## Giriş
 
