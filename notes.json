@@ -53,14 +53,14 @@
     {
   "name": "C Sharp",
   "notes": [
-    { "title": "Syntax", "path": "csharp/syntax.md" },
-    { "title": "Data Types", "path": "csharp/data-types.md" },
-    { "title": "Operators", "path": "csharp/operators.md" },
-    { "title": "Decision Making", "path": "csharp/decision-making.md" },
-    { "title": "Loops", "path": "csharp/loops.md" },
-    { "title": "Objects", "path": "csharp/objects.md" },
-    { "title": "OOP", "path": "csharp/oop.md" },
-    { "title": "SOLID Principles", "path": "csharp/solid-principles.md" }
+    { "title": "Söz Dizimi", "path": "csharp/syntax.md" },
+    { "title": "Veri Tipleri", "path": "csharp/data-types.md" },
+    { "title": "Operatörler", "path": "csharp/operators.md" },
+    { "title": "Karar verme mekanizmaları", "path": "csharp/decision-making.md" },
+    { "title": "Döngüler", "path": "csharp/loops.md" },
+    { "title": "Nesneler", "path": "csharp/objects.md" },
+    { "title": "Nesneye Yönelimli Programlama (OOP)", "path": "csharp/oop.md" },
+    { "title": "SOLID Prensipleri", "path": "csharp/solid-principles.md" }
   ]
 }
 
