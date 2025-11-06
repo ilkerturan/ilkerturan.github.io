@@ -55,13 +55,12 @@
   "notes": [
     { "title": "Syntax", "path": "csharp/syntax.md" },
     { "title": "Data Types", "path": "csharp/data-types.md" },
+    { "title": "Operators", "path": "csharp/operators.md" },
     { "title": "Decision Making", "path": "csharp/decision-making.md" },
     { "title": "Loops", "path": "csharp/loops.md" },
     { "title": "Objects", "path": "csharp/objects.md" },
     { "title": "OOP", "path": "csharp/oop.md" },
-    { "title": "Operators", "path": "csharp/operators.md" },
-    { "title": "SOLID Principles", "path": "csharp/solid-principles.md" },
-    { "title": "EF6", "path": "csharp/ef6.md" }
+    { "title": "SOLID Principles", "path": "csharp/solid-principles.md" }
   ]
 }
 
