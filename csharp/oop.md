@@ -1,16 +1,4 @@
-# C# Nesne Yönelimli Programlama (OOP) Ders Notları
-
-## İçindekiler
-1. [OOP Nedir?](#oop-nedir)
-2. [Sınıflar ve Nesneler](#sınıflar-ve-nesneler)
-3. [Encapsulation (Kapsülleme)](#encapsulation-kapsülleme)
-4. [Inheritance (Kalıtım)](#inheritance-kalıtım)
-5. [Polymorphism (Çok Biçimlilik)](#polymorphism-çok-biçimlilik)
-6. [Abstraction (Soyutlama)](#abstraction-soyutlama)
-7. [Interface (Arayüz)](#interface-arayüz)
-8. [Teknik Terimler Sözlüğü](#teknik-terimler-sözlüğü)
-
----
+# C# Nesne Yönelimli Programlama (OOP) 
 
 ## OOP Nedir?
 
