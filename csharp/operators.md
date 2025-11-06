@@ -1,21 +1,4 @@
-# C# Operatörleri Ders Notu
-
-## İçindekiler
-1. [Giriş](#giriş)
-2. [Aritmetik Operatörler](#aritmetik-operatörler)
-3. [Atama Operatörleri](#atama-operatörleri)
-4. [Karşılaştırma Operatörleri](#karşılaştırma-operatörleri)
-5. [Mantıksal Operatörler](#mantıksal-operatörler)
-6. [Bitsel Operatörler](#bitsel-operatörler)
-7. [Artırma ve Azaltma Operatörleri](#artırma-ve-azaltma-operatörleri)
-8. [Koşul Operatörü (Ternary)](#koşul-operatörü-ternary)
-9. [Null-Coalescing Operatörleri](#null-coalescing-operatörleri)
-10. [Tür Operatörleri](#tür-operatörleri)
-11. [Diğer Operatörler](#diğer-operatörler)
-12. [Operatör Önceliği](#operatör-önceliği)
-13. [Teknik Terimler Sözlüğü](#teknik-terimler-sözlüğü)
-
----
+# C# Operatörleri
 
 ## Giriş
 
