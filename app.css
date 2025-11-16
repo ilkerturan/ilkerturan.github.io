@@ -1,10 +1,24 @@
-.nav-link.active-note {
-    font-weight: 600;
-    background-color: #000 !important;
-    color: #fff !important;
+/* YENİ: Kartların üzerine gelince "magazine" tarzı 
+  vurgu efekti verir.
+*/
+.note-card {
+  transition: all 0.2s ease-in-out;
 }
 
-/* ---- markdown content style boost ---- */
+.note-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* KALDIRILDI: Navbar artık kullanılmadığı için 
+  .nav-link.active-note kuralı silindi.
+*/
+
+
+/* ---- markdown content style boost (DOKUNULMADI) ---- */
+/* Not: Bu kurallar artık .bg-white içindeki 
+  #content alanını hedefliyor.
+*/
 #content h1 {
     font-size: 2rem;
     margin-bottom: 1rem;
@@ -99,4 +113,3 @@
     background: #f6f8fa;
     font-weight: 600;
 }
-
