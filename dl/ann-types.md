@@ -1,4 +1,4 @@
-# Yapay Sinir Ağı Türleri - Detaylı Eğitim Dokümanı
+# Yapay Sinir Ağı Türleri
 
 ## 📚 İçindekiler
 1. [Giriş](#giriş)
