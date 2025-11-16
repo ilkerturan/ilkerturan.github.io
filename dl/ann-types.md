@@ -558,7 +558,3 @@ Yapay sinir ağı türlerinin her biri farklı problem türleri için optimize e
 - **GPU:** Graphics Processing Unit (Grafik İşlemci)
 - **TPU:** Tensor Processing Unit (Tensor İşlemci)
 - **API:** Application Programming Interface
-
----
-
-*Bu doküman, yapay sinir ağları konusunda temel ve orta seviye bilgi sunmaktadır. Daha detaylı bilgi için akademik makaleler ve özel kurslar önerilir.*
