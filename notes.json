@@ -21,8 +21,17 @@
         }
       ]
     },
+        {
+      "name": "Makine Öğrenmesi",
+      "notes": [
+        {
+          "title": "Makine Öğrenmesi Türleri",
+          "path": "ml/ml-types.md"
+        }    
+      ]
+    },
     {
-      "name": "Deep Learning",
+      "name": "Derin Öğrenme",
       "notes": [
         {
           "title": "Yapay Sinir Ağı Türleri",
