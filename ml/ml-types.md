@@ -410,11 +410,3 @@ Modern uygulamalarda genellikle birden fazla öğrenme türü birlikte kullanıl
 **Gradient Descent (Eğim İnişi)**: Kayıp fonksiyonunu minimize etmek için kullanılan optimizasyon algoritması.
 
 **Cross-Validation (Çapraz Doğrulama)**: Model performansını değerlendirmek için veriyi birden fazla parçaya bölerek test etme yöntemi.
-
----
-
-**Belge Bilgileri**
-- Versiyon: 1.0
-- Son Güncelleme: 2025
-- Hazırlayan: AI Asistan
-- Hedef Kitle: Makine öğrenmesi öğrencileri ve uygulayıcıları
