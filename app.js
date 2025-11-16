@@ -1,33 +1,19 @@
 // =================================================================
-// --- YENİ EKLENEN BÖLÜM: Mermaid ve Marked.js Yapılandırması ---
+// --- Mermaid ve Marked.js Yapılandırması (Dokunulmadı) ---
 // =================================================================
-
-// 1. Mermaid.js'yi manuel olarak tetiklenecek şekilde ayarlayın.
-//    (Sayfa yüklenince otomatik çalışmasın, biz 'loadNote' içinde çağıracağız)
 try {
   mermaid.initialize({ startOnLoad: false });
 } catch (e) {
   console.error("Mermaid.js kütüphanesi yüklenemedi veya initialize edilemedi.", e);
 }
-
-
-// 2. Marked.js için özel bir 'renderer' (işleyici) oluşturun.
 const customRenderer = {
   code(code, infostring, escaped) {
-    // Kod bloğunun dili 'mermaid' olarak belirtilmişse (```mermaid)
     if (infostring === 'mermaid') {
-      // ...onu <pre><code> ile değil, mermaid.js'nin 
-      // anlayacağı bir <div class="mermaid"> ile döndür.
       return `<div class="mermaid">${code}</div>`;
     }
-    
-    // Diğer tüm kod blokları için varsayılan davranışı taklit et.
-    // (infostring || '') dil belirtilmediğinde (örn: ```) hata olmasını engeller.
     return `<pre><code class="language-${infostring || ''}">${code}</code></pre>`;
   }
 };
-
-// 3. Marked.js'ye bu özel işleyiciyi kullanmasını söyleyin.
 try {
   marked.use({ renderer: customRenderer });
 } catch (e) {
@@ -35,59 +21,88 @@ try {
 }
 
 // =================================================================
-// --- SİZİN MEVCUT KODUNUZ (loadNote içinde küçük bir ekleme ile) ---
+// --- YENİ UYGULAMA MANTIĞI ---
 // =================================================================
 
-const navbarCategories = document.getElementById('navbarCategories');
-const content = document.getElementById('content');
-
+// Değişkenleri burada deklare et, ama DOM'a bağlı olanları atama
+let content;
 let notesData = null;
 
+/**
+ * Ana notlar yapılandırmasını yükler ve ana sayfayı çizer.
+ */
 async function loadNotesConfig(){
     try {
         const r = await fetch('notes.json');
         if(!r.ok) throw new Error('Network response was not ok');
         notesData = await r.json();
-        renderNavbar();
+        // Navbar yerine ana sayfayı (kartları) çiz
+        renderHomepage();
     } catch(err) {
         console.error("notes.json yüklenirken hata:", err);
-        navbarCategories.innerHTML = `<li class="nav-item"><span class="nav-link text-danger">notes.json okunamadı.</span></li>`;
+        // content artık null olmayacak çünkü main() içinde atandı.
+        content.innerHTML = `<div class="container"><div class="alert alert-danger">notes.json okunamadı.</div></div>`;
     }
 }
 
-function renderNavbar(){
-    let html = "";
+/**
+ * YENİ FONKSİYON:
+ * Ana sayfadaki kategori başlıklarını ve not kartlarını oluşturur.
+ */
+function renderHomepage(){
+    if (!notesData) return;
+
+    let html = '<div class="container pb-5">'; // Ana container
+
     notesData.categories.forEach((cat, idx)=>{
-        const dropdownId = "cat" + idx;
+        // Kategori Başlığı
         html += `
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="${dropdownId}" data-bs-toggle="dropdown">
-            ${cat.name}
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="${dropdownId}">
+        <h2 class="display-6 border-bottom pb-3 mb-4 mt-4">
+          <i class="bi bi-bookmark-star-fill me-2 text-primary-emphasis"></i>
+          ${cat.name}
+        </h2>
         `;
+        
+        // Not Kartları için Satır
+        html += '<div class="row g-4">';
+        
         cat.notes.forEach(n=>{
             html += `
-            <li>
-              <a class="dropdown-item note-link" href="#" data-path="${n.path}">
-                ${n.title}
-              </a>
-            </li>`;
+            <div class="col-md-6 col-lg-4">
+              <div class="card h-100 shadow-sm border-0 note-card" data-path="${n.path}" role="button">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title mb-2">${n.title}</h5>
+                  <p class="card-text text-muted small flex-grow-1">Bu notu görüntülemek için tıklayın.</p>
+                  <span class="text-primary fw-bold icon-link icon-link-hover">
+                    Şimdi Oku
+                    <i class="bi bi-arrow-right-short"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            `;
         });
-        html += `</ul></li>`;
+        
+        html += '</div>'; // row kapanışı
     });
 
-    navbarCategories.innerHTML = html;
+    html += '</div>'; // container kapanışı
+    content.innerHTML = html;
 
-    document.querySelectorAll('.note-link').forEach(a=>{
-        a.onclick = e => {
-            e.preventDefault();
-            loadNote(a.getAttribute('data-path'), a);
+    // Kartlara tıklama olaylarını ata
+    document.querySelectorAll('.note-card').forEach(card =>{
+        card.onclick = () => {
+            loadNote(card.getAttribute('data-path'));
         };
     });
 }
 
-async function loadNote(path, el){
+/**
+ * GÜNCELLENEN FONKSİYON:
+ * Bir notu yükler, gösterir ve "Geri Dön" butonu ekler.
+ */
+async function loadNote(path){
+    // "el" parametresine artık gerek yok
     content.innerHTML = `<div class="py-5 text-center text-muted">yükleniyor...</div>`;
     try {
         const r = await fetch(path);
@@ -96,29 +111,60 @@ async function loadNote(path, el){
         }
         const md = await r.text();
         
-        // 1. Marked.js içeriği DÖNÜŞTÜRÜR (customRenderer sayesinde mermaid div'leri oluşur)
-        content.innerHTML = marked.parse(md);
+        // Not içeriğini ve Geri butonunu oluştur
+        let noteHtml = `
+        <div class="container py-4">
+          <div class="row">
+            <div class="col-lg-10 mx-auto">
+              <!-- YENİ: Geri Dön Butonu -->
+              <button id="back-to-home" class="btn btn-outline-primary mb-4">
+                <i class="bi bi-arrow-left me-2"></i> Ana Sayfaya Dön
+              </button>
+              
+              <!-- Markdown İçeriği -->
+              <div class="bg-white p-4 p-md-5 rounded shadow-sm">
+                ${marked.parse(md)}
+              </div>
+            </div>
+          </div>
+        </div>
+        `;
+        
+        content.innerHTML = noteHtml;
 
-        // =====================================================
-        // --- YENİ EKLENEN SATIR: Mermaid'i Tetikleme ---
-        // 2. Mermaid'e "Şimdi sayfadaki .mermaid class'lı div'leri bul ve çiz" komutunu ver.
+        // Mermaid diyagramlarını çiz
         try {
             mermaid.run();
         } catch (e) {
             console.error("Mermaid.run() çalışırken hata:", e);
         }
-        // --- YENİ EKLEME SONU ---
-        // =====================================================
 
-        document.querySelectorAll('.note-link').forEach(x=>x.classList.remove('active-note'));
-        el.classList.add('active-note');
-
+        // Geri Dön butonuna olay ata
+        document.getElementById('back-to-home').onclick = renderHomepage;
+        
     } catch (err) {
         console.error("Not yüklenirken hata:", err);
-        content.innerHTML = `<div class="alert alert-warning">Dosya okunamadı: ${path}</div>`;
+        content.innerHTML = `<div class="container"><div class="alert alert-warning">Dosya okunamadı: ${path}</div></div>`;
         return;
     }
 }
 
-// Uygulamayı başlat
-loadNotesConfig();
+// YENİ: Ana Başlatıcı Fonksiyon
+function main() {
+    // 1. DOM yüklendikten SONRA #content elementini bul
+    content = document.getElementById('content');
+    
+    // Güvenlik kontrolü
+    if (!content) {
+        console.error("KRİTİK HATA: #content elementi sayfada bulunamadı.");
+        document.body.innerHTML = '<div class="alert alert-danger">Kritik hata: #content elementi bulunamadı.</div>';
+        return;
+    }
+    
+    // 2. Uygulamayı başlat
+    loadNotesConfig();
+}
+
+// YENİ: 'DOMContentLoaded' olayını bekle
+// Bu, tüm HTML elementleri yüklendikten sonra main() fonksiyonunu çalıştırır.
+document.addEventListener('DOMContentLoaded', main);
