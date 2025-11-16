@@ -1,25 +1,3 @@
-// 1. Mermaid.js'yi "sayfa yüklenince otomatik çalışma" (startOnLoad: false) 
-  //    olarak ayarlayın. Biz onu manuel olarak çağıracağız.
-  mermaid.initialize({ startOnLoad: false });
-
-  // 2. Marked.js için özel bir 'renderer' (işleyici) oluşturun.
-  const customRenderer = {
-    code(code, infostring, escaped) {
-      // Kod bloğunun dili 'mermaid' olarak belirtilmişse...
-      if (infostring === 'mermaid') {
-        // ...onu <pre><code> ile değil, mermaid.js'nin 
-        // anlayacağı bir <div class="mermaid"> ile döndür.
-        return `<div class="mermaid">${code}</div>`;
-      }
-      // Diğer tüm kod blokları için varsayılan işleyiciyi kullan
-      // (Bunu yapmak daha sağlamdır ancak bu örnek için es geçilebilir.
-      // Basitçe varsayılan davranışı taklit edelim:)
-      return `<pre><code class="language-${infostring}">${code}</code></pre>`;
-    }
-  };
-
-  // 3. Marked.js'ye bu özel işleyiciyi kullanmasını söyleyin.
-  marked.use({ renderer: customRenderer });
 const navbarCategories = document.getElementById('navbarCategories');
 const content = document.getElementById('content');
 
