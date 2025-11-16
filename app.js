@@ -71,12 +71,7 @@ function renderHomepage(){
             <div class="col-md-6 col-lg-4">
               <div class="card h-100 shadow-sm border-0 note-card" data-path="${n.path}" role="button">
                 <div class="card-body d-flex flex-column">
-                  <h5 class="card-title mb-2">${n.title}</h5>
-                  <p class="card-text text-muted small flex-grow-1">Bu notu görüntülemek için tıklayın.</p>
-                  <span class="text-primary fw-bold icon-link icon-link-hover">
-                    Şimdi Oku
-                    <i class="bi bi-arrow-right-short"></i>
-                  </span>
+                  <h5 class="card-title mb-2">${n.title} <i class="bi bi-arrow-right-short text-primary icon-link icon-link-hover"></i> </h5>
                 </div>
               </div>
             </div>
