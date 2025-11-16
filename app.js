@@ -68,7 +68,7 @@ function renderHomepage(){
         
         cat.notes.forEach(n=>{
             html += `
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-4 col-lg-3">
               <div class="card h-100 shadow-sm border-0 note-card" data-path="${n.path}" role="button">
                 <div class="card-body d-flex flex-column">
                   <h5 class="card-title mb-2">${n.title} <i class="bi bi-arrow-right-short text-primary icon-link icon-link-hover"></i> </h5>
