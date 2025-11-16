@@ -1,4 +1,4 @@
-# Yapay Sinir Ağı Türleri
+# Yapay Sinir Ağı Türleri - Detaylı Eğitim Dokümanı
 
 ## 📚 İçindekiler
 1. [Giriş](#giriş)
@@ -25,9 +25,16 @@ Yapay sinir ağları, insan beynindeki nöronların çalışma prensibinden esin
 En temel yapay sinir ağı türüdür. Bilgi, giriş katmanından çıkış katmanına doğru tek yönlü akar ve geriye dönüş yoktur. Çok Katmanlı Algılayıcılar (Multilayer Perceptrons - MLP) bu kategorinin en yaygın örneğidir.
 
 ### 📊 Mimari Yapı
-```
-Giriş Katmanı → Gizli Katman(lar) → Çıkış Katmanı
-     (x₁, x₂, x₃)  →  [●●●●]  →  [●●]  →  (y₁, y₂)
+```mermaid
+graph LR
+    A[Giriş Katmanı<br/>x₁, x₂, x₃] --> B[Gizli Katman 1<br/>●●●●]
+    B --> C[Gizli Katman 2<br/>●●●]
+    C --> D[Çıkış Katmanı<br/>y₁, y₂]
+    
+    style A fill:#e1f5ff
+    style B fill:#fff9e1
+    style C fill:#fff9e1
+    style D fill:#e8f5e9
 ```
 
 ### 💡 Kullanım Alanları
@@ -64,9 +71,22 @@ Giriş Katmanı → Gizli Katman(lar) → Çıkış Katmanı
 Görsel verileri işlemek için özel olarak tasarlanmış sinir ağlarıdır. Evrişim (convolution) işlemi ile görüntüdeki yerel özellikleri algılar ve hiyerarşik öğrenme yapar.
 
 ### 📊 Mimari Yapı
-```
-Girdi → Konvolüsyon → Aktivasyon → Havuzlama → Düzleştirme → Tam Bağlı → Çıktı
-[28×28] →  [Filter]  →   [ReLU]   → [MaxPool] →  [Flatten]  →   [FC]    → [10]
+```mermaid
+graph LR
+    A[Girdi<br/>28×28] --> B[Konvolüsyon<br/>Filtreler]
+    B --> C[Aktivasyon<br/>ReLU]
+    C --> D[Havuzlama<br/>MaxPool]
+    D --> E[Düzleştirme<br/>Flatten]
+    E --> F[Tam Bağlı<br/>FC]
+    F --> G[Çıktı<br/>10 sınıf]
+    
+    style A fill:#e1f5ff
+    style B fill:#fff3e0
+    style C fill:#f3e5f5
+    style D fill:#e8f5e9
+    style E fill:#fce4ec
+    style F fill:#fff9e1
+    style G fill:#e8f5e9
 ```
 
 ### 💡 Kullanım Alanları
@@ -106,13 +126,32 @@ Girdi → Konvolüsyon → Aktivasyon → Havuzlama → Düzleştirme → Tam Ba
 Zamansal veya sıralı veriyi işlemek için tasarlanmış ağlardır. Döngüsel bağlantılar sayesinde önceki bilgiyi hafızada tutar ve mevcut girdiyle birleştirir.
 
 ### 📊 Mimari Yapı
-```
-    ↻ (geri besleme döngüsü)
-    ↓
-x₁ → [RNN] → h₁ → y₁
-x₂ → [RNN] → h₂ → y₂
-x₃ → [RNN] → h₃ → y₃
-    (gizli durum taşınır)
+```mermaid
+graph TD
+    X1[x₁] --> R1[RNN Hücresi<br/>t=1]
+    X2[x₂] --> R2[RNN Hücresi<br/>t=2]
+    X3[x₃] --> R3[RNN Hücresi<br/>t=3]
+    
+    R1 --> H1[h₁]
+    R2 --> H2[h₂]
+    R3 --> H3[h₃]
+    
+    H1 --> Y1[y₁]
+    H2 --> Y2[y₂]
+    H3 --> Y3[y₃]
+    
+    R1 -.gizli durum.-> R2
+    R2 -.gizli durum.-> R3
+    
+    style X1 fill:#e1f5ff
+    style X2 fill:#e1f5ff
+    style X3 fill:#e1f5ff
+    style R1 fill:#fff9e1
+    style R2 fill:#fff9e1
+    style R3 fill:#fff9e1
+    style Y1 fill:#e8f5e9
+    style Y2 fill:#e8f5e9
+    style Y3 fill:#e8f5e9
 ```
 
 ### 💡 Kullanım Alanları
@@ -152,15 +191,30 @@ x₃ → [RNN] → h₃ → y₃
 RNN'lerin geliştirilmiş halidir. Özel kapı mekanizmaları (forget, input, output gates) ile uzun vadeli bağımlılıkları öğrenebilir ve vanishing gradient problemini çözer.
 
 ### 📊 Mimari Yapı
-```
-      Hücre Durumu (Cell State)
-    ═══════════════════════════→
-         ↑      ↑       ↑
-    [Unut] [Güncelle] [Çıkış]
-      Kapısı  Kapısı   Kapısı
-         ↑      ↑       ↑
-    ─────────────────────────→
-         Giriş ve Önceki Durum
+```mermaid
+graph TD
+    subgraph LSTM["LSTM Hücresi"]
+        Input[Giriş + Önceki Durum]
+        FG[Unut Kapısı<br/>Forget Gate]
+        IG[Güncelleme Kapısı<br/>Input Gate]
+        OG[Çıkış Kapısı<br/>Output Gate]
+        CS[Hücre Durumu<br/>Cell State]
+        
+        Input --> FG
+        Input --> IG
+        Input --> OG
+        FG --> CS
+        IG --> CS
+        CS --> OG
+        OG --> Output[Çıkış]
+    end
+    
+    style Input fill:#e1f5ff
+    style FG fill:#ffebee
+    style IG fill:#e8f5e9
+    style OG fill:#fff9e1
+    style CS fill:#f3e5f5
+    style Output fill:#e8f5e9
 ```
 
 ### 💡 Kullanım Alanları
@@ -558,3 +612,7 @@ Yapay sinir ağı türlerinin her biri farklı problem türleri için optimize e
 - **GPU:** Graphics Processing Unit (Grafik İşlemci)
 - **TPU:** Tensor Processing Unit (Tensor İşlemci)
 - **API:** Application Programming Interface
+
+---
+
+*Bu doküman, yapay sinir ağları konusunda temel ve orta seviye bilgi sunmaktadır. Daha detaylı bilgi için akademik makaleler ve özel kurslar önerilir.*
