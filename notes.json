@@ -22,6 +22,15 @@
       ]
     },
     {
+      "name": "Deep Learning",
+      "notes": [
+        {
+          "title": "Yapay Sinir Ağı Türleri",
+          "path": "dl/ann-types.md"
+        }    
+      ]
+    },
+    {
       "name": "SQL",
       "notes": [
         {
