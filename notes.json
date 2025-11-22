@@ -38,6 +38,10 @@
           "path": "dl/ann-types.md"
         },
         {
+          "title":"Aktivasyon Fonksiyonları: Kapsamlı Rehber",
+          "path":"dl/deep_learning_activation_functions.md"
+        },
+        {
           "title":"Derin Öğrenme ile Iris Veri Seti Sınıflandırması",
           "path":"dl/iris_fnn_tutorial.md"
         }
