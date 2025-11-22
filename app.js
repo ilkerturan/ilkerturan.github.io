@@ -11,6 +11,7 @@ const customRenderer = {
     if (infostring === 'mermaid') {
       return `<div class="mermaid">${code}</div>`;
     }
+    // YENİ: Kod bloklarına dil sınıfını ekleyerek vurgulamayı (highlighting) etkinleştir
     return `<pre><code class="language-${infostring || ''}">${code}</code></pre>`;
   }
 };
@@ -27,6 +28,31 @@ try {
 // Değişkenleri burada deklare et, ama DOM'a bağlı olanları atama
 let content;
 let notesData = null;
+// YENİ: Modal değişkenleri
+let noteModal = null;
+let noteContentArea = null;
+let noteModalTitle = null;
+
+
+/**
+ * YENİ YARDIMCI FONKSİYON:
+ * Modal nesnesini alır ve modal'ın DOM elementlerini atar.
+ */
+function getNoteModal() {
+    if (!noteModal) {
+        const modalElement = document.getElementById('noteModal');
+        noteModal = new bootstrap.Modal(modalElement);
+        noteContentArea = document.getElementById('note-content-area');
+        noteModalTitle = document.getElementById('noteModalLabel');
+        
+        // Modal gizlendiğinde içeriği temizle
+        modalElement.addEventListener('hidden.bs.modal', function () {
+            noteModalTitle.textContent = 'Not Başlığı';
+            noteContentArea.innerHTML = '<div class="py-5 text-center text-muted">İçerik Yüklenemedi.</div>';
+        });
+    }
+    return noteModal;
+}
 
 /**
  * Ana notlar yapılandırmasını yükler ve ana sayfayı çizer.
@@ -46,8 +72,9 @@ async function loadNotesConfig(){
 }
 
 /**
- * YENİ FONKSİYON:
+ * GÜNCELLENEN FONKSİYON:
  * Ana sayfadaki kategori başlıklarını ve not kartlarını oluşturur.
+ * Not: Kartlara data-title eklendi.
  */
 function renderHomepage(){
     if (!notesData) return;
@@ -67,9 +94,10 @@ function renderHomepage(){
         html += '<div class="row g-4">';
         
         cat.notes.forEach(n=>{
+            // YENİ: n.title'ı da data-title olarak kartta sakla
             html += `
             <div class="col-md-4 col-lg-3">
-              <div class="card h-100 shadow-sm border-0 note-card" data-path="${n.path}" role="button">
+              <div class="card h-100 shadow-sm border-0 note-card" data-path="${n.path}" data-title="${n.title}" role="button">
                 <div class="card-body d-flex flex-column">
                   <h5 class="card-title mb-2">${n.title} <i class="bi bi-arrow-right-short text-primary icon-link icon-link-hover"></i> </h5>
                 </div>
@@ -87,18 +115,27 @@ function renderHomepage(){
     // Kartlara tıklama olaylarını ata
     document.querySelectorAll('.note-card').forEach(card =>{
         card.onclick = () => {
-            loadNote(card.getAttribute('data-path'));
+            // data-title'ı da loadNote'a gönder
+            loadNote(card.getAttribute('data-path'), card.getAttribute('data-title'));
         };
     });
 }
 
 /**
  * GÜNCELLENEN FONKSİYON:
- * Bir notu yükler, gösterir ve "Geri Dön" butonu ekler.
+ * Bir notu yükler, Modal içinde gösterir.
  */
-async function loadNote(path){
-    // "el" parametresine artık gerek yok
-    content.innerHTML = `<div class="py-5 text-center text-muted">yükleniyor...</div>`;
+async function loadNote(path, title){
+    const modal = getNoteModal();
+    
+    // Modal başlığını ayarla
+    noteModalTitle.textContent = title || 'Not İçeriği';
+    // Yükleniyor durumunu göster
+    noteContentArea.innerHTML = `<div class="py-5 text-center text-muted">Not yükleniyor...</div>`;
+
+    // Modal'ı göster
+    modal.show();
+    
     try {
         const r = await fetch(path);
         if(!r.ok){
@@ -106,40 +143,46 @@ async function loadNote(path){
         }
         const md = await r.text();
         
-        // Not içeriğini ve Geri butonunu oluştur
-        let noteHtml = `
-        <div class="container py-4">
-          <div class="row">
-            <div class="col-lg-10 mx-auto">
-              <!-- YENİ: Geri Dön Butonu -->
-              <button id="back-to-home" class="btn btn-outline-primary mb-4">
-                <i class="bi bi-arrow-left me-2"></i> Ana Sayfaya Dön
-              </button>
-              
-              <!-- Markdown İçeriği -->
-              <div class="bg-white p-4 p-md-5 rounded shadow-sm">
-                ${marked.parse(md)}
-              </div>
-            </div>
-          </div>
-        </div>
-        `;
-        
-        content.innerHTML = noteHtml;
+        // Markdown içeriğini HTML'e dönüştür
+        const renderedHtml = marked.parse(md);
+
+        // Markdown İçeriğini Modal'a Yerleştir (Bootstrap stili için içerik div'i kaldırıldı, sadece content-area güncellendi)
+        noteContentArea.innerHTML = renderedHtml;
+
+        // YENİ: KaTeX ile LaTeX/Matematiksel İfadeleri Çiz
+        if (typeof renderMathInElement === 'function') {
+            // renderMathInElement fonksiyonu KaTeX auto-render kütüphanesinden gelir.
+            // Bu fonksiyon, modal içeriği yüklendikten sonra matematiksel ifadeleri bulur ve KaTeX ile HTML'e dönüştürür.
+            renderMathInElement(noteContentArea, {
+                // KaTeX varsayılan ayrıştırıcıları
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                errorCallback: function(msg, err) {
+                    console.error("KaTeX Hata:", msg, err);
+                }
+            });
+        }
+
 
         // Mermaid diyagramlarını çiz
         try {
-            mermaid.run();
+            // Sadece yeni yüklenen içerikteki div'lerde mermaid çalıştırmak için daha spesifik seçici kullanılabilir
+            const mermaidContainers = noteContentArea.querySelectorAll('.mermaid');
+            mermaidContainers.forEach(container => {
+                mermaid.init(undefined, container);
+            });
+            
         } catch (e) {
-            console.error("Mermaid.run() çalışırken hata:", e);
+            console.error("Mermaid.init() çalışırken hata:", e);
         }
-
-        // Geri Dön butonuna olay ata
-        document.getElementById('back-to-home').onclick = renderHomepage;
         
     } catch (err) {
         console.error("Not yüklenirken hata:", err);
-        content.innerHTML = `<div class="container"><div class="alert alert-warning">Dosya okunamadı: ${path}</div></div>`;
+        noteContentArea.innerHTML = `<div class="alert alert-warning">Dosya okunamadı: ${path}</div>`;
         return;
     }
 }
@@ -158,6 +201,9 @@ function main() {
     
     // 2. Uygulamayı başlat
     loadNotesConfig();
+
+    // 3. YENİ: Modal'ı bir kez başlat
+    getNoteModal(); 
 }
 
 // YENİ: 'DOMContentLoaded' olayını bekle
