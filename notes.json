@@ -36,7 +36,11 @@
         {
           "title": "Yapay Sinir Ağı Türleri",
           "path": "dl/ann-types.md"
-        }    
+        },
+        {
+          "title":"Derin Öğrenme ile Iris Veri Seti Sınıflandırması",
+          "path":"dl/iris_fnn_tutorial.md"
+        }
       ]
     },
     {
