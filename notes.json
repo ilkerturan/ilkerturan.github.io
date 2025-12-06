@@ -87,7 +87,7 @@
     { "title": "Nesneler", "path": "csharp/objects.md" },
     { "title": "Nesneye Yönelimli Programlama (OOP)", "path": "csharp/oop.md" },
     { "title": "SOLID Prensipleri", "path": "csharp/solid-principles.md" },
-    { "title": "C# Jenerik Koleksiyon Arabirimleri: Kapsamlı Rehber", "path": "charp/csharp-generic-collections.md"}
+    { "title": "C# Jenerik Koleksiyon Arabirimleri: Kapsamlı Rehber", "path": "csharp/csharp-generic-collections.md"}
   ]
 }
 
