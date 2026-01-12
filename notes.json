@@ -77,19 +77,24 @@
       ]
     },
     {
-  "name": "C Sharp",
-  "notes": [
-    { "title": "Söz Dizimi", "path": "csharp/syntax.md" },
-    { "title": "Veri Tipleri", "path": "csharp/data-types.md" },
-    { "title": "Operatörler", "path": "csharp/operators.md" },
-    { "title": "Karar verme mekanizmaları", "path": "csharp/decision-making.md" },
-    { "title": "Döngüler", "path": "csharp/loops.md" },
-    { "title": "Nesneler", "path": "csharp/objects.md" },
-    { "title": "Nesneye Yönelimli Programlama (OOP)", "path": "csharp/oop.md" },
-    { "title": "SOLID Prensipleri", "path": "csharp/solid-principles.md" },
-    { "title": "C# Jenerik Koleksiyon Arabirimleri: Kapsamlı Rehber", "path": "csharp/csharp-generic-collections.md"}
-  ]
-}
-
+      "name": "C Sharp",
+      "notes": [
+        { "title": "Söz Dizimi", "path": "csharp/syntax.md" },
+        { "title": "Veri Tipleri", "path": "csharp/data-types.md" },
+        { "title": "Operatörler", "path": "csharp/operators.md" },
+        { "title": "Karar verme mekanizmaları", "path": "csharp/decision-making.md" },
+        { "title": "Döngüler", "path": "csharp/loops.md" },
+        { "title": "Nesneler", "path": "csharp/objects.md" },
+        { "title": "Nesneye Yönelimli Programlama (OOP)", "path": "csharp/oop.md" },
+        { "title": "SOLID Prensipleri", "path": "csharp/solid-principles.md" },
+        { "title": "C# Jenerik Koleksiyon Arabirimleri: Kapsamlı Rehber", "path": "csharp/csharp-generic-collections.md"}
+      ]
+    },
+    {
+      "name": "C Sharp Özel Yapılar",
+      "notes": [
+        { "title": "Ocelot API Gateway Configuration Guide", "path": "csharp/ocelot_config_guide.md" },
+      ]
+    }
   ]
 }
