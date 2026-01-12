@@ -93,7 +93,7 @@
     {
       "name": "C Sharp Özel Yapılar",
       "notes": [
-        { "title": "Ocelot API Gateway Configuration Guide", "path": "csharp/ocelot_config_guide.md" },
+        { "title": "Ocelot API Gateway Configuration Guide", "path": "csharp/ocelot_config_guide.md" }
       ]
     }
   ]
