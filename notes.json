@@ -95,6 +95,15 @@
       "notes": [
         { "title": "Ocelot API Gateway Configuration Guide", "path": "csharp/ocelot_config_guide.md" }
       ]
+    },
+    {
+      "name": "Docker Eğitimi",
+      "notes": [
+        { "title": "Temeller ve İlk Adımlar", "path": "docker/docker_ders_notu.md" },
+        { "title": "Dockerfile ve Pratik Uygulamalar", "path": "docker/docker_ders_bolum2.md" },
+        { "title": "Docker Compose ve Gerçek Projeler", "path": "docker/docker_ders_bolum3.md" },
+        { "title": " İleri Seviye ve Production", "path": "docker/docker_ders_bolum4.md" }
+      ]
     }
   ]
 }
