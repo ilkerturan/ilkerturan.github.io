@@ -102,7 +102,8 @@
         { "title": "Temeller ve İlk Adımlar", "path": "docker/docker_ders_notu.md" },
         { "title": "Dockerfile ve Pratik Uygulamalar", "path": "docker/docker_ders_bolum2.md" },
         { "title": "Docker Compose ve Gerçek Projeler", "path": "docker/docker_ders_bolum3.md" },
-        { "title": " İleri Seviye ve Production", "path": "docker/docker_ders_bolum4.md" }
+        { "title": "İleri Seviye ve Production", "path": "docker/docker_ders_bolum4.md" },
+        { "title": "Docker Sözlüğü - Teknik Terimler", "path": "docker/docker_sozluk.md" }
       ]
     }
   ]
