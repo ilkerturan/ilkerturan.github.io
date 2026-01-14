@@ -1,6 +1,4 @@
-# 🐳 Docker Eğitimi - Bölüm 4: İleri Seviye ve Production
-
-> **Bu bölümde:** Docker Desktop kullanımı, image paylaşımı, production optimizasyonu, güvenlik ve troubleshooting öğreneceğiz.
+# 🐳 İleri Seviye ve Production
 
 ---
 
@@ -1090,26 +1088,3 @@ docker info
 - **Docker Hub:** https://hub.docker.com
 - **Play with Docker:** https://labs.play-with-docker.com (ücretsiz deneme)
 - **Awesome Docker:** https://github.com/veggiemonk/awesome-docker
-
-### 💡 Son Tavsiyeler
-
-1. **Pratik yapın!** Her gün bir mini proje
-2. **Hata yapmaktan korkmayın** → En iyi öğretmen
-3. **.dockerignore ve cache** → Build sürenizi kısaltır
-4. **Multi-stage build** → Production'da şart!
-5. **Güvenlik öncelik** → Secrets, users, scanning
-6. **Dokümantasyon yazın** → README'ler önemli
-
----
-
-## 🎉 Tebrikler!
-
-Docker'ın temellerinden ileri seviye konularına kadar her şeyi öğrendiniz. Artık:
-
-✅ Dockerfile yazabilirsiniz  
-✅ Container yönetimi yapabilirsiniz  
-✅ Docker Compose kullanabilirsiniz  
-✅ Production'a deploy edebilirsiniz  
-✅ Sorunları çözebilirsiniz  
-
-**Başarılar! 🚀**
