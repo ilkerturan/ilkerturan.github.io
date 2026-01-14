@@ -1,21 +1,10 @@
-# 🐳 Dockerfile ve Pratik Uygulamalar
-
----
-
-## 📚 İçindekiler
-- [Dockerfile Nedir?](#dockerfile-nedir)
-- [İlk Dockerfile'ımız](#ilk-dockerfileımız)
-- [Dockerfile Komutları (Detaylı)](#dockerfile-komutları-detaylı)
-- [Gerçek Proje: Node.js Uygulaması](#gerçek-proje-nodejs-uygulaması)
-- [Container İçine Girmek](#container-içine-girmek)
-- [Volume Kullanımı](#volume-kullanımı)
-- [.dockerignore Dosyası](#dockerignore-dosyası)
+# Dockerfile ve Pratik Uygulamalar
 
 ---
 
 ## Dockerfile Nedir?
 
-### 🤔 Basit Anlatım
+### Basit Anlatım
 
 **Dockerfile = Kendi image'imizi oluşturmak için yazdığımız tarif defteri**
 
@@ -31,7 +20,7 @@ FROM nginx
 COPY website.html /usr/share/nginx/html/index.html
 ```
 
-### 📝 Dockerfile Neden Gerekli?
+### Dockerfile Neden Gerekli?
 
 **Senaryolar:**
 
@@ -51,7 +40,7 @@ docker run python python script.py
 
 ## İlk Dockerfile'ımız
 
-### 📁 Proje Klasörü Oluşturalım
+### Proje Klasörü Oluşturalım
 
 **Adım 1: Klasör oluştur**
 ```bash
@@ -69,7 +58,7 @@ cd ilk-dockerfile
     <title>İlk Docker Projesi</title>
 </head>
 <body>
-    <h1>🎉 Merhaba Docker!</h1>
+    <h1>Merhaba Docker!</h1>
     <p>Bu sayfa Docker ile çalışıyor!</p>
 </body>
 </html>
@@ -93,7 +82,7 @@ ilk-dockerfile/
 └── index.html
 ```
 
-### 🏗️ Image'i Build Edelim (Oluşturalım)
+### Image'i Build Edelim (Oluşturalım)
 
 ```bash
 docker build -t ilk-websitem .
@@ -129,7 +118,7 @@ REPOSITORY      TAG       SIZE
 ilk-websitem    latest    42MB
 ```
 
-### 🚀 Image'den Container Oluşturalım
+### Image'den Container Oluşturalım
 
 ```bash
 docker run -d -p 8080:80 --name websitem ilk-websitem
@@ -140,13 +129,13 @@ docker run -d -p 8080:80 --name websitem ilk-websitem
 http://localhost:8080
 ```
 
-**🎉 Kendi web siteniz Docker'da çalışıyor!**
+**Kendi web siteniz Docker'da çalışıyor!**
 
 ---
 
 ## Dockerfile Komutları (Detaylı)
 
-### 1️⃣ FROM - Temel Image Seçimi
+### 1. FROM - Temel Image Seçimi
 
 **Ne işe yarar?** Her Dockerfile bir temel image ile başlar.
 
@@ -177,7 +166,7 @@ FROM nginx:alpine
 
 **⚠️ Önemli:** Her Dockerfile mutlaka FROM ile başlar!
 
-### 2️⃣ WORKDIR - Çalışma Dizini
+### 2. WORKDIR - Çalışma Dizini
 
 **Ne işe yarar?** Container içinde hangi klasörde çalışacağımızı belirtir.
 
@@ -217,7 +206,7 @@ COPY index.js .
 
 **💡 İpucu:** Genellikle `/app` klasörü kullanılır.
 
-### 3️⃣ COPY - Dosya Kopyalama
+### 3. COPY - Dosya Kopyalama
 
 **Ne işe yarar?** Bilgisayarınızdaki dosyaları container'a kopyalar.
 
@@ -254,7 +243,7 @@ COPY file1.txt file2.txt /app/
 
 **⚠️ Önemli:** COPY her zaman Dockerfile'ın bulunduğu klasörden başlar!
 
-### 4️⃣ RUN - Komut Çalıştırma
+### 4. RUN - Komut Çalıştırma
 
 **Ne işe yarar?** Image oluşturulurken komut çalıştırır.
 
@@ -297,7 +286,7 @@ RUN apt-get update && \
 - `RUN`: Image oluşturulurken çalışır (tek sefer)
 - `CMD`: Container her başladığında çalışır
 
-### 5️⃣ CMD - Başlangıç Komutu
+### 5. CMD - Başlangıç Komutu
 
 **Ne işe yarar?** Container başladığında ne çalışacağını belirtir.
 
@@ -335,7 +324,7 @@ CMD ["npm", "start"]
 CMD npm start
 ```
 
-### 6️⃣ EXPOSE - Port Bildirimi
+### 6. EXPOSE - Port Bildirimi
 
 **Ne işe yarar?** Container'ın hangi portu kullandığını belirtir (dokümantasyon amaçlı).
 
@@ -362,7 +351,7 @@ EXPOSE 8080 9090
 docker run -p 3000:3000 myapp
 ```
 
-### 7️⃣ ENV - Çevre Değişkenleri
+### 7. ENV - Çevre Değişkenleri
 
 **Ne işe yarar?** Container içinde kullanılacak değişkenleri tanımlar.
 
@@ -391,7 +380,7 @@ console.log(process.env.NODE_ENV); // "production"
 console.log(process.env.PORT);     // "3000"
 ```
 
-### 8️⃣ ARG - Build-time Değişkenler
+### 8. ARG - Build-time Değişkenler
 
 **Ne işe yarar?** Image oluşturulurken kullanılan geçici değişkenler.
 
@@ -418,7 +407,7 @@ docker build --build-arg NODE_VERSION=20 -t myapp .
 - `ARG`: Sadece build sırasında var
 - `ENV`: Container çalışırken de var
 
-### 9️⃣ USER - Kullanıcı Değiştirme
+### 9. USER - Kullanıcı Değiştirme
 
 **Ne işe yarar?** Container'ı root kullanıcı yerine başka kullanıcı ile çalıştırır (güvenlik).
 
@@ -450,7 +439,7 @@ CMD ["node", "index.js"]
 
 ## Gerçek Proje: Node.js Uygulaması
 
-### 📁 Proje Yapısı
+### Proje Yapısı
 
 ```
 nodejs-app/
@@ -460,7 +449,7 @@ nodejs-app/
 └── .dockerignore
 ```
 
-### 📝 1. package.json
+### 1. package.json
 
 ```json
 {
@@ -476,7 +465,7 @@ nodejs-app/
 }
 ```
 
-### 📝 2. index.js
+### 2. index.js
 
 ```javascript
 const express = require('express');
@@ -500,7 +489,7 @@ app.listen(PORT, () => {
 });
 ```
 
-### 📝 3. Dockerfile (En İyi Pratikler)
+### 3. Dockerfile (En İyi Pratikler)
 
 ```dockerfile
 # 1. Temel image (Alpine - küçük boyut)
@@ -540,7 +529,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
 CMD ["npm", "start"]
 ```
 
-### 🏗️ Build ve Çalıştırma
+### Build ve Çalıştırma
 
 ```bash
 # 1. Image oluştur
@@ -556,13 +545,13 @@ curl http://localhost:3000
 **Çıktı:**
 ```json
 {
-  "message": "🐳 Merhaba Docker!",
+  "message": "Merhaba Docker!",
   "timestamp": "2024-01-14T10:30:00.000Z",
   "nodeVersion": "v18.19.0"
 }
 ```
 
-### 🔍 Neden Önce package.json Kopyalanır?
+### Neden Önce package.json Kopyalanır?
 
 **❌ Kötü Yöntem:**
 ```dockerfile
@@ -595,7 +584,7 @@ Katman 5: CMD npm start                ✅ Cache'den (değişmedi)
 
 ## Container İçine Girmek
 
-### 🚪 docker exec Komutu
+### docker exec Komutu
 
 **Container çalışırken içine girmek:**
 
@@ -611,7 +600,7 @@ docker exec -it [container-adi] bash
 - `sh`: Shell (Alpine'de bash yoktur)
 - `bash`: Bash shell (Ubuntu/Debian'da)
 
-### 🔬 Pratik Örnekler
+### Pratik Örnekler
 
 **1. Node.js container'ına girelim:**
 ```bash
@@ -663,7 +652,7 @@ docker exec -it myapp sh
 # İki terminal aynı anda çalışır!
 ```
 
-### 📋 Container Loglarını İzleme
+### Container Loglarını İzleme
 
 ```bash
 # Tüm logları göster
@@ -689,7 +678,7 @@ docker logs --since 1h myapp
 
 ## Volume Kullanımı
 
-### 🤔 Problem: Veri Kaybı
+### Problem: Veri Kaybı
 
 ```bash
 # Container oluştur ve dosya ekle
@@ -707,7 +696,7 @@ docker rm test
 
 **Volume Türleri:**
 
-### 1️⃣ Named Volume (Önerilir)
+### 1. Named Volume (Önerilir)
 
 **Volume oluştur:**
 ```bash
@@ -745,7 +734,7 @@ docker volume inspect uygulama-verileri
 }
 ```
 
-### 2️⃣ Bind Mount (Development için)
+### 2. Bind Mount (Development için)
 
 **Ne işe yarar?** Bilgisayarınızdaki klasörü doğrudan container'a bağlar.
 
@@ -774,7 +763,7 @@ Bilgisayarınız              Container
 └────────────┘             └────────────┘
 ```
 
-### 3️⃣ Pratik Örnek: MongoDB
+### 3. Pratik Örnek: MongoDB
 
 ```bash
 # Volume oluştur
@@ -804,7 +793,7 @@ docker run -d \
 # ✅ Veriler hala orada!
 ```
 
-### 🗑️ Volume Temizleme
+### Volume Temizleme
 
 ```bash
 # Volume sil
@@ -818,7 +807,7 @@ docker volume prune
 
 ## .dockerignore Dosyası
 
-### 🤔 Neden Gerekli?
+### Neden Gerekli?
 
 **Problem:**
 ```dockerfile
@@ -831,7 +820,7 @@ COPY . .
 - ❌ Build süresi uzar
 - ❌ Güvenlik riski (.env dosyası kopyalanır!)
 
-### 📝 .dockerignore Dosyası
+### .dockerignore Dosyası
 
 **Proje klasörünüzde `.dockerignore` oluşturun:**
 
@@ -903,69 +892,3 @@ Build süresi: 45 saniye
 Image boyutu: 180 MB
 Build süresi: 8 saniye
 ```
-
----
-
-## 🎓 İkinci Bölüm Özeti
-
-### ✅ Öğrendiklerimiz
-
-1. **Dockerfile:** Kendi image'imizi oluşturma tarifi
-2. **Temel komutlar:** FROM, WORKDIR, COPY, RUN, CMD, EXPOSE, ENV
-3. **Best practices:** Layer caching, .dockerignore, güvenlik
-4. **Container'a girmek:** docker exec ile debugging
-5. **Volume:** Verileri kalıcı saklama
-6. **Bind mount:** Development için kod paylaşımı
-
-### 📝 Önemli Komutlar
-
-```bash
-# Image oluşturma
-docker build -t [isim] .
-docker build -t [isim]:[tag] .
-
-# Container içine girme
-docker exec -it [container] sh
-docker exec [container] [komut]
-
-# Log izleme
-docker logs -f [container]
-docker logs --tail 100 [container]
-
-# Volume yönetimi
-docker volume create [isim]
-docker volume ls
-docker volume rm [isim]
-
-# Bind mount
-docker run -v $(pwd):/app myapp
-```
-
-### 🎯 Pratik Yapın
-
-**Alıştırma: Python Flask Uygulaması**
-
-`app.py`:
-```python
-from flask import Flask
-app = Flask(__name__)
-
-@app.route('/')
-def hello():
-    return '🐍 Hello from Flask in Docker!'
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-```
-
-`requirements.txt`:
-```
-flask==3.0.0
-```
-
-**Dockerfile oluşturun ve çalıştırın!**
-- Gerçek proje: Web + Database + Redis
-- Docker Hub'a image yükleme
-- Production deployment stratejileri
-
-**🚀 Bölüm 3'e hazır mısınız?**
