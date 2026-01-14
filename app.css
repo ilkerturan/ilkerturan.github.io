@@ -91,53 +91,79 @@ body {
 #note-content-area h1 { color: #2c3e50; border-bottom: none; margin-bottom: 1.5rem; }
 #note-content-area h2 { color: #34495e; margin-top: 2.5rem; font-size: 1.5rem; border-bottom: 2px solid var(--accent-color); display: inline-block; padding-bottom: 5px; }
 #note-content-area img { max-width: 100%; border-radius: 8px; margin: 1rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-#note-content-area code { color: #e83e8c; background-color: #fff3f7; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
 
-/* Kod Blokları & Copy Butonu */
+
+/* --- KOD BLOKLARI VE RENKLER (DÜZELTİLMİŞ) --- */
+
+/* 1. Kırmızı Renk Düzeltmesi */
+code, .language-text {
+  color: #374151; /* Standart pembe yerine koyu gri */
+}
+
+/* 2. Satır İçi (Inline) Kodlar */
+p code, li code, td code {
+  background-color: #f3f4f6;   /* Çok hafif gri zemin */
+  color: #4b5563;              /* Okunaklı gri yazı */
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  border: 1px solid rgba(0,0,0,0.05);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* 3. Büyük Kod Blokları (Wrapper) */
 .code-wrapper {
   position: relative;
   margin-bottom: 1.5rem;
 }
 
 .code-wrapper pre {
-  background: #ffffff;           /* Koyu renk yerine BEYAZ */
-  border: 1px solid #eef0f2;     /* İnce, gri bir çerçeve */
+  background: #ffffff;           /* Arkaplan BEYAZ */
+  border: 1px solid #eef0f2;     /* İnce çerçeve */
   border-radius: 12px;
   padding: 1.2rem;
-  color: #333333;                /* Yazı rengi koyu gri */
+  color: #333333;                /* Kod yazısı koyu */
   margin: 0;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.02); /* Çok hafif gölge */
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace; /* Kod fontu */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   font-size: 0.95rem;
 }
 
-/* Copy Butonu - Açık temaya uygun hale getirildi */
+/* Wrapper içindeki code etiketi temizliği */
+.code-wrapper pre code {
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0;
+  border: none;
+}
+
+/* 4. Copy Butonu (Açık Tema) */
 .code-wrapper .btn-copy {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #f0f2f5;           /* Buton arka planı açık gri */
-  color: #666;                   /* Buton yazı rengi gri */
+  background: #f0f2f5;
+  color: #666;
   border: 1px solid #e0e0e0;
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
-  opacity: 0;                    /* Varsayılan olarak gizli */
+  opacity: 0;
   transition: all 0.2s ease;
 }
 
-/* Hover durumları */
-.code-wrapper:hover .btn-copy { 
-  opacity: 1; 
-}
+.code-wrapper:hover .btn-copy { opacity: 1; }
 
 .code-wrapper .btn-copy:hover { 
-  background: var(--accent-color); /* Üstüne gelince tema rengi (Yeşil) */
+  background: var(--accent-color); 
   color: #1a4a30;
   border-color: var(--accent-color);
 }
+
 
 /* --- TOC (İçindekiler) --- */
 .toc-nav a {
@@ -152,7 +178,7 @@ body {
 }
 .toc-nav a:hover { color: var(--accent-color); }
 
-/* Animasyon */
+/* --- Animasyon --- */
 .animate-fade-in {
   animation: fadeIn 0.4s ease-in-out;
 }
