@@ -1,7 +1,4 @@
-# 🐳 Docker Eğitimi - Bölüm 1: Temeller ve İlk Adımlar
-
-> **Bu doküman kimler için?** Yazılım geliştirmeye yeni başlayanlar, Docker'ı hiç kullanmamış ya da temel seviyede öğrenmek isteyen junior yazılımcılar için hazırlanmıştır.
-
+# 🐳 Bölüm 1: Temeller ve İlk Adımlar
 ---
 
 ## 📚 İçindekiler
@@ -553,17 +550,3 @@ docker ps
 docker stop veritabanim
 docker rm veritabanim
 ```
-
----
-
-## 📚 Sıradaki Bölüm
-
-**Bölüm 2'de öğrenecekleriniz:**
-- Dockerfile nasıl yazılır?
-- Kendi image'inizi nasıl oluşturursunuz?
-- Container içine nasıl girilir?
-- Volume kullanımı
-- Network oluşturma
-- Pratik bir Node.js/Python projesi containerize etme
-
-**🚀 Hazır mısınız? Bölüm 2'ye geçelim!**
