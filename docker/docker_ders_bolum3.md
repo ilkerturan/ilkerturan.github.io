@@ -1,6 +1,4 @@
-# 🐳 Docker Eğitimi - Bölüm 3: Docker Compose ve Gerçek Projeler
-
-> **Bu bölümde:** Birden fazla container'ı yönetmeyi, Docker Compose kullanmayı ve gerçek dünya senaryolarını öğreneceğiz.
+# 🐳 Docker Compose ve Gerçek Projeler
 
 ---
 
@@ -1041,17 +1039,3 @@ volumes:
 ```
 
 **Çalıştırın ve http://localhost:8080 adresinden WordPress kurulumunu yapın!**
-
----
-
-## 📚 Sıradaki Bölüm
-
-**Bölüm 4'te öğrenecekleriniz:**
-- Docker Desktop kullanımı (GUI)
-- Docker Hub'a image yükleme
-- Multi-stage build (Production optimizasyonu)
-- Docker Swarm ve Kubernetes'e giriş
-- Güvenlik best practices
-- Troubleshooting ve debug teknikleri
-
-**🚀 Final bölümüne hazır mısınız?**
