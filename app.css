@@ -1,115 +1,145 @@
-/* YENİ: Kartların üzerine gelince "magazine" tarzı 
-  vurgu efekti verir.
-*/
+:root {
+  /* Renk Paleti (Soft/Pastel) */
+  --bg-body: #FDFBF7; /* Çok hafif krem */
+  --primary-color: #6C757D;
+  --accent-color: #A8D5BA; /* Matcha Yeşili */
+  --card-hover-bg: #F0F7F4;
+  
+  /* Tipografi */
+  --font-heading: 'Quicksand', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-body);
+  font-family: var(--font-body);
+  color: #4a4a4a;
+}
+
+.brand-font, h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* --- Arama Kutusu --- */
+.search-box {
+  transition: all 0.3s ease;
+}
+.search-box:focus-within {
+  box-shadow: 0 0.5rem 1rem rgba(168, 213, 186, 0.4)!important; /* Yeşilimsi gölge */
+  border-color: var(--accent-color)!important;
+}
+
+/* --- Filtre Butonları (Pills) --- */
+.btn-filter {
+  background-color: white;
+  border: 1px solid #eee;
+  border-radius: 20px;
+  color: #666;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.btn-filter:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+}
+
+.btn-filter.active {
+  background-color: var(--accent-color); /* Aktif olunca yeşil */
+  color: #1a4a30; /* Koyu yeşil yazı */
+  border-color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* --- Not Kartları --- */
 .note-card {
-  transition: all 0.2s ease-in-out;
+  border-radius: 16px; /* Daha yuvarlak */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: white;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.03);
 }
 
 .note-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15)!important;
+  transform: translateY(-8px); /* Yukarı zıplama */
+  box-shadow: 0 1rem 2rem rgba(0,0,0,0.08)!important;
 }
 
-/* KALDIRILDI: Navbar artık kullanılmadığı için 
-  .nav-link.active-note kuralı silindi.
-*/
-
-
-/* ---- markdown content style boost (DOKUNULMADI) ---- */
-/* Not: Bu kurallar artık .bg-white içindeki 
-  #content alanını hedefliyor.
-*/
-#content h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #1a1a1a;
+.card-category-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
-#content h2 {
-    font-size: 1.6rem;
-    margin-top: 2.2rem;
-    margin-bottom: 1rem;
-    color: #1a1a1a;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #f0f0f0;
+.card-title {
+  font-weight: 700;
+  color: #333;
 }
 
-#content h3 {
-    font-size: 1.3rem;
-    margin-top: 1.8rem;
-    margin-bottom: .8rem;
-    color: #333;
+/* --- Okuma Alanı --- */
+#note-content-area {
+  font-size: 1.05rem;
+  line-height: 1.7;
 }
 
-#content h4 {
-    font-size: 1.15rem;
-    margin-top: 1.2rem;
-    margin-bottom: .6rem;
-    color: #444;
-}
+#note-content-area h1 { color: #2c3e50; border-bottom: none; margin-bottom: 1.5rem; }
+#note-content-area h2 { color: #34495e; margin-top: 2.5rem; font-size: 1.5rem; border-bottom: 2px solid var(--accent-color); display: inline-block; padding-bottom: 5px; }
+#note-content-area img { max-width: 100%; border-radius: 8px; margin: 1rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+#note-content-area code { color: #e83e8c; background-color: #fff3f7; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
 
-#content p {
-    margin-bottom: 1.2rem;
-    color: #444;
+/* Kod Blokları & Copy Butonu */
+.code-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
 }
-
-#content ul,
-#content ol {
-    margin-bottom: 1.2rem;
-    margin-left: 1.5rem;
+.code-wrapper pre {
+  background: #282c34;
+  border-radius: 12px;
+  padding: 1.2rem;
+  color: #abb2bf;
+  margin: 0;
 }
-
-#content li {
-    margin-bottom: 0.5rem;
-    color: #444;
+.code-wrapper .btn-copy {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
+.code-wrapper:hover .btn-copy { opacity: 1; }
+.code-wrapper .btn-copy:hover { background: rgba(255,255,255,0.2); }
 
-#content code {
-    background: #f5f5f5;
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9em;
-    color: #d73a49;
+/* --- TOC (İçindekiler) --- */
+.toc-nav a {
+  color: #888;
+  font-size: 0.9rem;
+  padding: 4px 0;
+  text-decoration: none;
+  display: block;
+  border-left: 2px solid transparent;
+  padding-left: 10px;
+  transition: all 0.2s;
 }
+.toc-nav a:hover { color: var(--accent-color); }
 
-#content pre {
-    background: #f6f8fa;
-    padding: 1rem;
-    border-radius: 6px;
-    overflow-x: auto;
-    margin-bottom: 1.2rem;
-    border: 1px solid #e1e4e8;
+/* Animasyon */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-in-out;
 }
-
-#content pre code {
-    background: none;
-    padding: 0;
-    color: #24292e;
-}
-
-#content blockquote {
-    border-left: 4px solid #ddd;
-    padding-left: 1rem;
-    margin: 1.5rem 0;
-    color: #666;
-    font-style: italic;
-}
-
-#content table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-bottom: 1.2rem;
-}
-
-#content table th,
-#content table td {
-    border: 1px solid #ddd;
-    padding: 0.75rem;
-    text-align: left;
-}
-
-#content table th {
-    background: #f6f8fa;
-    font-weight: 600;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
