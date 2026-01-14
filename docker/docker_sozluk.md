@@ -1,10 +1,10 @@
-# 🐳 Teknik Terimler
+# Teknik Terimler
 
 > Docker ile ilgili siklikla kullanilan terim ve kavramlar.
 
 ---
 
-## 📑 İçindekiler
+## İçindekiler
 
 - [A](#a) | [B](#b) | [C](#c) | [D](#d) | [E](#e) | [F](#f) | [G](#g) | [H](#h) | [I](#i) | [J](#j) | [K](#k) | [L](#l) | [M](#m)
 - [N](#n) | [O](#o) | [P](#p) | [R](#r) | [S](#s) | [T](#t) | [U](#u) | [V](#v) | [W](#w)
