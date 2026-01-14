@@ -1,6 +1,4 @@
-# 🐳 Docker Eğitimi - Bölüm 2: Dockerfile ve Pratik Uygulamalar
-
-> **Bu bölümde:** Kendi Docker image'lerimizi oluşturmayı, container içine girmeyi, dosya paylaşımını ve gerçek projeleri containerize etmeyi öğreneceğiz.
+# 🐳 Dockerfile ve Pratik Uygulamalar
 
 ---
 
@@ -966,14 +964,6 @@ flask==3.0.0
 ```
 
 **Dockerfile oluşturun ve çalıştırın!**
-
----
-
-## 📚 Sıradaki Bölüm
-
-**Bölüm 3'te öğrenecekleriniz:**
-- Docker Compose (Çoklu container yönetimi)
-- Network oluşturma ve kullanma
 - Gerçek proje: Web + Database + Redis
 - Docker Hub'a image yükleme
 - Production deployment stratejileri
