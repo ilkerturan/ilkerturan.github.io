@@ -46,7 +46,7 @@ docker run -d --name frontend --network app-network \
 - Durdurmak ve silmek zor
 - Başkasına paylaşmak imkansız
 
-### ✅ Çözüm: Docker Compose
+### Çözüm: Docker Compose
 
 **Tek bir dosya: `docker-compose.yml`**
 ```yaml
@@ -96,7 +96,7 @@ networks:       # Özel network'ler (opsiyonel)
   network1:
 ```
 
-### 🔍 Servis Tanımlama Seçenekleri
+### Servis Tanımlama Seçenekleri
 
 #### 1. image - Hazır Image Kullanma
 
@@ -763,7 +763,7 @@ Network: "app-network"
     ✅ İletişim var!
 ```
 
-### 📡 Network Türleri
+### Network Türleri
 
 #### 1. Bridge (Varsayılan)
 
