@@ -1,4 +1,4 @@
-# Bölüm 1: Temeller ve İlk Adımlar
+# Temeller ve İlk Adımlar
 ---
 
 ## Docker Nedir? Neden Kullanırız?
