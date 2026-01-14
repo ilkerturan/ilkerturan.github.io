@@ -1,4 +1,4 @@
-# 🐳 Docker Sözlüğü - Teknik Terimler
+# 🐳 Teknik Terimler
 
 > Docker ile ilgili tüm terimler, kavramlar ve kısaltmaların detaylı açıklamaları
 
@@ -753,9 +753,3 @@ COPY . .  # /app içine kopyalar
 **Docker Desktop:** WSL2 backend kullanır (Hyper-V yerine).  
 **Performans:** Native'e yakın hız.  
 **Gereksinim:** Windows 10/11 için Docker Desktop.
-
----
-
-## 🔤 Kısaltmalar
-
-| Kıs
