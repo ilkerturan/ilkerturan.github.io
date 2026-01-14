@@ -98,29 +98,46 @@ body {
   position: relative;
   margin-bottom: 1.5rem;
 }
+
 .code-wrapper pre {
-  background: #282c34;
+  background: #ffffff;           /* Koyu renk yerine BEYAZ */
+  border: 1px solid #eef0f2;     /* İnce, gri bir çerçeve */
   border-radius: 12px;
   padding: 1.2rem;
-  color: #abb2bf;
+  color: #333333;                /* Yazı rengi koyu gri */
   margin: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02); /* Çok hafif gölge */
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace; /* Kod fontu */
+  font-size: 0.95rem;
 }
+
+/* Copy Butonu - Açık temaya uygun hale getirildi */
 .code-wrapper .btn-copy {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: rgba(255,255,255,0.1);
-  border: none;
-  color: white;
-  padding: 4px 8px;
+  background: #f0f2f5;           /* Buton arka planı açık gri */
+  color: #666;                   /* Buton yazı rengi gri */
+  border: 1px solid #e0e0e0;
+  padding: 4px 10px;
   border-radius: 6px;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 600;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s;
+  opacity: 0;                    /* Varsayılan olarak gizli */
+  transition: all 0.2s ease;
 }
-.code-wrapper:hover .btn-copy { opacity: 1; }
-.code-wrapper .btn-copy:hover { background: rgba(255,255,255,0.2); }
+
+/* Hover durumları */
+.code-wrapper:hover .btn-copy { 
+  opacity: 1; 
+}
+
+.code-wrapper .btn-copy:hover { 
+  background: var(--accent-color); /* Üstüne gelince tema rengi (Yeşil) */
+  color: #1a4a30;
+  border-color: var(--accent-color);
+}
 
 /* --- TOC (İçindekiler) --- */
 .toc-nav a {
