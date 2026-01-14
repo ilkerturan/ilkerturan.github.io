@@ -1,21 +1,10 @@
-# 🐳 Docker Compose ve Gerçek Projeler
-
----
-
-## 📚 İçindekiler
-- [Docker Compose Nedir?](#docker-compose-nedir)
-- [docker-compose.yml Dosyası](#docker-composeyml-dosyası)
-- [Docker Compose Komutları](#docker-compose-komutları)
-- [Gerçek Proje 1: Web + Database](#gerçek-proje-1-web--database)
-- [Gerçek Proje 2: Full Stack Uygulama](#gerçek-proje-2-full-stack-uygulama)
-- [Docker Network](#docker-network)
-- [Environment Variables Yönetimi](#environment-variables-yönetimi)
+# Docker Compose ve Gerçek Projeler
 
 ---
 
 ## Docker Compose Nedir?
 
-### 🤔 Problem: Çoklu Container Yönetimi
+### Problem: Çoklu Container Yönetimi
 
 **Klasik bir web uygulaması:**
 ```
@@ -78,7 +67,7 @@ docker compose up    # Hepsini başlat
 docker compose down  # Hepsini durdur ve sil
 ```
 
-**🎉 Avantajlar:**
+**Avantajlar:**
 - Tek dosyada tüm yapılandırma
 - Tek komutla başlatma/durdurma
 - Kolay paylaşım ve versiyon kontrolü
@@ -88,7 +77,7 @@ docker compose down  # Hepsini durdur ve sil
 
 ## docker-compose.yml Dosyası
 
-### 📝 Temel Yapı
+### Temel Yapı
 
 ```yaml
 version: '3.8'  # Compose dosya versiyonu (opsiyonel artık)
@@ -109,7 +98,7 @@ networks:       # Özel network'ler (opsiyonel)
 
 ### 🔍 Servis Tanımlama Seçenekleri
 
-#### 1️⃣ image - Hazır Image Kullanma
+#### 1. image - Hazır Image Kullanma
 
 ```yaml
 services:
@@ -119,7 +108,7 @@ services:
     image: mycompany/myapp:1.0  # Özel registry'den
 ```
 
-#### 2️⃣ build - Dockerfile'dan Oluşturma
+#### 2. build - Dockerfile'dan Oluşturma
 
 ```yaml
 services:
@@ -131,7 +120,7 @@ services:
       dockerfile: Dockerfile.dev  # Özel Dockerfile ismi
 ```
 
-#### 3️⃣ ports - Port Bağlama
+#### 3. ports - Port Bağlama
 
 ```yaml
 services:
@@ -142,7 +131,7 @@ services:
       - "127.0.0.1:5000:5000"  # Sadece localhost
 ```
 
-#### 4️⃣ environment - Çevre Değişkenleri
+#### 4. environment - Çevre Değişkenleri
 
 ```yaml
 services:
@@ -157,7 +146,7 @@ services:
       PORT: 3000
 ```
 
-#### 5️⃣ volumes - Volume Bağlama
+#### 5. volumes - Volume Bağlama
 
 ```yaml
 services:
@@ -168,7 +157,7 @@ services:
       - /app/logs                # Anonymous volume
 ```
 
-#### 6️⃣ depends_on - Başlatma Sırası
+#### 6. depends_on - Başlatma Sırası
 
 ```yaml
 services:
@@ -181,7 +170,7 @@ services:
     image: postgres
 ```
 
-#### 7️⃣ restart - Yeniden Başlatma Politikası
+#### 7. restart - Yeniden Başlatma Politikası
 
 ```yaml
 services:
@@ -194,7 +183,7 @@ services:
     # unless-stopped → Manuel durdurulmadıkça başlat
 ```
 
-#### 8️⃣ networks - Network Bağlama
+#### 8. networks - Network Bağlama
 
 ```yaml
 services:
@@ -208,7 +197,7 @@ networks:
   backend:
 ```
 
-#### 9️⃣ container_name - Container İsmi
+#### 9. container_name - Container İsmi
 
 ```yaml
 services:
@@ -217,7 +206,7 @@ services:
     # Yoksa: [proje-adi]_db_1 şeklinde olur
 ```
 
-#### 🔟 command - Başlatma Komutu
+#### 10. command - Başlatma Komutu
 
 ```yaml
 services:
@@ -231,7 +220,7 @@ services:
 
 ## Docker Compose Komutları
 
-### 🚀 Temel Komutlar
+### Temel Komutlar
 
 #### Container'ları Başlatma
 
@@ -268,7 +257,7 @@ docker compose down -v
 docker compose down --rmi all
 ```
 
-### 📊 İzleme ve Debug
+### İzleme ve Debug
 
 ```bash
 # Çalışan servisleri listele
@@ -294,7 +283,7 @@ docker compose exec backend npm test
 docker compose run web npm install express
 ```
 
-### 🔧 Diğer Komutlar
+### Diğer Komutlar
 
 ```bash
 # Image'leri build et
@@ -329,7 +318,7 @@ docker compose up -d --scale worker=3
 
 ## Gerçek Proje 1: Web + Database
 
-### 📁 Proje Yapısı
+### Proje Yapısı
 
 ```
 todo-app/
@@ -341,7 +330,7 @@ todo-app/
 └── .env
 ```
 
-### 📝 1. Backend Uygulaması
+### 1. Backend Uygulaması
 
 **backend/package.json:**
 ```json
@@ -388,7 +377,7 @@ pool.query(`
 
 // API Endpoints
 app.get('/', (req, res) => {
-  res.json({ message: '✅ API çalışıyor!' });
+  res.json({ message: 'API çalışıyor!' });
 });
 
 app.get('/todos', async (req, res) => {
@@ -427,7 +416,7 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
-### 📝 2. Docker Compose Dosyası
+### 2. Docker Compose Dosyası
 
 **docker-compose.yml:**
 ```yaml
@@ -475,7 +464,7 @@ networks:
     driver: bridge
 ```
 
-### 📝 3. Environment Dosyası (Opsiyonel)
+### 3. Environment Dosyası (Opsiyonel)
 
 **.env:**
 ```env
@@ -500,7 +489,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
 ```
 
-### 🚀 Projeyi Çalıştırma
+### Projeyi Çalıştırma
 
 ```bash
 # 1. Proje klasörüne git
@@ -521,7 +510,7 @@ curl -X POST http://localhost:3000/todos \
 curl http://localhost:3000/todos
 ```
 
-### 🔍 Debug ve Kontrol
+### Debug ve Kontrol
 
 ```bash
 # Çalışan container'ları göster
@@ -537,7 +526,7 @@ docker compose exec database psql -U postgres -d todos
 SELECT * FROM todos;
 ```
 
-### 🛑 Projeyi Durdurma
+### Projeyi Durdurma
 
 ```bash
 # Durdur ama verileri sakla
@@ -554,7 +543,7 @@ docker compose down -v
 
 ## Gerçek Proje 2: Full Stack Uygulama
 
-### 📁 Proje Yapısı
+### Proje Yapısı
 
 ```
 fullstack-app/
@@ -571,7 +560,7 @@ fullstack-app/
     └── nginx.conf
 ```
 
-### 📝 docker-compose.yml (Full Stack)
+### docker-compose.yml (Full Stack)
 
 ```yaml
 services:
@@ -671,7 +660,7 @@ networks:
     driver: bridge
 ```
 
-### 📝 Nginx Konfigürasyonu
+### Nginx Konfigürasyonu
 
 **nginx/nginx.conf:**
 ```nginx
@@ -713,7 +702,7 @@ http {
 }
 ```
 
-### 🎯 Önemli Noktalar
+### Önemli Noktalar
 
 **1. Çoklu Network Kullanımı:**
 ```
@@ -757,7 +746,7 @@ Kod değişiklikleri anında yansır!
 
 ## Docker Network
 
-### 🤔 Network Neden Gerekli?
+### Network Neden Gerekli?
 
 **Problem:**
 ```
@@ -776,7 +765,7 @@ Network: "app-network"
 
 ### 📡 Network Türleri
 
-#### 1️⃣ Bridge (Varsayılan)
+#### 1. Bridge (Varsayılan)
 
 En yaygın kullanılan network türü.
 
@@ -791,7 +780,7 @@ networks:
 - İzole edilmiş network
 - Dışarıya port ile çıkış
 
-#### 2️⃣ Host
+#### 2. Host
 
 Container, host'un network'ünü kullanır.
 
@@ -803,7 +792,7 @@ services:
 
 **⚠️ Dikkat:** Port çakışması olabilir!
 
-#### 3️⃣ None
+#### 3. None
 
 Network yok (izole).
 
@@ -813,7 +802,7 @@ services:
     network_mode: none
 ```
 
-### 🔌 Network Kullanımı
+### Network Kullanımı
 
 **Manuel network oluşturma:**
 ```bash
@@ -841,7 +830,7 @@ docker network inspect app-network
 docker network inspect app-network | grep Name
 ```
 
-### 🎯 Compose ile Network
+### Compose ile Network
 
 **Otomatik:**
 ```yaml
@@ -888,7 +877,7 @@ networks:
 
 ## Environment Variables Yönetimi
 
-### 📝 .env Dosyası
+### .env Dosyası
 
 **Proje klasöründe `.env` oluşturun:**
 ```env
@@ -906,13 +895,13 @@ SECRET_KEY=supersecret
 REDIS_PASSWORD=redispass
 ```
 
-**⚠️ GİTİGNORE'a ekleyin:**
+**GİTİGNORE'a ekleyin:**
 ```
 .env
 .env.local
 ```
 
-### 🔐 Compose ile Kullanım
+### Compose ile Kullanım
 
 **Yöntem 1: env_file**
 ```yaml
@@ -945,7 +934,7 @@ services:
 
 Compose otomatik `.env`'den alır.
 
-### 🎯 Farklı Ortamlar
+### Farklı Ortamlar
 
 **Development:**
 ```bash
@@ -968,74 +957,3 @@ DEBUG=true
 NODE_ENV=production
 DEBUG=false
 ```
-
----
-
-## 🎓 Üçüncü Bölüm Özeti
-
-### ✅ Öğrendiklerimiz
-
-1. **Docker Compose:** Çoklu container yönetimi
-2. **docker-compose.yml:** Yapılandırma dosyası
-3. **Gerçek projeler:** Web + Database + Redis
-4. **Network:** Container'lar arası iletişim
-5. **Environment:** Güvenli config yönetimi
-6. **Best practices:** Volume, health check, restart policy
-
-### 📝 Önemli Komutlar
-
-```bash
-# Başlatma/Durdurma
-docker compose up -d
-docker compose down
-docker compose down -v
-
-# İzleme
-docker compose ps
-docker compose logs -f
-docker compose exec [servis] sh
-
-# Build ve güncelleme
-docker compose build
-docker compose up --build
-
-# Validation
-docker compose config
-```
-
-### 🎯 Pratik Yapın
-
-**Alıştırma: WordPress + MySQL**
-
-```yaml
-services:
-  wordpress:
-    image: wordpress:latest
-    ports:
-      - "8080:80"
-    environment:
-      - WORDPRESS_DB_HOST=db
-      - WORDPRESS_DB_USER=wpuser
-      - WORDPRESS_DB_PASSWORD=wppass
-      - WORDPRESS_DB_NAME=wordpress
-    depends_on:
-      - db
-    volumes:
-      - wordpress-data:/var/www/html
-
-  db:
-    image: mysql:8.0
-    environment:
-      - MYSQL_DATABASE=wordpress
-      - MYSQL_USER=wpuser
-      - MYSQL_PASSWORD=wppass
-      - MYSQL_ROOT_PASSWORD=rootpass
-    volumes:
-      - mysql-data:/var/lib/mysql
-
-volumes:
-  wordpress-data:
-  mysql-data:
-```
-
-**Çalıştırın ve http://localhost:8080 adresinden WordPress kurulumunu yapın!**
