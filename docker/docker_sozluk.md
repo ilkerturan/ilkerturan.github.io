@@ -1,6 +1,6 @@
 # 🐳 Teknik Terimler
 
-> Docker ile ilgili tüm terimler, kavramlar ve kısaltmaların detaylı açıklamaları
+> Docker ile ilgili siklikla kullanilan terim ve kavramlar.
 
 ---
 
