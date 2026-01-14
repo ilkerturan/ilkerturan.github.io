@@ -1,6 +1,6 @@
 # Teknik Terimler
 
-> Docker ile ilgili siklikla kullanilan terim ve kavramlar.
+> Docker ile ilgili sıklıkla kullanılan terim ve kavramlar.
 
 ---
 
