@@ -241,7 +241,7 @@ p code, li code, td code {
   margin: 1.5rem 0;
 }
 .code-wrapper pre {
-  background-color: #0f172a !important; /* Always dark for code blocks */
+  background-color: #1e293b !important; /* Kontrast için Slate-800 (Dark/Light uyumlu) */
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
   padding: 1.25rem;
