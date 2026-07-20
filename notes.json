@@ -1,0 +1,530 @@
+{
+  "categories": [
+    {
+      "name": "Yazılıma Giriş ve Oryantasyon",
+      "description": "Hiç kod bilmeyenler için Algoritma, Donanım, Yazılım ve Problem Çözme Felsefesi",
+      "notes": [
+        {
+          "title": "Yazılım Nedir? (Beden ve Ruh)",
+          "path": "giris/01-yazilim-nedir.md"
+        },
+        {
+          "title": "Algoritma Nedir? (Adımlar Sanatı)",
+          "path": "giris/02-algoritma-nedir.md"
+        },
+        {
+          "title": "Bilgisayar Nasıl Düşünür? (1 ve 0)",
+          "path": "giris/03-bilgisayar-nasil-dusunur.md"
+        },
+        {
+          "title": "Programlama Dilleri Neden Var?",
+          "path": "giris/04-programlama-dilleri-nedir.md"
+        },
+        {
+          "title": "Yazılımcı Olmak (Problem Çözme)",
+          "path": "giris/05-problem-cozme-sanati.md"
+        }
+      ]
+    },
+    {
+      "name": "HTML Temelleri ve Semantik Yapı",
+      "description": "Web'in iskeleti, Div çöplüğünden kurtuluş ve SEO uyumlu etiketleme",
+      "notes": [
+        {
+          "title": "HTML Nedir ve Temelleri",
+          "path": "html/01-html-nedir-ve-temeller.md"
+        },
+        {
+          "title": "Semantik HTML ve SEO",
+          "path": "html/02-semantik-html-ve-seo.md"
+        },
+        {
+          "title": "Formlar ve Etkileşim",
+          "path": "html/03-formlar-ve-girdiler.md"
+        }
+      ]
+    },
+    {
+      "name": "CSS ile Modern Web Tasarımı",
+      "description": "Kutu modeli (Box Model), Flexbox, CSS Grid ve Mobil Uyumluluk (Responsive)",
+      "notes": [
+        {
+          "title": "CSS Nedir ve Box Model",
+          "path": "css/01-css-nedir-ve-kutu-modeli.md"
+        },
+        {
+          "title": "Modern Yerleşim: Flexbox",
+          "path": "css/02-modern-yerlesim-flexbox.md"
+        },
+        {
+          "title": "İleri Yerleşim: CSS Grid",
+          "path": "css/03-modern-yerlesim-grid.md"
+        },
+        {
+          "title": "Mobil Uyumluluk (Responsive)",
+          "path": "css/04-mobil-uyumluluk-responsive.md"
+        }
+      ]
+    },
+    {
+      "name": "JavaScript ve Asenkron Mimari",
+      "description": "Tarayıcıların kas ve sinir sistemi: ES6, DOM Manipülasyonu, Async/Await ve Fetch API",
+      "notes": [
+        {
+          "title": "JS Nedir ve ES6 Temelleri",
+          "path": "javascript/01-js-nedir-ve-temeller.md"
+        },
+        {
+          "title": "DOM Manipülasyonu ve Olaylar",
+          "path": "javascript/02-dom-manipulasyonu.md"
+        },
+        {
+          "title": "Ok Fonksiyonları ve Array Metotları",
+          "path": "javascript/03-modern-fonksiyonlar-ve-array.md"
+        },
+        {
+          "title": "Asenkron Programlama (Async/Await)",
+          "path": "javascript/04-asenkron-programlama.md"
+        },
+        {
+          "title": "Backend ile İletişim (Fetch API)",
+          "path": "javascript/05-backend-ile-iletisim-fetch.md"
+        }
+      ]
+    },
+    {
+      "name": "Üretken Yapay Zeka (GenAI) ve İletişim Sanatı",
+      "notes": [
+        {
+          "title": "Üretken Yapay Zeka Nedir?",
+          "path": "prompt/01-uretken-yapay-zeka-nedir.md"
+        },
+        {
+          "title": "Yapay Zeka ile Etkili İletişim Sanatı",
+          "path": "prompt/02-ai-ile-etkili-iletisim-sanati.md"
+        },
+        {
+          "title": "İleri Seviye Komut Teknikleri",
+          "path": "prompt/03-ileri-seviye-komut-teknikleri.md"
+        },
+        {
+          "title": "Popüler Modeller ve İş Şablonları",
+          "path": "prompt/04-populer-modeller-ve-is-sablonlari.md"
+        }
+      ],
+      "description": "LLM Mantığı, Etkili Komut (Prompt) Tasarımı ve Pratik Şablonlar"
+    },
+    {
+      "name": "Makine Öğrenmesi",
+      "notes": [
+        {
+          "title": "Makine Öğrenmesi Türleri",
+          "path": "ml/01-makine-ogrenmesi-turleri.md"
+        }
+      ]
+    },
+    {
+      "name": "Derin Öğrenme",
+      "notes": [
+        {
+          "title": "Yapay Sinir Ağı Türleri",
+          "path": "dl/01-yapay-sinir-agi-turleri.md"
+        },
+        {
+          "title": "Aktivasyon Fonksiyonları: Kapsamlı Rehber",
+          "path": "dl/02-aktivasyon-fonksiyonlari.md"
+        },
+        {
+          "title": "Derin Öğrenme ile Iris Veri Seti Sınıflandırması",
+          "path": "dl/03-iris-veri-seti-siniflandirma.md"
+        }
+      ]
+    },
+    {
+      "name": "SQL",
+      "notes": [
+        {
+          "title": "Giriş ve Temel Kavramlar",
+          "path": "sql/temel/01-giris-ve-temel-kavramlar.md"
+        },
+        {
+          "title": "SELECT Sorguları ve Veri Filtreleme",
+          "path": "sql/temel/02-select-ve-filtreleme.md"
+        },
+        {
+          "title": "Sıralama, Gruplama ve Agregasyon Fonksiyonları",
+          "path": "sql/temel/03-siralama-gruplama-agregasyon.md"
+        },
+        {
+          "title": "JOIN İşlemleri ve Tablo İlişkileri",
+          "path": "sql/temel/04-join-islemleri.md"
+        },
+        {
+          "title": "Veri Ekleme, Güncelleme ve Silme",
+          "path": "sql/temel/05-veri-ekleme-guncelleme-silme.md"
+        },
+        {
+          "title": "Tablo Oluşturma, Değiştirme ve Veri Tipleri",
+          "path": "sql/temel/06-tablo-olusturma-ve-veri-tipleri.md"
+        },
+        {
+          "title": "Alt Sorgular (Subqueries) ve Küme İşlemleri",
+          "path": "sql/temel/07-alt-sorgular-ve-kumeler.md"
+        },
+        {
+          "title": "Modern SQL (Views, CTE ve Window Functions)",
+          "path": "sql/temel/08-modern-sql-ve-fonksiyonlar.md"
+        }
+      ]
+    },
+    {
+      "name": "C Sharp",
+      "notes": [
+        {
+          "title": "Söz Dizimi",
+          "path": "csharp/01-soz-dizimi.md"
+        },
+        {
+          "title": "Veri Tipleri",
+          "path": "csharp/02-veri-tipleri.md"
+        },
+        {
+          "title": "Operatörler",
+          "path": "csharp/03-operatorler.md"
+        },
+        {
+          "title": "Karar verme mekanizmaları",
+          "path": "csharp/04-karar-verme-mekanizmalari.md"
+        },
+        {
+          "title": "Döngüler",
+          "path": "csharp/05-donguler.md"
+        },
+        {
+          "title": "Nesneler",
+          "path": "csharp/06-nesneler.md"
+        },
+        {
+          "title": "Nesneye Yönelimli Programlama (OOP)",
+          "path": "csharp/07-oop-temelleri.md"
+        },
+        {
+          "title": "SOLID Prensipleri",
+          "path": "csharp/08-solid-prensipleri.md"
+        },
+        {
+          "title": "C# Jenerik Koleksiyon Arabirimleri: Kapsamlı Rehber",
+          "path": "csharp/09-generic-koleksiyonlar.md"
+        },
+        {
+          "title": "LINQ Temelleri",
+          "path": "csharp/11-linq-temelleri.md"
+        },
+        {
+          "title": "Hata Yönetimi",
+          "path": "csharp/12-hata-yonetimi.md"
+        },
+        {
+          "title": "Delegeler ve Lambdalar",
+          "path": "csharp/13-delegeler-ve-lambdalar.md"
+        },
+        {
+          "title": "Asenkron Programlama",
+          "path": "csharp/14-asenkron-programlama.md"
+        },
+        {
+          "title": "Entity Framework Core",
+          "path": "csharp/15-entity-framework-core.md"
+        }
+      ]
+    },
+    {
+      "name": "C Sharp Özel Yapılar",
+      "notes": [
+        {
+          "title": "Ocelot API Gateway Configuration Guide",
+          "path": "csharp/10-ocelot-api-gateway.md"
+        }
+      ]
+    },
+    {
+      "name": "Docker Eğitimi",
+      "notes": [
+        {
+          "title": "Temeller ve İlk Adımlar",
+          "path": "docker/01-temeller-ve-ilk-adimlar.md"
+        },
+        {
+          "title": "Dockerfile ve Pratik Uygulamalar",
+          "path": "docker/02-dockerfile-ve-pratik-uygulamalar.md"
+        },
+        {
+          "title": "Docker Compose ve Gerçek Projeler",
+          "path": "docker/03-docker-compose-ve-projeler.md"
+        },
+        {
+          "title": "Docker Sözlüğü - Teknik Terimler",
+          "path": "docker/04-teknik-terimler-sozlugu.md"
+        },
+        {
+          "title": "İleri Seviye ve Optimizasyon",
+          "path": "docker/05-docker-ileri-seviye.md"
+        },
+        {
+          "title": "Volume ve Network Detayları",
+          "path": "docker/06-docker-volume-ve-network.md"
+        }
+      ]
+    },
+    {
+      "name": "Kubernetes Eğitimi",
+      "description": "Konteyner Orkestrasyonu ve Mimarisi",
+      "notes": [
+        {
+          "title": "Kubernetes Nedir ve Mimari",
+          "path": "kubernetes/01-kubernetes-nedir-ve-mimari.md"
+        },
+        {
+          "title": "Temel Objeler (Pod, Service)",
+          "path": "kubernetes/02-temel-objeler.md"
+        },
+        {
+          "title": "Minikube ve Kubectl",
+          "path": "kubernetes/03-minikube-ve-kubectl.md"
+        },
+        {
+          "title": "İleri Seviye (Ingress, ConfigMap)",
+          "path": "kubernetes/04-ileri-seviye-kavramlar.md"
+        }
+      ]
+    },
+    {
+      "name": "Temiz Kod (Clean Code) ve Prensipler",
+      "description": "Evrensel kod kalitesi, SOLID ve Refactoring sanatının kod bağımsız anlatımı",
+      "notes": [
+        {
+          "title": "Temiz Kod (Clean Code) Nedir?",
+          "path": "temiz-kod/01-clean-code-nedir.md"
+        },
+        {
+          "title": "Kod Kokuları ve Refactoring",
+          "path": "temiz-kod/02-code-smells-ve-refactoring.md"
+        },
+        {
+          "title": "SOLID Prensipleri",
+          "path": "temiz-kod/03-solid-prensipleri.md"
+        },
+        {
+          "title": "Evrensel Yazılım Prensipleri",
+          "path": "temiz-kod/04-evrensel-yazilim-prensipleri.md"
+        }
+      ]
+    },
+    {
+      "name": "Tasarım Şablonları (Design Patterns)",
+      "description": "Gang of Four kalıpları: Yaratılışsal, Yapısal ve Davranışsal şablonların analojilerle anlatımı",
+      "notes": [
+        {
+          "title": "Tasarım Şablonları Nedir?",
+          "path": "tasarim-kaliplari/01-tasarim-kaliplari-nedir.md"
+        },
+        {
+          "title": "Yaratılışsal (Creational) Kalıplar",
+          "path": "tasarim-kaliplari/02-yaratilissal-kaliplar-creational.md"
+        },
+        {
+          "title": "Yapısal (Structural) Kalıplar",
+          "path": "tasarim-kaliplari/03-yapisal-kaliplar-structural.md"
+        },
+        {
+          "title": "Davranışsal (Behavioral) Kalıplar",
+          "path": "tasarim-kaliplari/04-davranissal-kaliplar-behavioral.md"
+        }
+      ]
+    },
+    {
+      "name": "Agile (Çevik) Metodolojiler ve Scrum",
+      "description": "Modern yazılım şirketlerinde takım çalışması, proje yönetimi ve Sprint süreçleri",
+      "notes": [
+        {
+          "title": "Şelaleye Karşı Çeviklik (Agile Manifestosu)",
+          "path": "agile-scrum/01-agile-manifestosu-nedir.md"
+        },
+        {
+          "title": "Scrum Mimarisi ve Takım Rolleri",
+          "path": "agile-scrum/02-scrum-mimarisi-ve-roller.md"
+        },
+        {
+          "title": "Scrum Etkinlikleri ve Sprint",
+          "path": "agile-scrum/03-scrum-etkinlikleri.md"
+        },
+        {
+          "title": "Kanban Panosu ve İş Takibi (Jira)",
+          "path": "agile-scrum/04-kanban-ve-is-takibi.md"
+        }
+      ]
+    },
+    {
+      "name": "Yazılım Testleri ve Kalite Güvencesi (QA)",
+      "description": "Manuel testlerin ölümü, Unit Test, Test Piramidi ve TDD (Red-Green-Refactor)",
+      "notes": [
+        {
+          "title": "Yazılım Testi Nedir? (Manuel Testlerin Ölümü)",
+          "path": "yazilim-testleri/01-yazilim-testi-nedir.md"
+        },
+        {
+          "title": "Test Piramidi (Unit, Integration, E2E)",
+          "path": "yazilim-testleri/02-test-piramidi.md"
+        },
+        {
+          "title": "Unit Test (Birim Testi) ve Mocking (Dublörler)",
+          "path": "yazilim-testleri/03-unit-test-ve-mocking.md"
+        },
+        {
+          "title": "TDD (Test Driven Development) Vizyonu",
+          "path": "yazilim-testleri/04-tdd-test-driven-development.md"
+        }
+      ]
+    },
+    {
+      "name": "CI/CD (DevOps Temelleri)",
+      "description": "Sürekli Entegrasyon, Otomasyon ve Kesintisiz Deployment Stratejileri",
+      "notes": [
+        {
+          "title": "CI/CD (Sürekli Entegrasyon ve Dağıtım) Nedir?",
+          "path": "cicd/01-cicd-nedir.md"
+        },
+        {
+          "title": "Versiyon Kontrol Stratejileri (Git)",
+          "path": "cicd/02-versiyon-kontrol-stratejileri.md"
+        },
+        {
+          "title": "GitHub Actions ile Otomasyon",
+          "path": "cicd/03-github-actions-ile-otomasyon.md"
+        },
+        {
+          "title": "Jenkins Temelleri",
+          "path": "cicd/04-jenkins-temelleri.md"
+        },
+        {
+          "title": "GitLab CI/CD",
+          "path": "cicd/05-gitlab-ci-cd.md"
+        },
+        {
+          "title": "Dağıtım (Deployment) Stratejileri",
+          "path": "cicd/06-deployment-stratejileri.md"
+        }
+      ]
+    },
+    {
+      "name": "Bulut Bilişim (Cloud Computing) Mimarisi",
+      "description": "AWS, Azure, Serverless Mimarisi ve Bulut Hizmet Modelleri (IaaS, PaaS, SaaS)",
+      "notes": [
+        {
+          "title": "Bulut Bilişim Nedir? (Başkasının Bilgisayarı)",
+          "path": "bulut-bilisim/01-bulut-bilisim-nedir.md"
+        },
+        {
+          "title": "Hizmet Modelleri (IaaS, PaaS, SaaS Pizza Analojisi)",
+          "path": "bulut-bilisim/02-hizmet-modelleri-iaas-paas-saas.md"
+        },
+        {
+          "title": "Sunucusuz (Serverless) Mimari",
+          "path": "bulut-bilisim/03-serverless-mimari.md"
+        },
+        {
+          "title": "Bulutun Devleri (AWS, Azure, GCP)",
+          "path": "bulut-bilisim/04-aws-azure-gcp-genel-bakis.md"
+        }
+      ]
+    },
+    {
+      "name": "Yazılım Güvenliği ve OWASP (2025)",
+      "description": "Siber Güvenlik Temelleri, Hacker Yaklaşımları ve OWASP Top 10 Zafiyet Mimarileri",
+      "notes": [
+        {
+          "title": "OWASP ve Yazılım Güvenliği Temelleri",
+          "path": "owasp/01-owasp-ve-yazilim-guvenligi.md"
+        },
+        {
+          "title": "Top 10 Değişimleri (2017-2021-2025)",
+          "path": "owasp/02-top-ten-degisimleri-2017-2021-2025.md"
+        },
+        {
+          "title": "A01: Broken Access Control",
+          "path": "owasp/03-a01-broken-access-control.md"
+        },
+        {
+          "title": "A02: Security Misconfiguration",
+          "path": "owasp/04-a02-security-misconfiguration.md"
+        },
+        {
+          "title": "A03: Software Supply Chain Failures",
+          "path": "owasp/05-a03-software-supply-chain-failures.md"
+        },
+        {
+          "title": "A04: Cryptographic Failures",
+          "path": "owasp/06-a04-cryptographic-failures.md"
+        },
+        {
+          "title": "A05: Injection",
+          "path": "owasp/07-a05-injection.md"
+        },
+        {
+          "title": "A06: Insecure Design",
+          "path": "owasp/08-a06-insecure-design.md"
+        },
+        {
+          "title": "A07: Authentication Failures",
+          "path": "owasp/09-a07-authentication-failures.md"
+        },
+        {
+          "title": "A08: Software and Data Integrity Failures",
+          "path": "owasp/10-a08-software-or-data-integrity-failures.md"
+        },
+        {
+          "title": "A09: Security Logging and Alerting",
+          "path": "owasp/11-a09-security-logging-and-alerting-failures.md"
+        },
+        {
+          "title": "A10: Mishandling of Exceptional Conditions",
+          "path": "owasp/12-a10-mishandling-of-exceptional-conditions.md"
+        }
+      ]
+    },
+    {
+      "name": "Teknik Terimler Sözlüğü (Glossary)",
+      "description": "Yazılım dünyasındaki tüm jargon, kelime ve mühendislik terimlerinin açıklamalı başucu sözlüğü",
+      "notes": [
+        {
+          "title": "Yazılıma Giriş ve Temel Kavramlar",
+          "path": "sozluk/01-yazilima-giris-sozlugu.md"
+        },
+        {
+          "title": "Frontend (Arayüz ve UX)",
+          "path": "sozluk/02-frontend-sozlugu.md"
+        },
+        {
+          "title": "Backend ve Veritabanı Mimarisi",
+          "path": "sozluk/03-backend-ve-veritabani-sozlugu.md"
+        },
+        {
+          "title": "Mimari, Tasarım ve Temiz Kod (Clean Code)",
+          "path": "sozluk/04-mimari-ve-temiz-kod-sozlugu.md"
+        },
+        {
+          "title": "Agile Metodolojiler ve Yazılım Testleri",
+          "path": "sozluk/05-agile-ve-test-sozlugu.md"
+        },
+        {
+          "title": "DevOps, Konteyner ve Bulut Bilişim",
+          "path": "sozluk/06-devops-ve-bulut-sozlugu.md"
+        },
+        {
+          "title": "Yapay Zeka (GenAI) ve Siber Güvenlik",
+          "path": "sozluk/07-yapay-zeka-ve-siber-guvenlik-sozlugu.md"
+        }
+      ]
+    }
+  ]
+}

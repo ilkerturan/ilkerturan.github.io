@@ -1,0 +1,336 @@
+/* --- Temel Değişkenler (Light Mode) --- */
+:root, [data-bs-theme="light"] {
+  --bg-body: #f8fafc; /* Tailwind Slate-50 */
+  --bg-surface: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --border-color: rgba(0, 0, 0, 0.08);
+  
+  --text-main: #334155;
+  --text-muted: #64748b;
+  --text-heading: #0f172a;
+  
+  --primary-color: #3b82f6; /* Modern Blue */
+  --primary-hover: #2563eb;
+  --accent-color: #8b5cf6; /* Violet */
+  
+  --sidebar-width: 280px;
+  --navbar-height: 64px;
+}
+
+/* --- Dark Mode Değişkenleri --- */
+[data-bs-theme="dark"] {
+  --bg-body: #0f172a; /* Deep Slate */
+  --bg-surface: #1e293b;
+  --bg-glass: rgba(30, 41, 59, 0.7);
+  --border-color: rgba(255, 255, 255, 0.1);
+  
+  --text-main: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-heading: #f8fafc;
+  
+  --primary-color: #38bdf8; /* Cyan */
+  --primary-hover: #0ea5e9;
+  --accent-color: #a78bfa; /* Soft Violet */
+}
+
+/* --- Genel Ayarlar --- */
+body {
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+.brand-font, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Quicksand', sans-serif;
+  color: var(--text-heading);
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+/* Text Gradient for Logo/Headers */
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* --- Layout (Sidebar & Main) --- */
+.custom-sidebar {
+  width: var(--sidebar-width) !important;
+  background-color: var(--bg-surface);
+  border-right-color: var(--border-color) !important;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.main-content {
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+}
+
+@media (min-width: 992px) {
+  .custom-sidebar {
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+  .main-content {
+    margin-left: var(--sidebar-width);
+  }
+}
+
+/* --- Glassmorphism --- */
+.glass-navbar {
+  height: var(--navbar-height);
+  background-color: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--border-color) !important;
+  z-index: 1030;
+  transition: background-color 0.3s ease;
+}
+
+.glass-card {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color) !important;
+  transition: background-color 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s;
+}
+
+.btn-glass {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  transition: all 0.2s;
+}
+.btn-glass:hover {
+  background-color: var(--bg-body);
+  transform: translateY(-2px);
+}
+
+/* --- Sidebar Menu Items --- */
+.sidebar-link {
+  display: block;
+  padding: 0.6rem 1rem;
+  color: var(--text-main);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  transition: all 0.2s;
+}
+.sidebar-link:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--primary-color);
+  transform: translateX(4px);
+}
+.sidebar-link.active {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: var(--primary-color);
+  font-weight: 600;
+  border-left: 3px solid var(--primary-color);
+}
+
+/* --- Search Box --- */
+.search-box {
+  background-color: var(--bg-body) !important;
+  border-color: var(--border-color) !important;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.search-box:focus-within {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  border-color: var(--primary-color) !important;
+}
+.search-input {
+  color: var(--text-main);
+}
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+.search-input:focus {
+  color: var(--text-main);
+}
+
+/* --- Note Cards (Grid) --- */
+.note-card {
+  border-radius: 16px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+}
+.note-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+  border-color: var(--primary-color);
+}
+[data-bs-theme="dark"] .note-card:hover {
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+}
+
+.card-category-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+  display: inline-block;
+}
+.card-title {
+  color: var(--text-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+/* --- Note Reading Area (Markdown) --- */
+.note-article {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-main);
+}
+.note-article h1, .note-article h2, .note-article h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-heading);
+}
+.note-article h1 { 
+  font-size: 2.2rem; 
+  border-bottom: 2px solid var(--border-color); 
+  padding-bottom: 0.5rem;
+}
+.note-article h2 { 
+  font-size: 1.7rem; 
+}
+.note-article img { 
+  max-width: 100%; 
+  border-radius: 12px; 
+  margin: 1.5rem 0; 
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1); 
+}
+.note-article blockquote {
+  border-left: 4px solid var(--accent-color);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--text-muted);
+  background-color: rgba(139, 92, 246, 0.05);
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+}
+
+/* --- Code Blocks (Syntax adapted for Light/Dark) --- */
+code, .language-text {
+  color: var(--accent-color);
+}
+p code, li code, td code {
+  background-color: rgba(139, 92, 246, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  font-family: 'Menlo', monospace;
+  font-size: 0.9em;
+}
+
+.code-wrapper {
+  position: relative;
+  margin: 1.5rem 0;
+}
+.code-wrapper pre {
+  background-color: #0f172a !important; /* Always dark for code blocks */
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
+  color: #e2e8f0 !important;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 0.95rem;
+  overflow-x: auto;
+}
+.code-wrapper pre code {
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0;
+}
+.code-wrapper .btn-copy {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255,255,255,0.1);
+  color: #cbd5e1;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s;
+  backdrop-filter: blur(4px);
+}
+.code-wrapper:hover .btn-copy { opacity: 1; }
+.code-wrapper .btn-copy:hover { 
+  background: var(--primary-color);
+  color: white;
+}
+
+/* --- TOC (Table of Contents / ScrollSpy) --- */
+.toc-nav a {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 6px 0;
+  text-decoration: none;
+  display: block;
+  border-left: 2px solid transparent;
+  padding-left: 12px;
+  transition: all 0.2s;
+}
+.toc-nav a:hover { 
+  color: var(--primary-color); 
+}
+.toc-nav a.active-toc {
+  color: var(--primary-color);
+  font-weight: 600;
+  border-left-color: var(--primary-color);
+}
+
+/* --- Theme Toggle Button --- */
+.theme-btn {
+  color: var(--text-main);
+  border-color: var(--border-color);
+}
+.theme-btn:hover {
+  background-color: var(--bg-body);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* --- View Transitions API & Animations --- */
+.animate-slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* View Transitions API (If supported by browser) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+}
+::view-transition-old(root) {
+  animation-name: fade-out, slide-out;
+}
+::view-transition-new(root) {
+  animation-name: fade-in, slide-in;
+}
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes slide-in { from { transform: translateY(15px); } to { transform: translateY(0); } }
+@keyframes slide-out { from { transform: translateY(0); } to { transform: translateY(-15px); } }

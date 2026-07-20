@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mühendislik Akademisi</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<!-- Navbar (Sadece mobilde veya karanlık mod butonu için tepede) -->
+<nav class="navbar glass-navbar fixed-top w-100 border-bottom border-light">
+  <div class="container-fluid px-3 px-md-4">
+    <div class="d-flex align-items-center">
+      <button class="btn btn-sm d-lg-none me-2 sidebar-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+        <i class="bi bi-list fs-4"></i>
+      </button>
+      <a class="navbar-brand fw-bold brand-font text-gradient" href="#/">
+        <i class="bi bi-rocket-takeoff text-primary me-2"></i>Akademi
+      </a>
+    </div>
+    
+    <div class="d-flex align-items-center">
+      <!-- Search Input in Navbar (Desktop) -->
+      <div class="search-box d-none d-md-flex align-items-center rounded-pill px-3 py-1 me-3 border bg-body-tertiary">
+        <i class="bi bi-search text-muted small"></i>
+        <input type="text" id="searchInputDesktop" class="form-control form-control-sm border-0 bg-transparent shadow-none ms-2 search-input" placeholder="Notlarda ara..." style="width: 200px;">
+      </div>
+
+      <button id="themeToggle" class="btn btn-outline-secondary btn-sm rounded-circle theme-btn" aria-label="Toggle Dark Mode">
+        <i class="bi bi-moon-stars"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar Offcanvas (Mobil) & Fixed Sidebar (Masaüstü) Birleşimi -->
+<div class="offcanvas-lg offcanvas-start custom-sidebar border-end" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
+  <div class="offcanvas-header border-bottom d-lg-none">
+    <h5 class="offcanvas-title fw-bold brand-font" id="sidebarOffcanvasLabel">Kategoriler</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas" aria-label="Close"></button>
+  </div>
+  
+  <div class="offcanvas-body d-flex flex-column p-0 h-100">
+    <div class="p-3 d-md-none border-bottom">
+      <!-- Search Input in Sidebar (Mobile) -->
+      <div class="search-box d-flex align-items-center rounded-pill px-3 py-1 border bg-body-tertiary">
+        <i class="bi bi-search text-muted small"></i>
+        <input type="text" id="searchInputMobile" class="form-control form-control-sm border-0 bg-transparent shadow-none ms-2 search-input" placeholder="Ara...">
+      </div>
+    </div>
+    <div class="sidebar-scroll p-3 flex-grow-1" id="category-sidebar-list">
+      <!-- Kategoriler JS ile buraya basılacak -->
+    </div>
+  </div>
+</div>
+
+<!-- Main Content Area -->
+<main class="main-content pt-5 mt-4">
+  <div class="container-fluid px-3 px-md-5 pb-5">
+    
+    <!-- HOME VIEW (Not Listesi) -->
+    <div id="home-view" class="view-container active">
+      <div class="mb-5 mt-3 animate-slide-up">
+        <h2 class="fw-bold brand-font mb-2" id="currentCategoryTitle">Tüm Notlar</h2>
+        <p class="text-muted" id="currentCategoryDesc">Kütüphanedeki tüm dokümanları inceliyorsunuz.</p>
+      </div>
+
+      <div id="notes-grid" class="row g-4">
+        <!-- Not kartları JS ile buraya basılacak -->
+      </div>
+    </div>
+
+    <!-- NOTE VIEW (Not Okuma Ekranı) -->
+    <div id="note-view" class="view-container d-none">
+      
+      <div class="mb-4 mt-3">
+        <button onclick="goBack()" class="btn btn-sm btn-glass px-3 rounded-pill hover-lift">
+          <i class="bi bi-arrow-left me-2"></i>Geri Dön
+        </button>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-xl-9 col-lg-8">
+          <article class="p-4 p-md-5 rounded-4 shadow-sm border glass-card note-article" id="note-content-area">
+             <!-- Markdown içeriği buraya basılacak -->
+          </article>
+        </div>
+        
+        <div class="col-xl-3 col-lg-4 d-none d-lg-block">
+          <div class="sticky-top pt-3" style="top: 4.5rem; max-height: calc(100vh - 6rem); overflow-y: auto;">
+            <div class="glass-card p-4 rounded-4 border shadow-sm">
+              <h6 class="fw-bold text-uppercase tracking-wider mb-3 ps-2 text-primary" style="font-size:0.8rem; letter-spacing:1px;">Bu Sayfada</h6>
+              <nav id="toc-area" class="nav flex-column toc-nav">
+                <!-- TOC JS ile buraya basılacak -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
