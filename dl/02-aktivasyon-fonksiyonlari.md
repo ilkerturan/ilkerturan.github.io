@@ -67,7 +67,7 @@ config:
             plotColorPalette: "#FF6B6B"
 ---
 xychart-beta
-    title Sigmoid Fonksiyonu
+    title "Sigmoid Fonksiyonu"
     x-axis [-6, -4, -2, 0, 2, 4, 6]
     y-axis "f(x)" 0 --> 1
     line [0.0025, 0.018, 0.119, 0.5, 0.881, 0.982, 0.9975]
@@ -120,7 +120,7 @@ config:
             plotColorPalette: "#4ECDC4"
 ---
 xychart-beta
-    title Tanh Fonksiyonu
+    title "Tanh Fonksiyonu"
     x-axis [-6, -4, -2, 0, 2, 4, 6]
     y-axis "f(x)" -1 --> 1
     line [-0.9993, -0.9640, -0.9640, 0, 0.9640, 0.9993, 0.9993]
@@ -172,7 +172,7 @@ config:
             plotColorPalette: "#45B7D1"
 ---
 xychart-beta
-    title ReLU Fonksiyonu
+    title "ReLU Fonksiyonu"
     x-axis [-6, -4, -2, 0, 2, 4, 6]
     y-axis "f(x)" 0 --> 6
     line [0, 0, 0, 0, 2, 4, 6]
@@ -230,7 +230,7 @@ config:
             plotColorPalette: "#96CEB4"
 ---
 xychart-beta
-    title Leaky ReLU Fonksiyonu (α=0.01)
+    title "Leaky ReLU Fonksiyonu (α=0.01)"
     x-axis [-6, -4, -2, 0, 2, 4, 6]
     y-axis "f(x)" -0.1 --> 6
     line [-0.06, -0.04, -0.02, 0, 2, 4, 6]
@@ -270,7 +270,7 @@ config:
             plotColorPalette: "#FFEAA7"
 ---
 xychart-beta
-    title ELU Fonksiyonu (α=1)
+    title "ELU Fonksiyonu (α=1)"
     x-axis [-6, -4, -2, 0, 2, 4, 6]
     y-axis "f(x)" -1 --> 6
     line [-0.9975, -0.9817, -0.8647, 0, 2, 4, 6]
@@ -304,7 +304,7 @@ config:
             plotColorPalette: "#DDA0DD"
 ---
 xychart-beta
-    title GELU Fonksiyonu
+    title "GELU Fonksiyonu"
     x-axis [-6, -4, -2, 0, 2, 4, 6]
     y-axis "f(x)" -0.2 --> 6
     line [-0.0003, -0.0108, -0.1542, -0.0199, 1.9959, 5.9965, 5.9965]
@@ -337,7 +337,7 @@ config:
             plotColorPalette: "#FF1744"
 ---
 xychart-beta
-    title Swish Fonksiyonu
+    title "Swish Fonksiyonu"
     x-axis [-6, -4, -2, 0, 2, 4, 6]
     y-axis "f(x)" -0.5 --> 6
     line [-0.0044, -0.0544, -0.2554, 0, 1.7616, 3.9279, 5.9963]
@@ -380,7 +380,7 @@ config:
             plotColorPalette: "#00BCD4"
 ---
 xychart-beta
-    title Mish Fonksiyonu
+    title "Mish Fonksiyonu"
     x-axis [-6, -4, -2, 0, 2, 4, 6]
     y-axis "f(x)" -0.3 --> 6
     line [-0.0167, -0.0969, -0.3034, 0, 1.9440, 3.9984, 5.9999]
@@ -447,7 +447,7 @@ config:
             plotColorPalette: "#667eea"
 ---
 xychart-beta
-    title Aktivasyon Fonksiyonlarının Türevleri (Gradyanlar)
+    title "Aktivasyon Fonksiyonlarının Türevleri (Gradyanlar)"
     x-axis [-6, -4, -2, 0, 2, 4, 6]
     y-axis "f'(x)" 0 --> 1
     line [0.0025, 0.0180, 0.1050, 0.25, 0.1050, 0.0180, 0.0025]
