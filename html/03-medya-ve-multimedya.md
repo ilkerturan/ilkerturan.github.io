@@ -1,42 +1,64 @@
-# Bölüm 03: Medya (Video, Ses ve Haritalar)
+# Bölüm 03: Medya Yönetimi (Video, Ses ve Dış İçerik)
 
-Web siteleri sadece metinlerden ibaret değildir. Kendi sunucumuzdaki veya başka platformlardaki (YouTube, Google Maps) medyaları sitemize gömebiliriz.
+Web sitenize zengin içerik katmak, sadece metin ve küçük resimlerle sınırlı kalmamaktır. Modern tarayıcılar (HTML5) harici bir eklentiye (Flash Player vb.) ihtiyaç duymadan ses ve video oynatabilme kapasitesine sahiptir.
 
-## 1. Video Ekleme
+## 1. Kendi Sunucumuzdaki Videoyu Oynatmak (`<video>`)
 
-HTML5 ile birlikte video oynatmak çok kolaylaştı.
+Eğer video dosyası (örneğin `.mp4`) kendi sunucunuzda duruyorsa bu etiketi kullanırız.
 
 ```html
-<video width="640" controls>
+<video width="800" height="450" controls poster="video-kapak.jpg" preload="metadata">
+    <!-- source etiketi, tarayıcı ilk kaynağı oynatamazsa (format uyumsuzluğu) ikinciye geçebilsin diye çoklu verilebilir -->
     <source src="tanitim.mp4" type="video/mp4">
-    Tarayıcınız bu videoyu desteklemiyor.
+    <source src="tanitim.webm" type="video/webm">
+    
+    <!-- Tarayıcı çok eskiyse video yerine bu metin görünür. -->
+    <p>Tarayıcınız HTML5 video etiketini desteklemiyor.</p>
 </video>
 ```
-- `controls`: Durdur/Başlat, Ses tuşlarının (Player) görünmesini sağlar.
-- `autoplay muted`: Video sayfaya girer girmez **sessiz** olarak otomatik başlar (Sessiz olmazsa tarayıcı otomatik oynatmaya izin vermez).
 
-## 2. Ses (Audio) Ekleme
+### Video Etiketi Özellikleri (Attributes)
+- `controls`: Bu kelimeyi eklerseniz tarayıcının yerleşik oynatıcısı belirir (Oynat, duraklat, ses seviyesi, tam ekran düğmeleri). Eklenmezse video sadece bir resim gibi durur, oynatılamaz.
+- `poster`: Video henüz oynatılmadan (veya yüklenmeden) önce gösterilecek olan küçük resim (thumbnail / kapak fotoğrafı) yoludur.
+- `autoplay`: Sayfa açılır açılmaz videonun otomatik başlamasını ister. **Ancak modern tarayıcılar, kullanıcıyı rahatsız etmemek için sadece `muted` (sessiz) olan videoların otomatik başlamasına izin verir.** `autoplay muted` birlikte kullanılmalıdır.
+- `loop`: Video bitince başa sarıp sonsuza kadar tekrar etmesini sağlar (Genellikle arka plan videolarında kullanılır).
+- `preload`: Videonun sayfa yüklenirken arka planda indirilip indirilmeyeceğini belirler.
+  - `auto`: Bant genişliği harcamasına bakmadan videoyu indirmeye başlar (Sayfa hızlı açılmaz, video tıklandığında hemen açılır).
+  - `metadata`: (Önerilen) Videonun sadece süresini ve ilk karesini indirir. Kullanıcı "Play" tuşuna basana kadar videoyu indirmez, sayfa hızını korur.
 
-Tıpkı video gibi çalışır:
+## 2. Ses Oynatmak (`<audio>`)
+
+Video ile tamamen aynı mantıkta çalışır, sadece görsel boyutları yoktur.
+
 ```html
-<audio controls>
-    <source src="muzik.mp3" type="audio/mpeg">
+<audio controls loop>
+    <source src="podcast.mp3" type="audio/mpeg">
+    <source src="podcast.ogg" type="audio/ogg">
+    Ses desteklenmiyor.
 </audio>
 ```
 
-## 3. Başka Siteleri Gömmek (Iframe)
+## 3. Dış İçerikleri Gömmek (Iframe)
 
-YouTube videolarını veya Google Haritalar'ı sitenizde göstermenin yolu `<iframe>` etiketidir. Başka bir web sayfasını sizin sayfanızın içinde bir kutuda açar.
+İnternetteki başka bir web sayfasını, bir YouTube videosunu veya Google Haritasını kendi sitemizin içinde bir "pencere" açarak gösterme yöntemidir. `<iframe>` (Inline Frame) bunun için kullanılır.
 
-**Örnek: YouTube Videosu Ekleme**
 ```html
+<!-- YouTube'dan bir video gömme örneği -->
 <iframe 
     width="560" 
     height="315" 
-    src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+    src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1" 
+    title="YouTube video player" 
     frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
     allowfullscreen>
 </iframe>
 ```
 
-> **Uyarı:** Sitenize gereksiz yere çok fazla iframe veya video eklemek sayfanın açılış hızını ciddi oranda yavaşlatır.
+### Iframe Etiketi Özellikleri
+- `src`: Gösterilecek olan sayfanın veya medyanın tam (Absolute) adresidir.
+- `frameborder="0"`: Iframe'in etrafındaki çirkin eski tip çerçeveyi kaldırır. (Günümüzde CSS ile `border: none;` yapmak daha yaygındır).
+- `allowfullscreen`: Kullanıcının iframin sağ altındaki "Tam Ekran" butonuna basmasına tarayıcının izin vermesini sağlar.
+- `allow="..."`: İframe içinde çalışan sitenin bilgisayarınızdaki hangi donanımlara (kamera, jiroskop vb.) erişebileceğini sınırlayan veya izin veren güvenlik duvarıdır.
+
+> **Güvenlik Uyarısı:** Tanımadığınız veya güvenmediğiniz siteleri `iframe` ile gömmeyin. Kötü niyetli siteler, iframe üzerinden kullanıcının tarayıcısında açıklar bulmaya (Örn: Clickjacking) çalışabilir.
