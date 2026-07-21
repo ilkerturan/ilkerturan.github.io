@@ -1,22 +1,22 @@
-# Bölüm 01: OWASP ve Yazılım Güvenliği
+# Bölüm 01: OWASP Nedir ve Yazılım Güvenliği Felsefesi
 
-Yazılım geliştirirken odak noktamız genellikle "Uygulama çalışıyor mu?" sorusudur. Ancak günümüzde daha önemli olan soru şudur: **"Uygulama saldırı altında çalışmaya devam edebiliyor mu ve verileri koruyabiliyor mu?"**
+Yazılım geliştiriciler genelde "Kodum çalışıyor mu?" sorusuna odaklanır. Ancak kötü niyetli bir hacker "Bu kod NASIL BOZULUR?" sorusuna odaklanır. Geliştirici sadece olumlu (Happy Path) senaryoları düşünürken, saldırganlar girdi kutularına hiç beklenmedik zehirli veriler göndererek sistemi dizleri üzerine çöktürmeye çalışır.
 
----
+## 1. OWASP (Open Worldwide Application Security Project) Nedir?
+OWASP, dünya çapındaki siber güvenlik uzmanlarının bir araya gelerek kurduğu, kâr amacı gütmeyen, açık kaynaklı devasa bir güvenlik organizasyonudur. Yazılım dünyasının "Sağlık Örgütü" gibidir.
 
-## 1. Bilgi Güvenliğinin Temeli: CIA Triad
-Siber güvenlik sadece "Hacker'lardan korunmak" değildir. Güvenliğin 3 temel saç ayağı vardır (CIA):
-- **C (Confidentiality - Gizlilik):** Veriyi sadece görmeye yetkisi olanların görmesi. (Örn: Parolaların şifrelenmesi).
-- **I (Integrity - Bütünlük):** Verinin yolda veya veritabanında değiştirilmemesi. (Örn: Banka hesabındaki bakiyenin manipüle edilmemesi).
-- **A (Availability - Erişilebilirlik):** Sistemin yetkili kişilere 7/24 hizmet vermeye devam etmesi. (Örn: DDoS saldırılarıyla sunucunun çökertilmemesi).
+**OWASP Top 10 Nedir?**
+Her 3-4 yılda bir, dünyadaki milyonlarca web sitesine yapılan gerçek siber saldırı verilerini analiz ederler ve yazılım dünyasındaki **En Kritik 10 Zafiyeti** (Vulnerability) listeleyen bir rapor yayınlarlar.
+Bir şirketin web sitesi eğer "OWASP Top 10" kriterlerini karşılamıyorsa, o site teknik olarak "Halka açık bir mayın tarlasıdır." Bankacılık, Sağlık veya Finans gibi sektörlerde OWASP uyumluluğu yasal bir zorunluluktur.
 
-## 2. OWASP Nedir?
-**OWASP (Open Worldwide Application Security Project)**, web ve yazılım güvenliğini artırmak için kurulmuş, kar amacı gütmeyen dünyanın en büyük güvenlik vakfıdır.
+## 2. Yazılım Güvenliğinin Üç Temel Sütunu (CIA Triad)
+Bilgi Güvenliği dünyasında sistemlerin güvenli kabul edilebilmesi için 3 ayağın da sağlam olması gerekir.
 
-OWASP'ın amacı şirketlere veya yazılımcılara bir şey satmak değildir. Yüzlerce güvenlik uzmanının gönüllü katılımıyla dünyadaki siber saldırıları analiz eder ve "Şu anda en çok can yakan 10 kritik güvenlik zafiyeti şunlardır" şeklinde periyodik listeler (Top 10) yayınlar.
+- **Confidentiality (Gizlilik):** Veriyi sadece görme yetkisi olan kişiler görebilmelidir. (Örn: Sizin maaş bordronuzu, şirketteki stajyerin görememesi).
+- **Integrity (Bütünlük):** Verinin aktarım sırasında veya veritabanında "izinsiz değiştirilmediğinin" garanti edilmesidir. (Örn: Bankadan arkadaşınıza 100 TL gönderdiğinizde, araya giren bir korsanın o rakamı 100.000 TL yapamaması).
+- **Availability (Erişilebilirlik):** Sistemin yetkili kişilere 7/24 hizmet verebilmesidir. Eğer bir hacker sisteme 1 milyon sahte istek yollayarak (DDoS) sunucuyu kilitliyor ve gerçek müşteriler siteye giremiyorsa, Erişim hakkı gasp edilmiştir.
 
-## 3. Koddan Bağımsız Güvenlik Mimarisi
-Güvenlik belirli bir programlama dilinin (C#, Java, Python) veya framework'ün sorunu değildir. 
-Bir yazılımda SQL sorgusu yazmayı bilirsiniz, ancak "Parametrik" yazmazsanız hacklenirsiniz. API (Endpoint) yazmayı bilirsiniz, ancak Authorization (Yetki Kontrolü) koymazsanız verilerinizi çaldırırsınız.
+## 3. Shift-Left Security (Güvenliği Sola Kaydırmak)
+Geleneksel yazılım süreçlerinde geliştiriciler kodu yazar, ürün biter, en son gün "Hadi bir siber güvenlik şirketine sızma testi (Penetration Test) yaptıralım" derler. Bu felakettir! Güvenlik açığı bulunursa kodun mimarisinin baştan değişmesi gerekir ki bu çok pahalıdır.
 
-Bu eğitim serisindeki zafiyetler dilden bağımsızdır. Amaç, kod yazarken veya mimari çizerken bir **Siber Korsan (Hacker)** gibi düşünebilme refleksini kazanmaktır.
+Modern yaklaşım **DevSecOps** (Shift-Left) der ki: Güvenlik en sağda (sonda) değil, en solda (en başta) başlamalıdır. Geliştirici henüz IDE'sinde kod yazarken dahi güvenlik eklentileri (SonarQube vb.) "Burada SQL açık bıraktın" diye onu uyarmalıdır.

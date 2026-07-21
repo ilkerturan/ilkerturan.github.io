@@ -1,50 +1,27 @@
-# Bölüm 04: İleri Seviye (Ingress, ConfigMap, Secret)
+# Bölüm 04: İleri Seviye K8s Kavramları (Ingress, ConfigMap, Namespaces)
 
-Temel K8s yetenekleri ile bir uygulamayı ayağa kaldırıp, kopyalarını yönetmeyi öğrendik. Ancak Production (Canlı) ortamlarında çok daha ince ayarlara ihtiyaç duyarız.
+Artık Pod'lar çalışıyor, Servislerle sabit IP atadık. Ancak gerçek bir büyük şirket mimarisinde ihtiyaçlar daha karmaşıktır. Ayar dosyalarınızı nereye koyacaksınız? İki farklı ortamı (Test ve Canlı) aynı sunucuda nasıl ayıracaksınız? 
 
----
+İşte İleri seviye kavramlar burada imdada yetişir.
 
-## 1. Ingress (Gelişmiş Yönlendirici)
+## 1. Ingress (Dış Dünyaya Açılan Akıllı Kapı)
 
-Önceki bölümlerde **Service (LoadBalancer)** kullanarak uygulamamızı dışarı açtık. Ancak şirketinizin 10 farklı mikroservisi (API'si) varsa, her biri için bulut sisteminden ayrı bir LoadBalancer (Ayrı bir IP) satın alırsanız ayda binlerce dolar fatura gelir. 
+**Problem:** İçerideki uygulamalara Service objesi IP verir dedik ama o IP'ler "Sistemin İç Ağına (Internal)" aittir. Dünyanın öbür ucundaki bir adam tarayıcıya `www.sitem.com` yazdığında o Pod'lara nasıl ulaşacak?
+**Çözüm:** Dış dünya ile iç dünya arasındaki kapıya (API Gateway) **Ingress** adı verilir. Ingress, tek bir dış IP adresi kullanarak, adresin sonundaki URL'ye göre istekleri içerideki doğru servise yönlendiren AKILLI bir Trafik Polisidir.
+- Örn: Kullanıcı `sitem.com/api` yazarsa, Ingress bunu alır ve arka plandaki `Backend-Servisine` yönlendirir.
+- Kullanıcı `sitem.com/admin` yazarsa, Ingress bunu alır ve `Admin-Panel-Servisine` yönlendirir. (Ve bedavadan HTTPS sertifikası - SSL Termination yapar).
 
-Ayrıca "Service", alan adları (`api.sitem.com` veya `sitem.com/admin`) üzerinden yönlendirme yapamaz. Sadece port ve IP yönlendirir.
+## 2. ConfigMap ve Secret (Ayarları Koddan Ayırmak)
 
-**Ingress**, Cluster'ın tek bir kapısıdır (Tek bir IP'si vardır). Kullanıcıların hangi adrese (`URL` veya `Domain`) girdiğine bakarak trafiği arkadaki doğru Service'lere dağıtır (Reverse Proxy gibi).
+**Kötü Yaklaşım:** Veritabanı şifrenizi veya bağlantı cümlenizi C# kodunun içine gömüp (Hardcode) Docker Image'ına çevirirseniz, şifre değiştiğinde koca Image'ı baştan oluşturmak zorunda kalırsınız.
+**K8s Çözümü:** 
+- **ConfigMap:** Kodunuz için gereken çevresel değişkenleri (Örn: `MAKS_SİPARİS_LİMİTİ=50`, `TEMA_RENGİ=Mavi`) Kubernetes'in hafızasında tutan bir dosyadır. Pod yaratılırken K8s bu değerleri Pod'un içine enjekte eder. Değer değişince kodu değil, sadece ConfigMap'i değiştirirsiniz.
+- **Secret (Sır):** ConfigMap'in aynısıdır ancak sadece "Hassas ve Gizli" veriler (Veritabanı şifreleri, API Token'lar) için kullanılır. Değerler Base64 ile şifrelenerek sistemde gizli tutulur.
 
-*Örnek Akış:*
-- Kullanıcı `app.sitem.com` adresine girer -> Ingress -> Frontend Service -> Frontend Pod'ları
-- Kullanıcı `api.sitem.com` adresine girer -> Ingress -> Backend API Service -> Backend Pod'ları
+## 3. Namespaces (Sanal Mahalleler)
 
----
-
-## 2. ConfigMap (Ayarları Koddan Ayırmak)
-
-Uygulamanızın renk teması, log seviyesi veya bir API Endpoint URL'si gibi ayarları kodun içine (hardcoded) yazmak büyük bir hatadır. Çünkü URL değiştiğinde kodu tekrar derleyip yeni bir Docker imajı çıkartmanız gerekir.
-
-**ConfigMap**, konfigürasyon değişkenlerini K8s içinde saklar. 
-
-- K8s, ConfigMap'in içindeki veriyi Pod'a bir **Çevre Değişkeni (Environment Variable)** olarak (örn: `process.env.API_URL`) veya bir dosya olarak verir.
-- Böylece sadece ConfigMap'i güncelleyerek aynı Docker imajını (kodu değiştirmeden) Dev, Test ve Production ortamlarında çalıştırabilirsiniz.
-
-```bash
-# Hızlıca bir ConfigMap oluşturalım
-kubectl create configmap benim-ayarim --from-literal=TEMA_RENGI=Koyu
-```
-
----
-
-## 3. Secret (Sır Tutucu)
-
-ConfigMap ile aynı işi yapar ancak **Şifreler** içindir. (Veritabanı şifresi, AWS API Key'leri, SSL Sertifikaları).
-
-Farkları:
-- ConfigMap'teki veriler düz metin (Plain Text) olarak tutulur.
-- Secret'taki veriler Base64 formatında kodlanır (Encode) ve diske şifrelenerek yazılabilir (Etcd Encryption).
-
-> *Önemli: Secret verileri Base64 ile kodlandığı için tam anlamıyla "şifrelenmiş" değildir, çok kolay çözülür (Decode). Temel amaç, şifrenin GitHub'daki YAML kodları arasında düz metin olarak dolaşmasını engellemektir.*
-
-```bash
-kubectl create secret generic db-sifresi --from-literal=sifre=SuperGizli123
-```
-Bu secret'ı bir Pod'a bağladığınızda, uygulamanız veritabanı şifresini güvenle okuyabilir ve kimse GitHub deponuzda şifreyi göremez.
+**Problem:** Şirketinize tek bir devasa K8s Cluster (Sunucu kümesi) kurdunuz. Ama şirketinizde "Muhasebe Uygulaması Ekibi", "Mobil Uygulama Ekibi" ve "Web Sitesi Ekibi" aynı yeri kullanıyor. Ayrıca "Test (Dev)" ortamı ve "Canlı (Prod)" ortamı var. Bütün Pod'ları aynı yere atarsınız her şey birbirine karışır. Bir ekip yanlışlıkla diğerinin uygulamasını siler.
+**Çözüm (Namespace):** Kubernetes cluster'ını fiziksel değil, **Sanal (Mantıksal)** olarak odalara (Namespace'lere) bölmektir.
+- `kube-system` : K8s'in kendi beyin dosyalarının çalıştığı dokunulmaz odadır.
+- `dev-ortami` ve `canli-ortam` diye odalar açarsınız.
+Her odanın (Namespace) içindeki isimler, Servisler ve Pod'lar DİĞERİNİ GÖRMEZ (İzole edilir). Hatta odalara "Kota" bile koyabilirsiniz ("Muhasebe takımı sadece maksimum 10 GB RAM kullansın" gibi).

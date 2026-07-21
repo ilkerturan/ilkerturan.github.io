@@ -1,19 +1,20 @@
-# A09:2025 - Security Logging and Alerting Failures (Güvenlik Günlüğü ve Uyarı Hataları)
+# Bölüm 11: A09 - Security Logging and Monitoring Failures (Kayıt ve İzleme Hataları)
 
-Ortalama bir şirketin "Sistemlerine bir Hacker'ın sızdığını" fark etme süresi (Endüstri araştırmalarına göre) **ortalama 200 gündür**. Zafiyet, saldırının kendisi değil; saldırıya uğradığınızı görmemenizi (Körlük) sağlayan loglama eksikliğidir.
+Bir web sitesinin hacklendiğinin (verilerinin çalındığının) dünyadaki ortalama fark edilme süresi **yaklaşık 200 GÜNDÜR!** (FireEye İstatistikleri).
+Çünkü yazılımcılar sistemin çöktüğünü yakalayacak hata kayıtlarını (Error Logging) tutarlar, ancak GÜVENLİK olaylarını kayıt altına almayı (Security Logging) hep unuturlar. Karda yürüyen bir korsanın ayak izlerini silmesine bile gerek yoktur, çünkü sistem kar yağdırmıyordur.
 
----
+## 1. Neler Loglanmıyor (Eksik Bırakılıyor)?
 
-## 1. Zafiyetin Mantığı
-Eğer sisteminizde kamera yoksa (Loglama), bir hırsızın içeri girip aylarca kalıp kalmadığını asla bilemezsiniz. Uygulama düzgün çalışmaya devam eder, ancak arka planda tüm veritabanınız azar azar dışarı sızdırılıyor olabilir. Veya hacker sistemi bozduğunda, geriye dönük "Nasıl girdiler?" sorusunu cevaplayacak bir kayıt (Adli Bilişim izi) bulamazsınız.
+Yazılımcılar genellikle sadece kod patladığında Log atarlar (Sistem çöktü vs.). Oysa şunlar birer güvenlik uyarısıdır ve kayıt edilmezse felaket olur:
+- **Giriş (Login) Denemeleri:** Bir kullanıcı ardı ardına 50 kez şifreyi yanlış giriyorsa (Brute Force), bu bir hata değil, SİBER SALDIRIDIR. Mutlaka Loglanmalıdır!
+- **Yetkisiz Erişimler:** Normal bir kullanıcı `Admin` paneline girmeye çalışmış ve 403 (Yasak) hatası almış. Bu bir saldırı keşfidir. Loglanmalıdır!
+- **Yüksek İşlemler:** Gece saat 03:00'da sistemden saniyede 10.000 veri çekiliyorsa bu bir Data Exfiltration (Veri Kaçırma) işlemidir. 
 
-## 2. En Sık Görülen Hatalar
-- **Kritik Olayların Loglanmaması:** Kullanıcıların siteye girişleri, hatalı parola denemeleri, şifre sıfırlama talepleri ve yetki değişimi (Kullanıcıyken admin olma) gibi hayati işlemlerin hiçbir iz bırakılmadan yapılması.
-- **Sadece Yerel Loglama (Local Logging):** Logların uygulamanın çalıştığı sunucunun kendi içine (text dosyası olarak) yazılması. Hacker sunucuyu ele geçirdiğinde yapacağı ilk iş kendi izlerini (logları) silmektir.
-- **Alarmların (Alerts) Olmaması:** Loglar tutuluyor olsa bile, bir saldırgan saniyede 10.000 hatalı login (Brute-force) denemesi yaptığında, sistemin hiçbir güvenlik ekibine e-posta/SMS gibi uyarılar (Alert) atmaması.
-- **Log Forgery (Log Zehirlenmesi):** Loglanan verinin sanitize edilmemesi (Örn: Kullanıcı Adı kısmına zararlı kod yazan hacker, sistemin log ekranını açan adminin tarayıcısını hackleyebilir - Log XSS).
+## 2. Alerting (Alarm Üretme) Eksikliği
+Log dosyalarının var olması da yetmez. Eğer bir Log dosyasına 1 saat içinde "20.000 adet Başarısız Login" mesajı yazıldıysa ve bu dosyayı kimse okumuyorsa, log tutmanın anlamı yoktur.
 
-## 3. Nasıl Korunuruz? (Mimari Savunma)
-1. **Merkezi Log Yönetimi (SIEM):** Logları asla uygulamanın olduğu makinede bırakmayın. ELK Stack (Elasticsearch, Logstash, Kibana), Splunk veya Azure Monitor gibi dışarıdaki izole ve merkezi (Centralized) bir log sunucusuna anında (Stream) gönderin.
-2. **Kapsamlı Loglama:** Başarılı/Başarısız tüm kimlik doğrulamalarını (Auth), erişim reddi hatalarını (403 Forbidden) ve kritik veri değişimlerini Mutlaka Time-Stamp (Zaman Damgası) ve IP adresleriyle loglayın.
-3. **Erken Uyarı Sistemleri (Alerts):** Anormal trafik artışı veya ardışık 50 başarısız giriş gibi senaryolarda otomatik tetiklenen uyarı (Slack, Email) mekanizmaları kurun.
+## 3. Doğru Loglama Nasıl Yapılmalıdır?
+
+- **Kritik Olayları Loglayın:** Başarılı/Başarısız loginler, şifre değişimleri, yüksek tutarlı para transferleri, yetki (role) değişimleri. Mutlaka Saat (Timestamp) ve yapan kişinin IP/Kullanıcı Adı ile birlikte kaydedin.
+- **Hassas Verileri Loglamayın! (Data Leakage):** Asla ama asla kullanıcıların Şifrelerini (Plain Text), Kredi Kartı numaralarını veya TC Kimlik Numaralarını log dosyalarına YAZMAYIN! Hacker sunucuya sızarsa veritabanını geçip dümdüz Text (Log) dosyalarından tüm dünyayı çalar.
+- **SIEM / Merkezi İzleme Kurun:** Uygulamanın ürettiği bu logları (ElasticSearch, Splunk, Datadog gibi) harici ve güvenli bir sunucuya gönderin. Alarm sistemleri kurun (Örn: 1 dakikada 50 başarısız log gelirse Sistem Yöneticisinin telefonuna SMS at).

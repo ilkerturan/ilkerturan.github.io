@@ -1,27 +1,24 @@
-# Bölüm 02: Versiyon Kontrol (Git) Stratejileri
+# Bölüm 02: Versiyon Kontrol Stratejileri (Git Flow)
 
-CI/CD otomasyonunun tetiklenebilmesi için kodların düzenli ve belirli kurallara göre yönetildiği bir Git deposu (Repository) olması şarttır. Takımların kargaşa (Conflict) yaşamadan kod yazabilmesi için stratejiler kullanılır.
+Eğer CI/CD (Otomasyon) bir tren ise, **Git (Versiyon Kontrol Sistemi)** o trenin üzerinde gittiği Raylardır. Raylar yamuksa tren kesinlikle raydan çıkar.
 
----
+Ekibinizdeki 5 yazılımcı "Main (Master)" isimli ana koda (Canlıdaki çalışan mükemmel koda) aynı anda "Palabdır küldür" özellik (Commit) gönderirse, kimin neyi bozduğu anlaşılamaz. Bu yüzden sektörde kurumsallaşmış "Dallanma Stratejileri (Branching Strategies)" kullanılır.
 
-## 1. Git Flow
-Kurumsal şirketlerin en çok sevdiği, çok katı ve güvenli dallanma (branching) stratejisidir.
+## 1. En Ünlü Strateji: GitFlow (Ağır Abilerin Yolu)
+Vincent Driessen tarafından yaratılmış, finans ve bankacılık gibi hata payı sıfır olması gereken kurumsal projelerin vazgeçilmez stratejisidir. Bolca kuralı vardır.
 
-**Temel Dalları:**
-- `master` / `main`: Sadece çalışan, canlı (Production) kodu barındırır. Buraya asla doğrudan kod yazılamaz.
-- `develop`: Tüm geliştiricilerin kodlarının birleştiği ana çalışma dalıdır.
+**Temel Dalları (Branches):**
+- **Main (veya Master):** Kutsaldır! Yalnızca ve yalnızca Müşterinin şu an internette kullandığı CANLI SÜRÜMÜ (Örn: v1.0.0) barındırır. Buraya asla doğrudan kod (Commit) yazılamaz!
+- **Develop (Geliştirme):** Yazılımcıların asıl ana üssüdür. Gelecekte çıkacak olan sürümün (Örn: v1.1.0) test edildiği, son hali alan kararlı daldır.
 
-**Geçici Dalları:**
-- `feature/*`: Yeni bir özellik (örn: sepet_modulu) yapılacağı zaman develop'tan açılır, bitince develop'a birleştirilir.
-- `release/*`: Canlıya çıkmadan hemen önce develop'tan ayrılır, son testler yapılır.
-- `hotfix/*`: Canlıda (main) acil bir hata (Bug) çıkarsa doğrudan main'den açılır, düzeltilip hem main hem develop'a atılır.
+**Geçici (Destek) Dalları:**
+- **Feature (Özellik):** Sizden "Sepete ekle" özelliği istendi. "Develop" dalından bir kopya alıp `feature/sepet-ekle` adında KENDİ özel dalınızı yaratırsınız. 3 gün kendi dalınızda çalışırsınız. İşiniz bittiğinde kodunuzu tekrar "Develop" dalına birleştirirsiniz (Merge / Pull Request).
+- **Release (Sürüm Çıkışı):** Develop dalı "Hazır, artık canlıya çıkabiliriz" noktasına geldiğinde, buradan `release/1.1.0` diye bir dal ayrılır. Bu dalda artık SADECE son dakika ufak hataları (Bug) çözülür, yeni bir buton/özellik ASLA eklenemez. Testler bittiğinde bu dal "Main" dalına atılır (ve Canlıya çıkar).
+- **Hotfix (Acil Yangın):** Canlı sitede (Main'de) aniden sepet çöktü! Müşteri kredi kartı çekemiyor. Develop dalında da bir sürü yarım iş var. Ne yapacağız? Main dalından ANINDA `hotfix/acil-sepet-sorunu` diye bir dal çıkılır. Hemen hata 10 dakikada düzeltilir ve direkt "Main" dalına (Acil yama olarak) basılır. (Tabi Develop'a da yansıtılır ki unutulmasın).
 
-## 2. GitHub Flow
-Çok daha hafif, Agile (Çevik) ekipler için tasarlanmıştır. `develop` dalı yoktur.
-- Sadece `main` dalı vardır ve her zaman canlıya çıkmaya hazırdır.
-- Yeni bir iş yapılacaksa `main` üzerinden bir dal açılır, iş bitince bir **Pull Request (PR)** açılır, testler (CI) çalışır, kod gözden geçirilir (Code Review) ve doğrudan `main` dalına birleştirilir.
-
-## 3. Trunk-Based Development
-DevOps ve CI/CD felsefesine en uygun, ancak uygulaması en zor olan stratejidir (Google ve Facebook bunu kullanır).
-- Geliştiriciler özellik dallarında (feature branch) günlerce beklemez. Günde birkaç kez, küçük kod parçalarını doğrudan ana dala (`trunk` veya `main`) atarlar (Push).
-- **Sırrı:** Kod yarım bile olsa canlıya atılır, ancak **Feature Flags (Özellik Bayrakları)** kullanılarak arayüzde müşteriden gizlenir. Çok sağlam otomatik testler gerektirir.
+## 2. GitHub Flow (Agile ve Modern Şirketlerin Yolu)
+GitFlow çok hantal, çok fazla dalı olan (Bürokratik) bir yapıdır. Eğer günde 5 defa canlıya kod atıyorsanız (SaaS ürünler), GitFlow size işkence olur. O yüzden GitHub kendi hafif felsefesini yarattı.
+- Tek bir ana dal vardır: **Main.**
+- Herhangi bir özellik veya hata çözümü için Main'den bir `Feature` branch açarsınız.
+- Kodunuzu bitirir, PR (Pull Request - Kod İnceleme Talebi) açarsınız. Başka bir yazılımcı kodunuzu okuyup (Code Review) onaylarsa, kodunuz direkt MAIN'e (Yani canlıya) akar!
+- Hızlı, çevik (Agile) ve Sürekli Dağıtıma (Continuous Deployment) en uygun stratejidir.

@@ -1,38 +1,37 @@
-# Bölüm 06: Dağıtım (Deployment) Stratejileri
+# Bölüm 06: Mükemmel Deployment (Dağıtım) Stratejileri
 
-CI/CD sürecinin sonunda kodun canlı sunucuya (Production) alınması gerekir. Milyonlarca kişinin kullandığı bir sitede "Sistemi durdur, yeni kodu yükle, sistemi başlat" derseniz o 10 dakikalık kesintide şirket milyonlarca dolar kaybeder. 
+Yazdığınız e-ticaret sitesinin v1.0 sürümü şu an internette çalışıyor ve saniyede binlerce müşteri alışveriş yapıyor (Sepete ekleme, Kredi kartı çekimi devam ediyor). Siz yepyeni bir özellik eklediniz ve v2.0 sürümünü "Canlıya alacaksınız (Deploy edeceksiniz)".
 
-Kesintisiz (Zero Downtime) ve güvenli geçiş için şu stratejiler (genellikle Kubernetes yardımıyla) kullanılır:
+Eski usülde: Gece 03:00 beklenir, "Sistem Bakımda" yazısı konur, eski sunucu kapatılır (İnsanlar atılır), yenisi kopyalanır, açılır. Bu **Downtime (Kesintili)** dağıtımdır ve modern dünyada Kabul Edilemez! Modern DevOps, Müşterinin (Müzik dinlerken bile) haberi olmadan uygulamanın alttan güncellenmesini (Zero-Downtime) sağlar.
 
----
+İşte en ünlü 3 KESİNTİSİZ Dağıtım Stratejisi:
 
-## 1. Rolling Update (Kademeli Güncelleme)
-Mevcut sunucuları (veya Pod'ları) hep birden kapatmak yerine, teker teker güncelleyen stratejidir. Kubernetes'in varsayılan (Default) taktiğidir.
+## 1. Rolling Update (Aşamalı / Yuvarlanan Güncelleme)
+En klasik modern Kubernetes stratejisidir.
+**Senaryo:** Arka tarafta çalışan ve yükü taşıyan 4 adet v1.0 Sunucusu (Pod) var.
+**Nasıl Çalışır?** 
+- Kubernetes bir anda dördünü de FİŞTEN ÇEKMEZ.
+- Önce Yeni v2.0 sürümünden **1 adet yeni sunucu (Pod)** başlatır. (Toplam sunucu 5 olur).
+- Yeni 2.0 sunucusunun sağlıklı çalıştığından (Health Check) emin olur.
+- Sonra eski v1.0 sunucularından 1 tanesini (Trafik bittikten sonra) kibarca öldürür. (Kaldı 3 eski, 1 yeni).
+- Tekrar 1 tane yeni (2.0) yaratır, 1 tane eskiyi öldürür. 
+Böylece çark (Rolling) döne döne, müşteriler "hiçbir hata almadan" sistem yeni versiyona geçirilir. Kademelidir.
 
-**Süreç:** Elimizde 3 sunucu varsa; önce 1. sunucuyu kapatır, yeni versiyonu yükler ve açar. O çalışırken diğer 2 sunucu müşterilere cevap vermeye devam eder. Sonra 2. sunucuya geçer. Sistemde saniye bile kesinti olmaz.
+## 2. Blue-Green Deployment (Mavi-Yeşil Dağıtım / Anında Geçiş)
+Risk faktörü yüksek (Hemen geri dönülmesi gereken) kurumsal işlerde kullanılır. Bankacılık için harikadır.
+**Senaryo:** Şu an canlıda v1.0 (Mavi Renk) çalışıyor.
+**Nasıl Çalışır?**
+- Kubernetes, canlıdaki Mavi sunuculara HİÇ DOKUNMAZ.
+- Arka planda (Müşterinin görmediği izole bir alanda), v2.0 sürümünün çalışacağı yepyeni bir altyapı (Yeşil Renk) ayağa kaldırılır.
+- Test ekipleri gizlice Yeşil sürüme bağlanır ve her şeyi test eder (Canlı veritabanıyla). Her şey mükemmeldir.
+- **Geçiş Anı:** Yük dengeleyicide (Load Balancer / Ingress) tek bir düğmeye (Switch) basılır! Yüzde yüz trafik ANINDA (Saliseyle) Mavi'den Yeşil'e yönlendirilir.
+- **Avantajı (Geri Dönüş - Rollback):** Yeni sürümde (Yeşil) aniden bir hata mı patladı? Hiç sorun yok! Mavi sürüm arka planda hala ayaktadır (Silinmedi). Salisesinde şalteri tekrar Maviye çevirirsiniz ve hayat kaldığı yerden devam eder.
 
-## 2. Blue-Green Deployment (Mavi-Yeşil Dağıtım)
-En güvenli ama en pahalı sistemdir. Çünkü mevcut canlı sunucuların (Mavi) birebir aynısından bir kopya (Yeşil) daha inşa etmenizi gerektirir (2 kat maliyet).
-
-```mermaid
-graph TD
-    User("Müşteriler / Load Balancer") --> |"Trafik %100"| Blue["Mavi Sistem - Eski Versiyon v1.0"]
-    User -.-> |"Trafik %0"| Green["Yeşil Sistem - YENİ Versiyon v2.0"]
-    
-    subgraph "Değişim Anı (Switch)"
-        Note("Testler bittikten sonra Load Balancer <br>tek tuşla tüm trafiği Yeşil'e aktarır")
-    end
-```
-
-**Süreç:** Yeni kod (v2.0) hiç trafik almayan Yeşil sisteme yüklenir. Şirket içi tester'lar Yeşil sistemi canlıda denerler. Her şey kusursuzsa "Yönlendirici (Load Balancer)" tek tuşla Müşteri trafiğini Mavi'den kesip Yeşil'e bağlar. Hata çıkarsa 1 saniye içinde tekrar Mavi'ye geri dönülebilir (Rollback).
-
-## 3. Canary Release (Kanarya Dağıtımı)
-Adını eski madencilerin zehirli gazı önden test etmek için madene kanarya kuşu salmasından alır. Yeni versiyonun (V2.0) doğrudan tüm müşterilere değil, **sadece müşterilerin küçük bir yüzdesine (%5'ine)** açılmasıdır.
-
-```mermaid
-graph TD
-    User("Load Balancer / Yönlendirici") --> |"%95 Eski Trafik"| Old["V1.0 Eski Sürüm"]
-    User --> |"%5 Yeni Trafik"| New["V2.0 YENİ Sürüm - Kanaryalar"]
-```
-
-**Süreç:** Sisteme giren müşterilerin %5'i (veya sadece İzmir'den bağlananlar) şans eseri yeni tasarıma (v2.0) düşerler. Arka planda loglar (hatalar) incelenir. Eğer o %5'lik kesimde çökmeler artmazsa oran %10'a, %50'ye ve sonunda %100'e çekilerek yavaş ve aşırı güvenli bir geçiş sağlanır. (Instagram ve YouTube arayüz güncellemelerini hep böyle yapar).
+## 3. Canary Deployment (Kanarya Dağıtımı / Kobay Kullanımı)
+Adını, eski madencilerin kömür madenindeki zehirli gazı (riskleri) tespit etmek için madene önden bir "Kanarya Kuşu" göndermelerinden alır. (Kuş bayılırsa madene inmezler).
+**Senaryo:** Facebook'un tasarımı değişti (v2.0). 3 Milyar insanın aynı anda tasarımını değiştirirseniz (Blue-Green gibi) ve hata varsa sistem çöker.
+**Nasıl Çalışır?**
+- Yeni v2.0 sürümünden 1 tane sunucu ayağa kaldırılır.
+- Yük Dengeleyiciye (Router) şu ayar girilir: **"Trafiğin %95'ini eski sürümde (v1.0) tut, Dünya'daki rastgele insanların (Kanaryaların) sadece %5'ini yeni sürüme (v2.0) yönlendir!"**
+- Şirket bu %5'lik kobay kullanıcıyı 1 saat boyunca monitörlerden (Hata (Log) var mı? Satış düştü mü?) diye izler.
+- Her şey iyi gidiyorsa trafik %10'a, sonra %50'ye, en son %100'e çekilerek yavaş yavaş ve RİSKSİZ şekilde canlıya çıkılır. Hata varsa sadece o %5'lik kesim etkilenmiştir, hemen geri (v1.0'a) alınır.

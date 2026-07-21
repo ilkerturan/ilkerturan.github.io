@@ -1,45 +1,30 @@
-# Bölüm 06: Model Değerlendirme ve Performans Metrikleri
+# Bölüm 06: Model Başarısını Ölçmek (Değerlendirme Metrikleri)
 
-Eğittiğimiz modelin "Ne kadar iyi" olduğunu sadece %90 Başarılı (Accuracy) diyerek ölçemeyiz. Özellikle dengesiz veri setlerinde Accuracy devasa bir yalandır.
+Modelinizi eğittiniz. Makine "Ben öğrendim patron, bana soru sor" dedi. Peki onun gerçekten iyi öğrendiğini nasıl bileceğiz? Belki de ezberledi?
+Makineyi canlıya almadan önce Test verileriyle sınava sokarız ve karnesine (Metriklere) bakarız.
 
-*(Örn: 100 hastanın sadece 1'i kanser, 99'u sağlıklıysa. Model hiçbir şey öğrenmeden herkese "Sağlıklı" derse bile %99 doğru bilmiş olur. Ama o 1 kanserli hastayı kaçırmak ölümcüldür!)*
+## 1. Sınıflandırma Karnesi (Karmaşıklık Matrisi - Confusion Matrix)
 
----
+Bir hastanede yapay zekanız hastanın 100 röntgenine bakıp "Kanser (Pozitif)" veya "Sağlıklı (Negatif)" dedi. 4 temel sonuç çıkar:
+- **True Positive (TP - Doğru Pozitif):** Hasta gerçekten kanserdi, model de Kanser dedi (Başarı!).
+- **True Negative (TN - Doğru Negatif):** Adam sapa sağlamdı, model de Sağlıklı dedi (Başarı!).
+- **False Positive (FP - Yanlış Pozitif / Tip 1 Hata):** Adam SAĞLIKLIYDI ama model adama "Kansersin!" dedi (Yanlış Alarm - Travma).
+- **False Negative (FN - Yanlış Negatif / Tip 2 Hata):** EN KORKUNÇ HATA! Adam KANSERDİ ama model "Sapasağlamsın git evine yat" dedi. (Hasta ölebilir!).
 
-## 1. Sınıflandırma Metrikleri (Confusion Matrix)
-Modelin tahminlerini Gerçek Değerlerle karşılaştıran bir (2x2) matristir.
+### Metrikler:
+1. **Accuracy (Doğruluk):** (TP + TN) / Tümü. Modelin genel bilme oranı. (Ama eğer 100 kişinin 99'u sağlamsa ve model "Herkese sağlam de" diyip tembellik ederse doğruluk %99 çıkar. Bu sahte bir başarıdır! İşe yaramaz.)
+2. **Precision (Kesinlik):** Modelin "Kansersin" dediklerinin gerçekten kaçı kanser? (Yanlış alarm (FP) var mı ölçer).
+3. **Recall / Sensitivity (Duyarlılık):** Gerçekten Kanser olan hastaların "Yüzde kaçını YAKALAYABİLDİK?" (Kaçıran (FN) ölümcül hatayı ölçer. Sağlık sektöründe Recall'un %99 olması hayat kurtarır, gerekirse yanlış alarm (Precision) düşsün ama kimseyi kaçırmayalım derler!).
+4. **F1-Score:** Precision ile Recall'un (Denge) Harmonik ortalamasıdır. (Her ikisi de iyi olsun istiyorsak buna bakarız).
 
-- **TP (True Positive):** Kanserliye kanser dedik (Doğru).
-- **TN (True Negative):** Sağlıklıya sağlıklı dedik (Doğru).
-- **FP (False Positive):** Sağlıklıya kanser dedik (Yanlış Alarm - Tip 1 Hata).
-- **FN (False Negative):** Kanserliye sağlıklı dedik (ÖLÜMCÜL HATA - Tip 2 Hata).
+## 2. Regresyon Karnesi (Hata Ölçümleri)
+Regresyonda sonuç "Kategori" değil, bir FİYAT (Örn: Ev 100.000 TL) olduğu için Doğru/Yanlış diyemeyiz. Evin asıl fiyatı 105.000 TL'dir. "Aradaki Farkı (Hatayı)" ölçeriz.
 
-### Precision (Kesinlik)
-"Kanser" dediklerimizin yüzde kaçı GERÇEKTEN kanserdi? (FP'ye odaklanır).
-*Spam mailler için çok önemlidir. Önemli bir maile Spam dersek kötü olur.*
+1. **MAE (Mean Absolute Error - Ortalama Mutlak Hata):**
+   Model evi 110.000 TL tahmin etti, aslı 100.000 TL (Fark: 10). Diğer ev 95.000, aslı 100.000 (Fark: 5). Hataları toplar ve ortalamasını alır. "Modelimiz evlerin fiyatını ortalama 7.500 TL sapmayla (hatayla) biliyor" dedirtir. Müşteriye açıklaması en kolay olanıdır.
+2. **MSE / RMSE (Hata Kareler Ortalaması):**
+   Hataların (Farkların) Karesini alır. Neden? Eğer modeliniz bir tane eve 10.000.000 TL farkla saçma sapan bir tahmin yaptıysa, onun Karesi çok çok çok devasa bir sayı çıkar ve Modelin Karnesine BÜYÜK BİR KIRBAÇ (Ceza) vurur. "Büyük sapmaları (Outlier hatalarını) cezalandırmak" için kullanılır.
 
-### Recall (Duyarlılık - Hassasiyet)
-Gerçekte "Kanser" olan hastaların yüzde kaçını TESPİT EDEBİLDİK? (FN'ye odaklanır).
-*Sağlık ve güvenlik sektöründe en kritik metriktir.*
-
-### F1-Score
-Precision ve Recall'un Harmonik Ortalama değeridir. Tek bir sayı ile modelin genel performansını en adil şekilde yansıtır.
-
-## 2. Regresyon Hata Metrikleri
-Hedefimiz sayı (fiyat) tahmin etmek olduğu için, modelin tahmin ettiği fiyat ile gerçek fiyat arasındaki **Mesafeye (Hataya)** bakılır.
-
-### MAE (Mean Absolute Error - Ortalama Mutlak Hata)
-Tüm hataların mutlak değerini alıp ortalamasını bulur. Basittir ama uçuk (aykırı) hataları pek önemsemez.
-
-### MSE (Mean Squared Error - Ortalama Kare Hata)
-Hataların (mesafelerin) karesini alır. Böylece model büyük bir hata yaptıysa, karesi alındığı için hata devasa gözükür ve modeli fena cezalandırır.
-
-### RMSE (Root Mean Squared Error)
-MSE'nin kareköküdür. Karesi alınarak şişirilmiş sayıyı, tekrar evin fiyatı (Dolar, TL vs) birimine çevirerek bizim için anlaşılır kılar. Regresyonda en çok bu kullanılır.
-
-```python
-from sklearn.metrics import root_mean_squared_error, accuracy_score, classification_report
-
-# Sınıflandırma Raporu (Precision, Recall, F1 aynı anda)
-print(classification_report(y_test, siniflandirma_tahminler))
-```
+## 3. En Büyük Tuzak: Overfitting (Aşırı Uyum / Ezberleme)
+Eğer modelinizin eğitim (Train) sırasındaki karnesi %99 Başarıysa, ama daha önce HİÇ GÖRMEDİĞİ yeni bir müşteri verisi (Test) geldiğinde başarısı %50'ye düşüyorsa, makine Mantığı (Kuralları) öğrenmemiş, **Sadece Geçmiş Soruları ve Cevapları EZBERLEMİŞTİR.**
+- *Çözüm:* Modeli basitleştirmek, ağaç dallarını budamak (Pruning) veya Düzenlileştirme (Regularization/L1-L2) teknikleri uygulamaktır.

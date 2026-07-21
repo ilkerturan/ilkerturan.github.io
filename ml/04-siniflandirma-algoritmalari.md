@@ -1,32 +1,34 @@
 # Bölüm 04: Sınıflandırma (Classification) Algoritmaları
 
-Hedef değişkenimiz sayısal (fiyat, sıcaklık) değil de, **Kategorik** ise (Hasta / Sağlıklı, Kedi / Köpek, Kredi Onaylandı / Reddedildi) o zaman "Sınıflandırma" algoritmaları kullanılır.
+Eğer hedefiniz bir sayı değil, bir "Kategori" (Evet/Hayır, Hasta/Sağlam, Kedi/Köpek, Lise/Üni) bulmak ise, Sınıflandırma yöntemlerini kullanırsınız. En meşhur 3 algoritmayı (Gerçek hayat analojileriyle) inceleyelim.
 
----
+## 1. Karar Ağaçları (Decision Trees)
+İnsan beyninin karar verme şekline en çok benzeyen ve bir çocuğa anlatsanız anlayacağı kadar "Yorumlanabilir (Şeffaf)" bir algoritmadır.
 
-## 1. Lojistik Regresyon (Logistic Regression)
-İsminde "Regresyon" geçmesine rağmen bir sınıflandırma algoritmasıdır. Çıktı olarak bir sayının olabilirlik oranını (Probability) 0 ile 1 arasında tahmin eder. (Sigmoid Fonksiyonu kullanır).
-*Örn: Hastanın kanser olma ihtimali %85 (0.85). Eğer eşik değer %50 (0.50) ise, hasta sınıfına girer.*
+**Mantığı (Soru Sorma Oyunu):**
+Algoritma veriyi en iyi bölen (En çok bilgiyi veren - Information Gain) soruyu sorarak başlar.
+- "Müşterinin maaşı 10 Bin TL'den fazla mı?" 
+  - EVET İSE (Sağ Dal) -> "Önceden kredi çekmiş mi?" 
+    - HAYIR İSE -> "KREDİ VER!"
+  - HAYIR İSE (Sol Dal) -> "Yaşı 25'ten büyük mü?" 
+    - HAYIR İSE -> "KREDİ VERME (RET)!"
 
-## 2. K-Nearest Neighbors (KNN - K-En Yakın Komşu)
-Çok basit ve mantıksal bir algoritmadır. "Bana arkadaşını söyle, sana kim olduğunu söyleyeyim" mantığıyla çalışır.
-Ekrana yeni bir veri geldiğinde, kendisine **en yakın (mesafe olarak) K tane komşusuna** bakar. Komşular çoğunlukla hangi sınıftaysa, yeni gelen veriyi de o sınıfa atar.
+**Avantajı:** Yönetim kuruluna "Neden bu adama kredi vermedik?" dediklerinde ağacın yapraklarını okuyarak net bir açıklama (İnsan dilinde) yapabilirsiniz.
+**Dezavantajı:** Ağaç çok fazla büyürse (Yüzlerce soru sorarsa), sırf elindeki o anki verilere aşırı uyum sağlar (Ezberler / Overfitting) ve yepyeni bir dış veri geldiğinde çok kötü tahmin yapar.
 
-## 3. Support Vector Machines (SVM - Destek Vektör Makineleri)
-Verileri birbirinden ayıran ve iki sınıf arasındaki "Sokağı (Margin)" en geniş şekilde çizen algoritmadır. Veriler iç içe girmişse (Non-linear) "Kernel Trick" adlı matematiksel numarayla verileri 3 Boyutlu uzaya taşıyıp yukarıdan bir kılıç darbesiyle (Hyperplane) ikiye böler.
+## 2. Rastgele Orman (Random Forest) - Ensemble (Topluluk) Gücü
+Karar ağaçlarının zayıf yönünü (Ezberleme hatasını) kapatmak için yaratılmış bir "Komite / Meclis" sistemidir.
 
-## 4. Karar Ağaçları (Decision Trees)
-Nasıl ki biz insanlar "Maaşı 10 binden büyük mü? -> Evet -> Yaşı 30'dan küçük mü? -> Hayır" gibi sorularla karar veriyorsak, model de aynı mantıkla dallara (If-Else yapılarına) ayrılarak sonuca (Yaprak) ulaşır.
-**Dezavantaj:** Veriyi ezberlemeye (Overfitting) aşırı müsaittir.
+**Mantığı:** Sadece 1 tane süper zeki ama ezberci Karar Ağacı yapmak yerine; verilerinizi yüzlerce parçaya böler ve arka planda **100 farklı küçük Karar Ağacı** üretirsiniz (Bu bir ormandır).
+Bir hasta geldiğinde (Tümör var mı yok mu?), 100 ağaca birden bu hastayı sorarsınız. 
+- 80 ağaç "HASTA" der.
+- 20 ağaç "SAĞLAM" der.
+**Oylama (Voting) Yapılır:** Çoğunluğun kararı alınır ve sonuç HASTA (Kanser) olarak müşteriye basılır. Komitenin kararı, tek bir uzmanın (ağacın) kararından her zaman daha kararlı ve güvenilirdir.
 
-## 5. Rastgele Orman (Random Forest)
-Karar ağaçlarının ezberleme sorununu çözen muazzam bir "Ensemble" (Topluluk) modelidir. 
-Tek bir karar ağacı yerine, verinin farklı parçalarıyla birbirinden habersiz yüzlerce (veya binlerce) küçük Karar Ağacı eğitilir. Sonunda hepsi oy kullanır ve "Çoğunluğun Oyuna (Majority Voting)" göre karar verilir.
+## 3. Destek Vektör Makineleri (SVM - Support Vector Machines)
+Matematiksel olarak çok havalı ve çok sert sınırlar çizen bir algoritmadır.
 
-```python
-from sklearn.ensemble import RandomForestClassifier
-
-model = RandomForestClassifier(n_estimators=100) # 100 tane ağaç
-model.fit(X_train, y_train)
-tahminler = model.predict(X_test)
-```
+**Mantığı (Masa Analojisi):**
+Bir bilardo masasına (2 Boyutlu) Elmalar ve Armutlar serpiştirdiniz. Amacınız, masaya elinize bir TAHTA (Çizgi) alıp öyle bir noktaya koymak ki; elmalar tamamen tahtanın bir tarafında, armutlar diğer tarafında kalsın (Sınıflandırma).
+Ancak SVM öyle sıradan bir tahta koymaz; Elmalara VE Armutlara (Destek noktalarına / Support Vectors) "Eşit Uzaklıkta olan ve Aralarındaki Yolu (Marjini) EN GENİŞ YAPAN" en güvenli sokağı bulup tahtayı oraya çizer.
+Eğer masada elmalar ve armutlar iç içe geçmişse ve düz çizgi çizilemiyorsa; SVM "Kernel Trick (Çekirdek Hilesi)" denen bir matematik sihri yapar. Masayı ortadan ikiye katlayıp yukarı kaldırır (3. Boyuta çeker) ve aralarına havadan bir kağıt (Hiper-Düzlem) sokarak onları mükemmel şekilde ayırır.

@@ -1,23 +1,21 @@
-# Bölüm 02: OWASP Top 10 Değişimleri (2017 - 2021 - 2025)
+# Bölüm 02: OWASP Top 10'un Yıllara Göre Evrimi
 
-Siber güvenlik, sürekli bir "kedi-fare" oyunudur. Hacker'lar yeni saldırı yolları buldukça, OWASP listesi de değişir. Listelerin evrimine bakmak, teknolojinin nereye gittiğini anlamanın en iyi yoludur.
+Siber güvenlik sürekli kedi-fare oyunudur. Geliştiriciler eski açıkları (Örn: XSS) tamamen kapatacak Framework'ler (React, Angular) üretirler; bu sefer hackerlar sistemlerin "Mimari Tasarımındaki" (Insecure Design) veya "Erişim Yetkilerindeki" (Broken Access Control) mantıksal hatalara saldırırlar.
 
----
+## 2017 ve 2021 OWASP Top 10 Karşılaştırması
 
-## 2017 Yılı: Kodlama Hataları Zirvedeydi
-2017 yılında yazılımcılar güvenlik konusunda daha bilinçsizdi.
-- **A1 - SQL Injection:** Zirvedeydi. Çünkü herkes veritabanı sorgularını string (metin) birleştirerek yazıyordu.
-- **XSS (Cross-Site Scripting):** Listede apayrı bir maddeydi. Sitelerde yorum satırlarına JavaScript kodları gömülerek saldırılar yapılıyordu.
+**En Büyük Değişim:** Eskiden (2017) en büyük sorun geliştiricinin kod satırlarında yaptığı hatalardı (Injection, XSS). Bugün (2021+) en büyük sorun, yazılımın Mimari olarak yanlış tasarlanması (Insecure Design) ve Karmaşık Bulut/Mikroservis yapılarında yetki kontrollerinin (Broken Access Control) atlanmasıdır.
 
-## 2021 Yılı: Bulut ve Mimariye Geçiş
-2021 listesi, framework'lerin (React, Angular, EF Core vb.) SQL ve XSS gibi kodlama hatalarını "varsayılan" olarak kapatmaya başlamasıyla büyük bir evrim geçirdi.
-- **Broken Access Control (Kırık Erişim Kontrolü):** 1. sıraya oturdu. Çünkü framework'ler kod hatasını önlese de, "A kişisi, B kişisinin faturasına ulaşabilir mi?" gibi MİMARİ/MANTIKSAL (Business Logic) hatalarını framework'ler yakalayamazdı.
-- **Insecure Design (Güvensiz Tasarım):** Listeye 4. sıradan bomba gibi düştü. Kod mükemmel yazılsa bile, iş mantığı baştan hatalı kurgulanmışsa (Örn: Şifremi unuttum sorusuna "Annenizin kızlık soyadı?" diye sormak) hacklenmenin kaçınılmaz olduğu kabul edildi.
+### 2021 Güncel Top 10 Listesi:
+1. **A01: Broken Access Control (Kırık Erişim Kontrolü)** (1. Sıraya Yükseldi!)
+2. **A02: Cryptographic Failures (Kriptografik Hatalar)** (Eski Adı: Hassas Veri İfşası)
+3. **A03: Injection (Enjeksiyon)** (Tahtından düştü, 3. sıraya geriledi)
+4. **A04: Insecure Design (Güvensiz Tasarım)** (Listeye ilk kez girdi!)
+5. **A05: Security Misconfiguration (Güvenlik Yanlış Yapılandırması)**
+6. **A06: Vulnerable and Outdated Components (Savunmasız ve Modası Geçmiş Bileşenler)**
+7. **A07: Identification and Authentication Failures (Kimlik Doğrulama Hataları)**
+8. **A08: Software and Data Integrity Failures (Yazılım ve Veri Bütünlüğü Hataları)**
+9. **A09: Security Logging and Monitoring Failures (Güvenlik Loglama ve İzleme Hataları)**
+10. **A10: Server-Side Request Forgery - SSRF (Sunucu Tarafı İstek Sahteciliği)**
 
-## 2025 Yılı (Güncel Standart): Tedarik Zinciri ve Karmaşıklık
-Bugün (2025/2026), DevOps ve CI/CD pipeline'larının, Cloud (AWS, Azure) mimarilerinin zirve yaptığı bir çağdayız. Uygulamalar devasa bir hızla güncelleniyor.
-- **Security Misconfiguration (Güvenlik Yanlış Yapılandırması) (2. Sıra):** AWS/Azure'da tek bir yanlış tik atmak veya Docker'ı yanlış konfigüre etmek, tüm verilerin internete açılmasına (S3 Bucket sızıntıları) neden oldu.
-- **[YENİ] Software Supply Chain Failures (Yazılım Tedarik Zinciri):** Hacker'lar artık şirketin uygulamasını değil, uygulamanın kullandığı 3. parti npm/nuget paketlerini veya GitHub Actions süreçlerini hackliyorlar.
-- **[YENİ] Mishandling of Exceptional Conditions (Hata Yönetimi):** Sistemin hata fırlattığı anda Stack Trace (sunucu kodları) veya kritik bilgileri ekrana basıp basmadığı başlı başına bir kategori haline geldi.
-
-Kısacası evrim şudur: **"Satır içi kod hataları"** devrinden, **"Sistem ve Mimari hataları"** devrine geçiş yapılmıştır.
+> **Önemli Not:** Eskiden herkesin dilinde olan **XSS (Cross-Site Scripting)**, modern Frontend kütüphaneleri (React, Vue vb.) sayesinde otomatik engellendiği için tek başına bir kategori olmaktan çıkmış, A03 Injection'ın altına küçücük bir alt madde olarak erimiştir.

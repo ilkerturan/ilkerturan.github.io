@@ -1,39 +1,30 @@
-# Bölüm 02: Yapay Zeka ile Etkili İletişim Sanatı
+# Bölüm 02: AI ile İletişim (Prompt Engineering Temelleri)
 
-"Prompt Engineering" (Komut Mühendisliği) sektörel bir jargondur. Aslında yaptığımız iş bir mühendislikten ziyade, **yapay zekaya ne istediğimizi doğru ve net bir biçimde aktarma sanatıdır.** 
+**Prompt (İstem/Komut)**, yapay zekaya ne yapması gerektiğini söylediğiniz metin kutusudur.
+**Prompt Engineering (Komut Mühendisliği)** ise, yapay zekadan en doğru, en kaliteli ve en hatasız sonucu alabilmek için bu metin kutusunu belirli stratejiler ve kalıplarla (mühendislik disipliniyle) kullanma sanatıdır.
 
-Etkili bir iletişim için (tıpkı bir insana iş devrediyormuş gibi) şu 4 altın kuralı uygulamak sonuçların kalitesini %90 oranında artıracaktır:
+Yapay zeka "çöp atarsanız çöp üretir" (Garbage In, Garbage Out). "Bana bir web sitesi yaz" derseniz, size çok genel ve dandik bir kod verir.
 
----
+## Mükemmel Bir Prompt'un Anatomisi (4 Temel Bileşen)
 
-## 1. Bağlam (Context) Kurmak
-Yapay Zekanın hafızası boştur. Siz ona "Bana bir reklam metni yaz" derseniz, dünyanın en genel geçer ve sıkıcı metnini yazar. Ona, içinde bulunduğunuz durumu anlatın.
+Profesyonel bir komut yazarken şu 4 bloğun mutlaka doldurulması gerekir:
 
-**❌ Kötü İletişim:** "Bana bir e-posta yaz, müşteriden ödeme iste."
-**✅ Etkili İletişim:** "Ben bir grafik tasarım ajansı sahibiyim. 'Ahmet Bey' adındaki müşterim 3 haftadır logo tasarım faturasını ödemiyor. Ona kibar ama hukuki işlem başlatabileceğimi de hissettiren profesyonel bir hatırlatma e-postası yaz."
+### 1. Rol / Persona (Role)
+Yapay zekaya kimlik kazandırırsanız, devasa veritabanından sadece o kimliğe uygun (Uzmanlık) kelimeleri seçmeye başlar.
+- *Kötü:* Bana Python'da veri çekmeyi anlat.
+- *İyi:* **"Sen 20 yıllık tecrübesi olan Kıdemli (Senior) bir Python Geliştiricisi ve Eğitmeni'sin."** 
 
-## 2. Rol Atama (Persona - Sistem Komutu)
-Yapay Zekaya "Kim olduğunu" söylerseniz, kullandığı kelimeleri ve uzmanlığını anında o yöne çeker.
+### 2. Görev / Talimat (Task/Instruction)
+Ne istediğinizi aşırı net ve kesin ifadelerle (Kısa ve emir kipleriyle) yazmalısınız.
+- *Kötü:* Kodda bir hata var bulsana.
+- *İyi:* **"Aşağıda verdiğim C# kodundaki 'NullReferenceException' hatasının nerede olduğunu tespit et ve sorunu çözen güvenli bir kod bloğu yaz."**
 
-**Örnek Roller:**
-- *Sen 20 yıllık deneyimli bir Kıdemli Yazılım Mimarı'sın (Senior Software Architect). Kodlarımı bu gözle incele ve sadece performans sorunlarına odaklan.*
-- *Sen neşeli, enerjik ve emojileri çok seven bir Sosyal Medya Uzmanısın.*
-- *Sen acımasız ve detayı seven bir Edebiyat Eleştirmenisin.*
+### 3. Bağlam / Detay (Context)
+Model nerede olduğunuzu, bu kodu ne için kullandığınızı bilmezse yanlış çözüm üretir.
+- *Kötü:* Sitemi hızlandır.
+- *İyi:* **"Biz e-ticaret sektörü için yüksek trafikli (saniyede 100.000 istek alan) bir sistem tasarlıyoruz. Veritabanımız PostgreSQL. Amacım okuma hızlarını %50 artırmak."**
 
-## 3. Format ve Sınırlar (Constraints) Belirleme
-İnsanlar genellikle LLM'lerin gevezeliğinden şikayet eder. Sınırları sizin koymanız gerekir.
-
-**Nasıl sınır konur?**
-- "Sadece 3 madde halinde yaz."
-- "Açıklama yapma, sadece kod bloğunu ver."
-- "Cevabı JSON formatında ver."
-- "Maksimum 50 kelime kullan."
-
-## 4. Doğru Şablonu Kullanmak (CRF Metodu)
-Tüm bu adımları birleştiren basit bir zihinsel şablon kullanın: **C-R-F (Context, Request, Format)** 
-Yani (Bağlam, İstek, Format).
-
-**Mükemmel bir örnek:**
-- **(Rol + Bağlam):** *Sen uzman bir Diyetisyensin. Benim adım Ayşe, 30 yaşındayım, masa başı çalışıyorum ve glütene alerjim var.*
-- **(İstek):** *Bana günlük 1500 kaloriyi geçmeyecek, hazırlaması kolay, glütensiz bir 3 günlük beslenme programı hazırla.*
-- **(Format):** *Sonucu her gün için ayrı bir Markdown Tablosu halinde göster. Kalori değerlerini yanına yaz. Ekstra açıklama yapma.*
+### 4. Çıktı Formatı ve Kısıtlamalar (Output Format / Constraints)
+Sonucun nasıl görünmesini istediğinizi dikte etmezseniz, model size 5 sayfa felsefe yapar.
+- *Kötü:* Cevap ver.
+- *İyi:* **"Cevabını sadece bir Markdown Tablosu olarak ver. 3 sütun olsun (Araç Adı, Avantajı, Fiyatı). Tablo dışında hiçbir açıklama veya giriş cümlesi (Elbette, işte tablonuz vb.) YAZMA! Maksimum 100 kelime kullan."**

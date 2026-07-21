@@ -1,64 +1,51 @@
-# Bölüm 04: Jenkins Temelleri
+# Bölüm 04: Jenkins (Geleneksel DevOps Devi) Temelleri
 
-GitHub Actions ve GitLab CI bulut tabanlı modern sistemlerken, **Jenkins** kurumsal dünyanın en köklü, Java tabanlı, açık kaynak ve on-premise (kendi sunucunuza kurduğunuz) CI/CD sunucusudur. Eklenti (Plugin) zenginliği sayesinde entegre edilemediği teknoloji yoktur.
+GitHub Actions, GitLab CI veya Azure DevOps modern, bulut tabanlı ve kullanımı kolay (Yönetilmeyen - Serverless gibi) araçlardır. Ancak dünyadaki "Kurumsal (Enterprise), Banka ve Holding" sınıfındaki şirketlerin mahzenlerine indiğinizde, orada genelde ihtiyar, devasa ama inanılmaz güçlü bir kahya görürsünüz: **Jenkins.**
 
----
+## 1. Jenkins Nedir ve Neden Hala Popülerdir?
+Jenkins, 2011'de doğmuş (Eski adı Hudson), Java ile yazılmış, logosu Şapkalı bir Uşak (Kahya) olan Açık Kaynaklı bir Otomasyon (CI/CD) Sunucusudur.
 
-## 1. Master ve Agent (Node) Mimarisi
-Jenkins tüm işi tek başına yapmaz. 
-- **Jenkins Master (Controller):** Arayüzü sunduğu, işleri (Job) yönettiği ve orkestrasyon yaptığı ana sunucudur. İşleri derlemez, sadece dağıtır.
-- **Jenkins Agents (Worker Nodes):** Asıl derleme (Build) ve test yükünü çeken "İşçi" sunuculardır. Biri Linux, biri Windows, biri Mac olabilir (Örn: iOS uygulamasını Mac agent'a yollar).
+**Neden modern araçlara rağmen hala efsanedir?**
+- **Tam Kontrol (On-Premise):** Bir banka "Kodlarımın ve Pipeline sistemimin GitHub'ın bulut sunucularında, Amerika'da çalışmasını istemiyorum (Güvenlik yasaları/KVKK)" derse, Jenkins'i alıp KENDİ yerel (Bina içindeki) sunucularına, tamamen kapalı ağda kurabilir.
+- **Eklenti (Plugin) Cehennemi (ve Cenneti):** Jenkins tek başına çok saf bir robottur. Onu değerli kılan, arkasındaki binlerce eklentisidir. Dünyada entegre olamayacağı HİÇBİR sistem (Amazon, Docker, Slack, Kubernetes, eski tip mainframe'ler vb.) yoktur.
+- **Dağıtık Mimari (Master - Slave/Agent):** Jenkins'in beyni (Master) ayrı çalışır, o beyne bağlı 50 tane işçi (Agent) makinesi olabilir. Master, Mac derlemesini Mac makinesine, Windows derlemesini Windows makinesine yollar, yükleri harika dağıtır.
 
-## 2. Jenkinsfile (Pipeline as Code)
-Eskiden Jenkins arayüzünden form doldurarak iş (Job) oluşturulurdu. Günümüzde projenizin ana dizinine koyduğunuz `Jenkinsfile` adında bir metin dosyası ile tüm otomasyon (Pipeline) kodla tanımlanır.
+## 2. Jenkinsfile (Kod Olarak Pipeline)
+Eskiden (Karanlık Çağlarda) Jenkins yöneticileri (DevOps uzmanları), Pipeline adımlarını Jenkins'in Web Arayüzüne (UI) girip tıklayarak "Önce Build yap, sonra Test yap" diye elle kutucuklara doldururlardı. Bu felaketti, ayarlar silinince tarih oluyordu.
 
-İki şekilde yazılabilir:
-- **Scripted Pipeline:** Groovy diliyle yazılan, çok esnek ama karmaşık eski yapıdır.
-- **Declarative Pipeline:** Daha modern, okunması kolay, kuralları net olan yapıdır.
+Günümüzde Jenkins de **Pipeline as Code (Kod olarak Boru Hattı)** felsefesine geçmiştir. Yazılımcılar kodlarının (Git reposunun) tam içine **`Jenkinsfile`** adında bir dosya bırakırlar. Jenkins bu dosyayı okur ve Groovy dilinde yazılmış adımları çalıştırır.
 
-## 3. Örnek Declarative Pipeline
-
+*(Örnek Bildirimsel - Declarative Jenkinsfile Anatomisi)*
 ```groovy
 pipeline {
-    agent any // Boşta olan herhangi bir işçi (agent) üzerinde çalış
-    
-    stages {
-        stage('Checkout') {
+    agent any // Hangi işçi (Slave) müsaitse o çalıştırsın
+
+    stages { // Aşamalar (Boru hattının odaları)
+        
+        stage('1- Checkout (Kodu Indir)') {
             steps {
-                // Kodu Git'ten çek
-                git branch: 'main', url: 'https://github.com/ornek/proje.git'
+                git 'https://github.com/sirket/projem.git' // GitHub'dan kodu çek
             }
         }
-        stage('Build') {
+        
+        stage('2- Build (Derle)') {
             steps {
-                echo 'Proje derleniyor...'
-                sh 'npm install'
-                sh 'npm run build'
+                sh 'dotnet build' // Linux kabuğunda derleme komutu
             }
         }
-        stage('Test') {
+        
+        stage('3- Test (Güvenlik Kapısı)') {
             steps {
-                echo 'Testler çalışıyor...'
-                sh 'npm test'
+                sh 'dotnet test' // Testlerden geçerse devam et, geçemezse KIRMIZI (Fail) yap
             }
         }
-        stage('Deploy') {
-            when {
-                branch 'main' // Sadece main dalındaysa Deploy yap
-            }
+        
+        stage('4- Deploy (Canliya Al)') {
             steps {
-                echo 'Canlıya alınıyor...'
-                sh './deploy.sh'
+                // Sadece ve sadece 'main' branchinde isek canlıya at
+                when { branch 'main' } 
+                sh './k8s-deploy.sh' // Kubernetes'e fırlatan shell script
             }
-        }
-    }
-    
-    post {
-        success {
-            echo 'Pipeline başarıyla tamamlandı!'
-        }
-        failure {
-            echo 'HATA! Pipeline patladı, Slack üzerinden ekibe mesaj at!'
         }
     }
 }

@@ -1,19 +1,19 @@
-# A07:2025 - Authentication Failures (Kimlik Doğrulama Hataları)
+# Bölüm 09: A07 - Identification and Authentication Failures
 
-Eski adıyla Broken Authentication. Kullanıcının (veya bir API'nin) kim olduğunu (Identity) kanıtlama aşamasında yapılan kritik hatalardır. Hacker'ların en sevdiği yöntemdir çünkü "Sistemi hacklemekle uğraşmazlar, doğrudan kapıdan girerler."
+Eski adıyla "Kırık Kimlik Doğrulama" (Broken Authentication). Sistemlerin giriş (Login) mekanizmalarındaki veya Oturum (Session) yönetimindeki zayıflıklardır. Eğer bir web sitesine yetkisiz (şifresiz) girebiliyorsanız veya başkasının kimliğine (Oturumuna) bürünebiliyorsanız bu açık vardır.
 
----
+## 1. Saldırı Türleri (Hacker Nasıl Sızar?)
 
-## 1. Zafiyetin Mantığı
-Sisteminizin kapısında bekleyen güvenliğin, gelen kişinin gerçekten "İlker" olup olmadığını doğru kontrol edememesidir. Parola yönetimi, oturum (Session/Token) yönetimi ve MFA (Çok Faktörlü Doğrulama) eksiklikleri bu kategoriye girer.
+- **Credential Stuffing (Kimlik Bilgisi Doldurma):** İnsanların %80'i tüm sitelerde (Netflix, Twitter, Banka, Yemeksepeti) aynı e-mail ve şifreyi kullanır. Hacker, daha önce hacklenmiş ve karanlık ağda (Dark Web) yayınlanmış devasa e-mail:şifre listelerini indirir. Yazdığı bir bot programla SİZİN web sitenizde saniyede binlerce kombinasyonu dener. İllaki birkaçı sizin sisteminize giriş yapmayı başaracaktır.
+- **Brute Force (Kaba Kuvvet):** Bilinen şifreleri tek tek sırayla denemektir (Örn: admin/123456, admin/qwerty).
+- **Session Hijacking (Oturum Çalma):** Siz bir siteye girdiğinizde sunucu size bileklik gibi bir "Session ID (Cookie)" verir. Eğer hacker kafe ortamında veya XSS açığı sayesinde sizin tarayıcınızdaki o "Session ID" metnini çalarsa, KENDİ tarayıcısına yapıştırır ve kullanıcı adı/şifre bilmesine gerek kalmadan SİZİN hesabınıza direkt girer!
 
-## 2. En Sık Görülen Saldırı Tipleri
-- **Credential Stuffing (Kimlik Bilgisi Doldurma):** Başka bir sitenin (Örn: Bir oyun forumunun) çalınan kullanıcı adı ve şifre veritabanını alıp, aynı şifrelerin şirketinizin portalında (veya e-posta servisinde) botlar aracılığıyla denenmesi. İnsanlar aynı şifreyi kullandığı için bu yöntem ölümcül derecede etkilidir.
-- **Session Hijacking (Oturum Çalma):** Başarılı girişten sonra kullanıcıya verilen Oturum Kimliğinin (Session ID / JWT Token) URL'de görünür olması veya XSS açıklarıyla çalınması. Hacker şifreyi bilmese bile bu kimlikle hesaba erişir.
-- **Zayıf Parola Politikaları:** Kullanıcıların "123456" veya "qweasd" gibi parolalar kullanmasına izin veren sistemler.
-- **Session Fixation:** Çıkış yap (Logout) butonuna basıldığında oturumun sunucu tarafında (Backend) gerçekten öldürülmemesi (Sadece tarayıcıdan silinmesi).
+## 2. Nasıl Engellenir (Savunma)?
 
-## 3. Nasıl Korunuruz? (Mimari Savunma)
-1. **MFA (Multi-Factor Authentication) Zorunluluğu:** Kritik tüm sistemlerde (özellikle admin panellerinde) parola haricinde ikinci bir güvenlik katmanı (Authenticator uygulaması veya SMS OTP) zorunlu olmalıdır.
-2. **Güçlü Parola Kontrolü:** Şifrenin en az 8-12 karakter olması sağlanmalı ve daha da önemlisi; Pwned Passwords gibi veritabanlarıyla şifrenin "daha önce sızdırılmış bir şifre olup olmadığı" kayıt anında kontrol edilmelidir.
-3. **Session Yönetimi:** JWT (Token) kullanılıyorsa süreleri (Expiration Date) çok kısa tutulmalı (Örn: 15 dakika) ve Refresh Token mekanizması kurulmalıdır. Tarayıcıda saklanan Cookie'ler (Çerezler) mutlaka `HttpOnly` ve `Secure` flag (bayrakları) ile işaretlenmelidir.
+1. **MFA / 2FA (Çok Faktörlü Kimlik Doğrulama):** Kesinlikle ZORUNLUDUR! Artık sadece şifre (Bildiğin şey) yeterli değildir. Sisteme girişte mutlaka telefona gelen bir SMS kodu veya Authenticator (Sahip olduğun şey) kodu istenmelidir. Hacker şifrenizi bilse bile telefonunuz elinde olmadığı için içeri giremez!
+2. **Rate Limiting ve Brute Force Koruması:** Bir IP adresi veya e-mail hesabı arka arkaya 5 kez yanlış şifre denerse, o hesabı 15 dakikalığına KİLİTLEYİN veya sistem karşısına çözmesi zor bir "CAPTCHA" çıkarın. Botların işi felç olur.
+3. **Güvenli Oturum (Session) Yönetimi:**
+   - Kullanıcı "Çıkış Yap (Logout)" butonuna bastığında, sunucudaki o bilekliği (Session objesini) kesinlikle SİLİN (Destroy).
+   - Çerezleri (Cookies) oluştururken kesinlikle `HttpOnly` ve `Secure` flag'lerini (işaretlerini) **True** yapın. 
+   - `HttpOnly`: Hacker'ın zararlı Javascript (XSS) kodu yazarak çerezlerinizi çalmasını (document.cookie) tamamen yasaklar.
+   - `Secure`: Çerezin sadece güvenli HTTPS ağında gönderilmesini sağlar.

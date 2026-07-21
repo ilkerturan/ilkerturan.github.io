@@ -1,19 +1,27 @@
-# A10:2025 - Mishandling of Exceptional Conditions (İstisnai Durumların Yanlış Yönetimi)
+# Bölüm 12: A10 - SSRF (Sunucu Tarafı İstek Sahteciliği)
 
-**[2025 Yeni]** Modern uygulamalar (API'ler, Microservices) çok karmaşık olduğu için çok sık "Beklenmeyen Hatalar (Exceptions)" fırlatırlar. Ancak bu hataların "Nasıl" fırlatıldığı, Hacker'lara uygulamanın röntgenini (Haritasını) veren devasa bir güvenlik açığıdır. Eski SSRF maddesinin yerine listeye bomba gibi girmiştir.
+*Server-Side Request Forgery* (SSRF), modern Bulut (Cloud) ve Mikroservis dünyasının gelişmesiyle listeye 10. sıradan hızlı bir giriş yapan çok popüler bir saldırıdır.
 
----
+Felsefesi Şudur: Hacker dış dünyadan (İnternetten) şirketin içindeki özel sunuculara DİREKT erişemez (Çünkü araya devasa Firewall'lar kurulmuştur). Hacker şöyle bir kurnazlık düşünür: "Ben o içerideki sunucuya giremiyorum... Peki Dışarıya açık olan (ve iç sunucularla sohbet edebilen) Web Sunucusunu (Benim kullandığım siteyi) KANDIRIRSAM ve o iç sunucuya benim yerime SİTENİN KENDİSİNİ saldırtırsam?"
 
-## 1. Zafiyetin Mantığı
-Uygulamanız bir veritabanına bağlanamadığında veya kullanıcı beklenmeyen bir karakter (Örn: `'`) gönderdiğinde sistem patlar (Crash).
-Eğer siz bu patlamayı (Exception) yakalayıp şık bir şekilde "Beklenmeyen bir hata oluştu" demek yerine, sistemin ham hata mesajını (Stack Trace) ekrana basarsanız, saldırgana tüm cephaneliğinizi göstermiş olursunuz.
+## 1. SSRF Saldırısı Nasıl Yapılır?
 
-## 2. En Sık Görülen Saldırı Tipleri / Hatalar
-- **Stack Trace (Hata Yığını) İfşası:** ASP.NET veya Spring Boot gibi framework'lerin detaylı hata sayfasını (Yellow Screen of Death) canlıda (Production) açık bırakmak. Hacker hata mesajına bakarak; kullanılan kütüphane versiyonlarını, dosya yollarını (Örn: `C:\inetpub\wwwroot\db.cs`), hatta bazen SQL tablo isimlerini anında öğrenir.
-- **Bilgi İfşa Eden Özel Hatalar:** "Bu e-posta kayıtlı değil" veya "Kullanıcı adı doğru ama parola yanlış" gibi hatalar, Hacker'ların "Sistemde kimler kayıtlı" bilgisini (User Enumeration) taramasına (brute-force) olanak tanır.
-- **Fail-Open (Açık Hata) Durumu:** Sistem bir hata verdiğinde, güvenli moda geçmek (erişimi reddetmek) yerine, hata yüzünden kontrolleri atlayıp işlemi yapmasına izin vermesi (Fail-Close yerine Fail-Open kurgusu).
+**Senaryo:** Sitenizde bir özellik var. Kullanıcı kendi sitesindeki bir resmi sizin profil resminiz yapmak için, sizin sitenize bir URL yazıyor. Sizin Arka plan kodunuz (Server), o URL'ye gidip resmi indiriyor.
 
-## 3. Nasıl Korunuruz? (Mimari Savunma)
-1. **Global Exception Handling (Genel Hata Yakalama):** Uygulamanın neresinde hata çıkarsa çıksın, onu en tepede (Middleware / Interceptor) yakalayan tek bir mekanizma kurun.
-2. **Kullanıcıya Standart, Admine Detaylı Mesaj:** Son kullanıcıya veya API yanıtına ASLA teknik detay döndürmeyin (Sadece: `HTTP 500: Sunucu Hatası, Lütfen daha sonra deneyin` veya `Kullanıcı adı veya şifre hatalı`). Ancak o anki teknik detayı arka planda (Log sunucusuna) UUID (Hata Kodu) ile birlikte kaydedin.
-3. **Environment (Ortam) Yönetimi:** `ASPNETCORE_ENVIRONMENT` veya `NODE_ENV` gibi değişkenlerin Canlı (Production) sunucularda asla "Development" (Geliştirme) modunda unutulmadığına emin olun (Development modları detaylı hata basar).
+Hacker formdaki o "Resim URL'si" kutucuğuna gidip şu adresi yazar: 
+`http://localhost:8080/admin/db_backup.zip` (veya bulutta AWS'nin metadata ip'si olan `http://169.254.169.254/latest/meta-data/`)
+
+Sizin Dış Web Sunucunuz (Saf kodunuz) ne yapar? "Kullanıcı benden buraya gitmemi istedi" der, gider "Kendi iç ağına (Localhost)" bağlanır, devasa veritabanı yedeğini (veya Cloud gizli AWS keylerini) indirir ve "Al kardeşim resmin" diyerek Hacker'a yollar!
+
+Saldırgan, SİZİN SUNUCUNUZU SİLAH OLARAK KULLANARAK kendi arka bahçenize saldırtmıştır! 
+
+## 2. Nasıl Engellenir (Savunma)?
+
+SSRF'yi engellemek oldukça zordur çünkü sunucunun internete çıkması bir ihtiyaçtır.
+
+1. **Deny by Default (Varsayılan Olarak Yasakla):**
+   Uygulamanızın sadece ve sadece belirli IP'lere veya güvenilir alan adlarına (Whitelist) gitmesine izin verin. Eğer "Resim URL" kutucuğuna `127.0.0.1` (Localhost) veya `192.168.x.x` (İç ağ) gibi kelimeler yazılmışsa, kod bu isteği ANINDA DURDURMALI ve engellemelidir.
+2. **Kullanıcı Girdisini Doğrula:**
+   Dışarıya HTTP isteği atacak kod (Örn: C#'ta `HttpClient`), kullanıcıdan gelen ham URL metnini asla direkt kabul etmemelidir. Önce bu URL'nin bir resim (png/jpg) olup olmadığı ve yasal bir alan adında olup olmadığı regex ve format kontrollerinden geçirilmelidir.
+3. **Ağ İzolasyonu (Network Segmentation):**
+   Dışarıya açık Web Sunucunuz, arkadaki Veritabanına ulaşabilmeli ama sistem yönetimi (Admin) panellerine ulaşamamalıdır. Araya iç ağ güvenlik duvarları (Firewall) konmalıdır.

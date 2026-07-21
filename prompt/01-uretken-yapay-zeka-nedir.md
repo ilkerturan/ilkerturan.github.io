@@ -1,27 +1,20 @@
 # Bölüm 01: Üretken Yapay Zeka (Generative AI) Nedir?
 
-Geçmişteki Yapay Zeka sistemleri satranç oynamak, hava durumunu tahmin etmek veya kredi kartı sahtekarlığını tespit etmek (Analitik AI) gibi matematiksel ve kurala dayalı görevler yapıyordu.
+Yapay zeka (AI) dünyasında son yıllarda yaşanan patlamanın (ChatGPT, Midjourney) arkasında yatan sihirli kavram **Üretken Yapay Zeka'dır (Generative AI)**. 
 
-**Üretken Yapay Zeka (GenAI)** ise daha önce hiç var olmayan yepyeni bir metin, resim, kod veya ses "üretebilen" teknolojilere verilen isimdir (Örn: ChatGPT, Midjourney).
+Geleneksel makine öğrenmesi (Örn: Yüz tanıma, spam filtreleme) "Analiz eder" ve "Sınıflandırır". (Bu fotoğraf kedi mi, köpek mi?).
+Üretken Yapay Zeka ise "Var olmayan, yepyeni bir şeyi İNŞA EDER". (Bana uzayda kaykay kayan mor bir kedinin fotoğrafını çiz veya Shakespeare tarzında kod yazan bir şiir üret).
 
----
+## 1. LLM (Large Language Model - Büyük Dil Modelleri) Nasıl Çalışır?
+ChatGPT (OpenAI), Gemini (Google) veya Claude (Anthropic) gibi modellerin kalbinde LLM yatar. Bunlar aslında "Dünyanın en gelişmiş Otomatik Tamamlama (Auto-complete)" motorlarıdır.
 
-## 1. LLM (Büyük Dil Modeli) Nedir?
-ChatGPT ve Claude gibi sistemlerin arkasındaki beyne **LLM (Large Language Model)** denir. 
-İnsanlar genellikle yapay zekanın düşünüp karar verdiğini sanır, ancak LLM'lerin çalışma mantığı çok daha basit ve ilginçtir: **Sıradaki kelimeyi tahmin etmek (Next Word Prediction).**
+Çalışma prensibi büyü değil, **İstatistik ve Olasılıktır**:
+İnternetteki milyarlarca kitap, makale, kod ve yazışma bu modellere okutulur (Eğitim - Training). Model, kelimeler arasındaki ilişkileri (Ağırlıkları/Weights) öğrenir.
+Siz ona: "Sabah kalktım ve yüzümü..." dediğinizde, model matematiksel olarak şuna bakar: "Benim okuduğum milyarlarca metinde, bu kelimelerden sonra %99 ihtimalle 'yıkadım' kelimesi geliyor." Ve oraya **Yıkadım** yazar.
 
-Klavye uygulamanızda kelime yazarken üstte çıkan tahmin kelimelerinin milyarlarca kez daha akıllı ve milyarlarca metinle eğitilmiş versiyonudur.
+Bir LLM, dünyanın ne olduğunu "anlamaz". Duygusu yoktur. Sadece "Hangi kelimeden sonra hangi kelimenin gelme ihtimali yüksektir?" (Next-Token Prediction) hesabı yapan devasa bir istatistik makinesidir.
 
-- Siz *"Bugün hava çok..."* yazdığınızda, model milyarlarca parametresini kullanarak sıradaki en mantıklı kelimenin "Güzel" veya "Kötü" olduğuna matematiksel bir olasılıkla karar verir. 
+## 2. Halüsinasyon (Hallucination) Olgusu
+LLM'lerin en büyük kusurudur. Siz "Tarihte ilk uçan Osmanlı Padişahı kimdir?" diye sorarsanız, LLM size bilmediğini söylemek (Genelde) yerine, muazzam ikna edici ve süslü cümlelerle uydurma bir padişah ismi (Örn: Sultan Hezarfen) icat eder ve onu savunur.
 
-## 2. Token Mantığı (Harf değil, Heceler)
-Yapay Zeka kelimeleri bizim gibi harflerle okumaz. Onları **Token** denen hece parçalarına böler ve sayılara çevirir. 
-*Ortalama 1 Token = 4 İngilizce karakter veya 1 kelimenin dörtte üçü (3/4) kadardır.*
-
-- Örneğin "Hamburger" kelimesi model için tek kelime değil; "Ham" - "bur" - "ger" olarak 3 token olabilir.
-- Bu yüzden bazen ChatGPT'den kelime saymasına dair bir şey istediğinizde başarısız olur, çünkü o kelimeleri değil Token'ları sayar.
-
-## 3. Halüsinasyon (Uydurma)
-LLM'ler birer arama motoru (Google) değildir. Bir veritabanından bilgi "çekip" getirmezler, bir kelimeden sonra gelmesi muhtemel diğer kelimeyi "üretirler". 
-
-Bu yüzden, bilmedikleri veya çok nadir geçen bir konu sorulduğunda, matematiksel olarak en mantıklı gelen kelimeleri yan yana dizerek **tamamen uydurma, ancak son derece ikna edici** cevaplar verirler. Buna yapay zeka jargonuyla **Halüsinasyon (Hallucination)** denir.
+Neden? Çünkü Olasılık motoru "Cevap vermemek" üzere değil, "Kelime üretmek" üzere kurgulanmıştır. Yalan söylemez, sadece mantıklı görünen ama gerçekte var olmayan ihtimaller zinciri (Halüsinasyon) üretir. Bu yüzden yapay zekanın yazdığı kod veya hukuki bilgi mutlaka bir İnsan (Human-in-the-loop) tarafından teyit edilmelidir!

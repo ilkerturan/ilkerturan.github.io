@@ -1,34 +1,25 @@
-# Bölüm 05: Evrişimsel Sinir Ağları (CNN)
+# Bölüm 05: CNN (Convolutional Neural Networks) ile Görüntü İşleme
 
-Geleneksel Yapay Sinir Ağları (MLP / ANN), resim gibi verileri işlemek için korkunç derecede kötüdür. Resimdeki pikselleri düz bir çizgi halinde ağa verdiğimizde resmin tüm uzamsal (spatial) yapısı bozulur.
-Ayrıca 1000x1000 piksel bir renkli resim 3 Milyon girdi demektir. Bunu standart bir ağa sokmak bilgisayarı kilitler.
+Yıllarca standart Yapay Sinir Ağlarına (Geçen bölümdeki 16 Nöronlu düz ağlar vb.) resimler (Örn: Köpek fotoğrafları) gösterdik ve onları eğitmeye çalıştık ama ÇUVALLADIK! 
+Neden? Çünkü standart ağ (Dense Network), bir resimdeki "Köpeğin Kulağı" resmin sol üstünde mi, sağ altında mı DİKKATE ALMAZ. Oksijen tüpü gibi tüm pikselleri yan yana dümdüz bir sıraya dizer. Uzamsal (Spatial) özellik (Neyin neyin yanında olduğu) tamamen YOK OLUR.
 
-İşte tam burada imdada **CNN (Convolutional Neural Networks)** yetişir. Otonom araçlar, yüz tanıma ve kanser tespiti gibi tüm görüntü işleme teknolojilerinin kalbidir.
+Bunu çözmek için İnsan Gözünün (Görme Korteksi) çalışma mantığını taklit eden devrimsel bir mimari yaratıldı: **Evrişimli Sinir Ağları (CNN).**
 
----
+## 1. Evrişim (Convolution) Katmanı - Filtrelerle Bakmak
 
-## 1. Bilgisayar Görüntüyü Nasıl Görür?
-Bizim gördüğümüz bir kedi resmi, bilgisayar için sadece **Piksellerden** oluşan koca bir sayı (Matris) tablosudur. Renkli resimler RGB (Kırmızı, Yeşil, Mavi) olmak üzere üst üste binmiş 3 farklı matristen oluşur.
+Siz bir resme bakarken tek tek piksellerine bakmazsınız; resimde "Dikey çizgiler var mı?", "Yuvarlaklar (Göz) var mı?" diye bütüne bakarsınız. CNN de tam bunu yapar.
+- CNN, resmin üzerinde bir Fener (Filtre / Kernel - Genelde 3x3 veya 5x5 boyutunda bir kare matris) gezdirir. 
+- Bu fener soldan sağa, yukarıdan aşağıya (Stride - Kaydırma adımı) resmin üzerinde dolaşırken "Burada Köşe var mı? Burada Dikey Çizgi var mı?" diye matematiksel çarpım yaparak (Evrişim işlemi) fotoğrafın **Özellik Haritasını (Feature Map)** çıkarır.
+- İlk CNN katmanları sadece "Çizgileri" öğrenir. İkinci katman o çizgileri birleştirip "Gözleri/Burunları" öğrenir. Son katmanlar o burunları birleştirip "Köpek/Kedi" yüzünü BÜTÜNSEL OLARAK öğrenir!
 
-## 2. Convolution (Evrişim) İşlemi
-Resmin her pikselini tek tek incelemek yerine, resmin üzerinde küçük bir **Filtre (Kernel)** (örn: 3x3 bir büyüteç) gezdirilir.
-- İlk katmandaki filtreler resimdeki **Kenarları (Dikey, Yatay)** tespit eder.
-- İleriki katmanlardaki filtreler kenarları birleştirip **Şekilleri (Yuvarlak, Üçgen)** bulur.
-- Son katmanlardaki filtreler şekilleri birleştirip **Nesneleri (Göz, Kulak, Kuyruk)** tespit eder.
+## 2. Havuzlama (Pooling) Katmanı - Boyut Küçültme
 
-## 3. Pooling (Havuzlama)
-Evrişim işleminden çıkan veri haritası hala çok büyüktür. Pooling (Genelde Max Pooling kullanılır), resmi sıkıştırarak (Örn: 2x2'lik piksel grubundaki en büyük sayıyı alarak) görüntünün boyutunu yarıya indirir.
-- Bilgisayarın hesaplama yükünü inanılmaz oranda azaltır.
-- Resimdeki kedinin sağda veya solda olmasından (konumdan) bağımsız olarak kediyi tanımasını sağlar (Translation Invariance).
+Eğer 4K çözünürlüğünde (8 Milyon Piksel) bir resim üzerinde fener gezdirip işlem yaparsanız, dünyanın en güçlü bilgisayarının bile RAM'i patlar.
+Bunu engellemek ve veriyi SIKIŞTIRMAK için her Evrişim (Görme) katmanından sonra bir **Pooling (Havuzlama)** katmanı atılır.
 
-## 4. Flattening (Düzleştirme) ve Çıktı
-Yeterince Convolution ve Pooling yapıldıktan sonra, en son elde edilen özellik haritası tek boyutlu düz bir çizgiye (Flatten) dönüştürülür ve klasik (ANN) sinir ağına bağlanır. Ağ bu özelliklere bakarak resmin "%80 Kedi, %20 Köpek" olduğuna karar verir.
+- **Max-Pooling (En Büyüğü Alma):** Resimdeki her 2x2'lik (4 piksellik) bloğa bakar. "Bu 4 piksel içindeki En Büyük (En Keskin / En önemli Özellik olan) rakam hangisi? Örneğin 255 (Beyaz Çizgi)." Onu alır (Kaydeder), geriye kalan önemsiz 3 karanlık pikseli çöpe atar!
+- **Faydası:** Saniyeler içinde, kedi resminin asıl "Köpekten ayıran mantığını / Özünü" kaybetmeden resmin boyutunu 4 KATA KÜÇÜLTÜR. Matematiksel yükü inanılmaz hafifletir. Ayrıca resimdeki köpek sağa kaymış veya sola eğilmiş (Translation) olsa bile model onu tanımaya devam eder (Çünkü detaylar değil "Öz" kalmıştır).
 
----
-
-## 5. Transfer Learning (Transfer Öğrenme)
-Görüntü işleme modellerini sıfırdan eğitmek devasa veri seti ve haftalar süren GPU (Ekran Kartı) gücü gerektirir. 
-
-Bunun yerine, Google (Inception), Microsoft (ResNet) veya Oxford (VGG16) gibi devlerin günlerce eğitip milyarlarca resmi tanımasını öğrettiği modelleri alırız. Bu modellerin sadece **son karar verme katmanını** kesip atar, kendi projemize (örn: Röntgen'den zatürre bulma) uygun yeni bir katman takarız.
-
-Böylece binlerce resimle ve 10 dakikalık eğitimle devasa bir doğruluk elde edebiliriz!
+## 3. Tam Bağlantılı (Fully Connected / Dense) Düzleştirme Katmanı
+Model, defalarca Evrişim ve Havuzlama yapa yapa 4K'lık resmi, el kadar (10x10'luk) ama içinde "Kedi Kulağı", "Kedi Tüyü" bilgisi olan saf özellik matrislerine dönüştürür.
+Son aşamada (Flatten - Düzleştirme işlemiyle) bu matrisler dümdüz tek bir sıraya (Vektöre) dönüştürülür ve standart (Bölüm 3'teki) Yapay Sinir Ağına sokulur. O ağ da (Softmax ile) son noktayı koyar: **"Bu resim %98 ihtimalle Kedidir!"**

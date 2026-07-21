@@ -1,56 +1,60 @@
-# Bölüm 03: GitHub Actions (Modern CI/CD)
+# Bölüm 03: GitHub Actions (Boru Hattı İnşası)
 
-GitHub Actions, günümüzün en popüler, ücretsiz (açık kaynak projeler için) ve entegre CI/CD aracıdır. Başka bir sunucu kurmanıza (Jenkins gibi) gerek kalmadan tüm otomasyonu GitHub üzerinde çalıştırırsınız.
+CI/CD robotumuzu (Pipeline) kurmak için günümüzde Jenkins gibi ayrı ve ağır bir sunucu kurmaya gerek kalmadı. Eğer kodunuz GitHub üzerindeyse, GitHub'ın içine gömülü (ücretsiz) gelen devasa otomasyon fabrikası **GitHub Actions** emrinizdedir.
 
----
+## 1. Çalışma Mantığı (Olay Güdümlü - Event Driven)
+GitHub Actions, "Ben ne zaman çalışayım?" sorusuna bir **Event (Olay)** bekleyerek cevap verir. 
+Siz bir dosya oluşturursunuz: `.github/workflows/deploy.yml`
 
-## 1. Temel Kavramlar
+İçine şunları yazarsınız (Tetikleyici):
+*"Eğer bir yazılımcı 'Main' isimli branch'e PUSH komutu yaparsa, hemen uyan ve aşağıdaki Görevleri (Jobs) başlat!"*
+Veya: *"Her gece saat 03:00'da (Cron) uyan ve veritabanı yedeğini al!"*
 
-- **Workflow (İş Akışı):** Belirli olaylarda tetiklenen (Örn: "main dalına Push atıldığında çalış") otomasyon senaryolarıdır. Projenin ana dizininde `.github/workflows/` klasöründeki `.yml` dosyalarıyla tanımlanır.
-- **Runner:** Kodunuzu derleyen ve test eden GitHub'ın (veya sizin kendi) sanal makineleridir (Ubuntu, Windows, macOS).
-- **Job (İş):** Bir workflow içindeki görev gruplarıdır (Örn: `build_job`, `test_job`, `deploy_job`). Job'lar varsayılan olarak aynı anda (Paralel) çalışır, istenirse birbirine bağlanabilir (`needs: build_job`).
-- **Step (Adım):** Bir Job içindeki tekil komutlardır (Örn: `npm install`, `dotnet test`).
-- **Action:** Başkalarının yazıp GitHub markete koyduğu hazır komutlardır (Örn: `actions/checkout@v4` kodunuzu Runner'a indirir).
+## 2. YAML Dosyasının Anatomisi (Bir Pipeline Mimarisi)
 
-## 2. Secrets (Güvenlik)
-Veritabanı şifreleri veya Sunucu SSH anahtarları asla `.yml` dosyasına açıkça yazılmaz. GitHub arayüzünden **Settings -> Secrets** bölümüne eklenir ve yml dosyasında `${{ secrets.DB_PASSWORD }}` şeklinde çağrılır.
-
-## 3. Örnek Bir Workflow (.NET Web API için)
+Bir CI/CD sürecinin C# (.NET) uygulaması için örnek adımları (Steps) şöyledir:
 
 ```yaml
-name: .NET CI Pipeline
+# 1. Pipeline'ın Adı
+name: .NET Canliya Alma Boru Hatti (CI/CD)
 
-# Ne zaman tetiklenecek?
+# 2. Ne Zaman Çalışacak? (Tetikleyici/Event)
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "main" ] # Main dalına her kod atıldığında tetiklen!
 
+# 3. İşler (Jobs)
 jobs:
-  build_and_test:
-    runs-on: ubuntu-latest # Hangi sunucuda çalışacak?
+  build-and-test: # 1. İş: Derle ve Test Et (CI)
+    runs-on: ubuntu-latest # GitHub'ın bize 2 dakikalığına verdiği kiralık (sanal) Linux bilgisayarı
 
-    steps:
-    # 1. Kodu sunucuya indir
-    - name: Kodu Checkout Yap
-      uses: actions/checkout@v4
+    steps: # Bu sanal bilgisayarda sırasıyla hangi komutlar çalışsın?
+    
+    # Adım 1: Yazılımcının kodlarını (Depoyu) bu sanal Linux bilgisayarına kopyala (İndir)
+    - name: Kodu Klonla
+      uses: actions/checkout@v3
 
-    # 2. .NET 8 Kur
-    - name: .NET 8 Kurulumu
-      uses: actions/setup-dotnet@v4
+    # Adım 2: Bilgisayara C# (Dotnet) SDK'sını kur (Çünkü boş bilgisayar)
+    - name: .NET Kurulumu
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: '8.0.x'
 
-    # 3. Kütüphaneleri Yükle
-    - name: Bağımlılıkları Yükle (Restore)
+    # Adım 3: Kütüphaneleri (NuGet paketlerini) İndir
+    - name: Bagimliliklari (Restore) Yukle
       run: dotnet restore
 
-    # 4. Kodu Derle
+    # Adım 4: Kodu Derle (Build) (Eğer hata varsa (Sytnax vs) Robot burada kırılır ve iptal olur)
     - name: Projeyi Derle (Build)
       run: dotnet build --no-restore
 
-    # 5. Testleri Çalıştır
-    - name: Unit Testleri Çalıştır
+    # Adım 5: UNIT TESTLERİ ÇALIŞTIR! (Burası Kalptir)
+    # Eğer testlerden 1'i bile hata verirse (Assert), robot ilerlemeyi durdurur! Canlıya ÇIKAMAZSINIZ.
+    - name: Testleri Kostur
       run: dotnet test --no-build --verbosity normal
+
+    # Adım 6: Eğer Testler YEŞİL yandıysa (CD), kodun son paket (DLL) halini Publish et.
+    # Sonra bu paketi AWS'ye veya Kubernetes Sunucusuna FTP/SSH ile kopyala (Dağıtım-Deploy).
 ```
+
+İşte modern yazılım şirketlerinde bir uygulamanın "Canlıya Alınması (Deploy)" bu 6 adımlık dosyanın saniyeler içinde Otomatik çalışmasından ibarettir!

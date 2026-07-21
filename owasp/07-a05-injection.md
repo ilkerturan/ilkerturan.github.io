@@ -1,19 +1,44 @@
-# A05:2025 - Injection (Enjeksiyon Zafiyetleri)
+# Bölüm 07: A03 - Injection (Enjeksiyon) ve SQL Injection
 
-Siber güvenliğin en eski, en bilinen ve hala inatla sistemleri yok eden efsanevi zafiyetidir. Injection (Enjeksiyon) sadece SQL'den ibaret değildir; Cross-Site Scripting (XSS), Command Injection, LDAP Injection gibi sistemin veriyi "Komut" sanıp çalıştırmasıdır.
+İnternet dünyasının en eski, en bilinen ama hala en çok baş ağrıtan açıklarından biridir.
+Enjeksiyon felsefesi şudur: Uygulama, kullanıcının girdiği "Veriyi", arkada çalışan bilgisayarın "Kodları/Komutları" ile BİRBİRİNE KARIŞTIRIR (Ayrıştıramaz). Sistem, kullanıcının girdiği veriyi sanki bir Kod parçasıymış gibi okuyup ÇALIŞTIRIR (İcra eder).
 
----
+## 1. Efsanevi SQL Injection (SQLi) Nedir?
+Veritabanına gönderilen sorgunun (Query) içine, kötü niyetli bir verinin "Şırınga edilmesi" işlemidir.
 
-## 1. Zafiyetin Mantığı
-İstemciden (Kullanıcıdan, Formdan, URL'den) gelen veri, uygulamanın arka planında çalışan "Yorumlayıcıya" (Veritabanı, İşletim Sistemi Terminali, Tarayıcı HTML Motoru) doğrudan, kontrol edilmeden gönderilir. 
-Yorumlayıcı, gönderilen bu zararlı veriyi bir "Veri" olarak değil, bir "Komut/Kod" olarak algılar ve çalıştırır.
+**Saldırı Senaryosu:**
+Bir giriş (Login) ekranınız var.
+Sizin arka plandaki C# kodunuz, kullanıcının kutulara yazdığı değeri alıp şöyle bir metin (String) birleştirmesi yapıyor:
+```csharp
+// KÖTÜ KOD (Felaket!) - Araya "+" koyarak string birleştirme!
+string sql = "SELECT * FROM Users WHERE UserName='" + girilenKullaniciAd + "' AND Password='" + girilenSifre + "'";
+```
 
-## 2. En Sık Görülen Saldırı Tipleri
-- **SQL Injection (SQLi):** Kullanıcı girişindeki "Kullanıcı Adı" kutusuna `admin' OR '1'='1` yazılarak, veritabanına gönderilen sorgunun (Query) mantığının tamamen değiştirilmesi ve sisteme şifresiz girilmesi.
-- **Cross-Site Scripting (XSS):** Saldırganın bir forumun yorum bölümüne zararlı `<script>` JavaScript kodu yazması. O sayfayı açan tüm normal kullanıcıların tarayıcılarında bu kod çalışır ve çerezleri (Session) çalınır. *(XSS 2021 itibariyle Injection kategorisine dahil edilmiştir)*.
-- **Command Injection:** Kullanıcıdan IP adresi alıp sunucuda "Ping" atan bir sistemin, IP kutusuna `127.0.0.1; rm -rf /` yazılarak sunucuya Linux komutu çalıştırılması (Sunucunun silinmesi).
+Eğer hacker, Kullanıcı Adı kutusuna şunu yazarsa:
+`admin' OR '1'='1`
 
-## 3. Nasıl Korunuruz? (Mimari Savunma)
-1. **ORM Kullanımı (Entity Framework, Hibernate):** SQL Injection'dan korunmanın en kesin yolu, klasik SQL (string birleştirme) yazmayı bırakıp ORM araçlarını veya **Parametrik Sorgular (Parameterized Queries)** kullanmaktır.
-2. **Veriyi Temizleme (Sanitization / Escaping):** Kullanıcıdan alınan her türlü metin (Özellikle XSS'e karşı) ekrana basılmadan önce mutlaka HTML Encode edilmeli (Zararlı `<` `>` işaretleri metne çevrilmeli) dir.
-3. **Strict Type Checking (Sıkı Tip Kontrolü):** Sisteme bir 'Yaş' girilmesi gerekiyorsa, bunu String olarak değil, zorunlu Integer (Tam Sayı) olarak kabul edin.
+Sizin arka plandaki SQL sorgunuz şu korkunç şekle dönüşür:
+`SELECT * FROM Users WHERE UserName='admin' OR '1'='1' AND Password='xxx'`
+
+**Ne Oldu?** SQL Motoru buna bakar ve der ki: "Kullanıcı adı admin mi? Bilmiyorum. VEYA (OR) 1 rakamı 1'e eşit mi? EVET KESİNLİKLE EŞİT!"
+`1=1` her zaman Doğru (TRUE) olduğu için SQL sunucusu hiçbir şifre sormadan hacker'ı "Admin" olarak sisteme giriş yaptırır! Veritabanı komple çalınabilir veya "DROP TABLE" yazılarak silinebilir.
+
+## 2. Nasıl Engellenir (Savunma)?
+
+SQL Injection'dan korunmanın DÜNYA STANDARDI tek bir kuralı vardır: **Parameterized Queries (Parametreli Sorgular) veya ORM (Entity Framework) Kullanmak.**
+
+Veriyi asla "+" ile SQL cümlesinin içine DİREKT GÖMMEYİN. Veriyi kapalı bir paket (Parametre) olarak gönderin.
+
+**GÜVENLİ KOD (Parametreli):**
+```csharp
+// 1. SQL cümlesinin içinde verinin geleceği yerlere sadece "@KullaniciAdi" gibi değişken (yer tutucu) isimleri yazın.
+string sql = "SELECT * FROM Users WHERE UserName = @kAd AND Password = @kSifre";
+SqlCommand cmd = new SqlCommand(sql, dbConnection);
+
+// 2. Parametre paketlerini GÜVENLİ ve TIP dönüşümlü olarak SQL'e gönderin.
+// SQL Motoru bunu alır, bunun ASLA kod olmadığını, DÜZ YAZI bir değişken olduğunu anlar. 
+// "admin' OR '1'='1" yollasa bile SQL bunu dümdüz bir isim sanar ve böyle bir isim bulamayacağı için işlem başarısız olur. Hacker dışarıda kalır!
+cmd.Parameters.AddWithValue("@kAd", girilenKullaniciAd);
+cmd.Parameters.AddWithValue("@kSifre", girilenSifre);
+```
+*(Not: C# tarafında Entity Framework veya LINQ kullanıyorsanız, onlar arka planda bunu sizin yerinize otomatik (Güvenli) olarak yapmaktadır).*

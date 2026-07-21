@@ -1,44 +1,25 @@
-# Bölüm 02: Temel Kubernetes Objeleri
+# Bölüm 02: Kubernetes Temel Objeleri (Pod, Deployment, Service)
 
-Kubernetes, "Her şey bir objedir (nesne)" mantığıyla çalışır. Biz Kubernetes'e (YAML dosyaları aracılığıyla) ne istediğimizi söyleriz, o da arka planda bu nesneleri oluşturur.
+Kubernetes'te "Docker Konteyneri" diye bir şey K8s'in direkt muhatap olduğu bir kavram değildir. Kubernetes, her şeyi kendi özel soyut "Objeleri (Bileşenleri)" içine sarar. Her şey YAML (Yamel - Ayar dosyası) ile tanımlanır.
 
-En çok kullanacağınız 3 temel obje şunlardır: **Pod**, **Deployment** ve **Service**.
+## 1. Pod (Bakla / Kozadan Gelen En Küçük Birim)
+Kubernetes dünyasının EN KÜÇÜK VE EN TEMEL yapı taşıdır.
+Kubernetes asla çıplak bir Docker Konteynerini direkt yönetmez. O konteyneri alır, etrafına bir "Zarf (Kılıf)" geçirir. O kılıfın adına **Pod** denir.
+- Bir Pod'un içinde genelde 1 tane Docker konteyneri çalışır (Bazen sıkı sıkıya bağlı 2 tane de olabilir).
+- Pod'lar fani'dir (Ölümlüdür). Bir Pod çökerse (Ölürse), K8s gidip onu "tamir etmeye" çalışmaz! Onu çöpe atar ve onun Tıpatıp aynısından YEPYENİ BİR POD (Klon) yaratır.
 
----
+## 2. ReplicaSet ve Deployment (Yönetim Katmanı)
 
-## 1. Pod (Bezelye Kabuğu)
-Kubernetes dünyasındaki **en küçük yapıtaşıdır.** Kubernetes doğrudan konteynerleri (Docker) yönetmez; konteynerleri bir **Pod**'un içine koyar ve Pod'u yönetir.
-- Bir Pod'un içinde genelde 1 adet konteyner bulunur. (Bazen aynı kaynakları paylaşması gereken birbirine yapışık 2 konteyner de bulunabilir).
-- Pod'lar ölümlüdür (Ephemeral). Çökerse tamir edilmez, silinip yerine yepyeni (farklı IP'ye sahip) bir Pod açılır.
+Siz sisteme direkt "Pod" yarat derseniz, o Pod ölünce kimse onu geri diriltmez. Bu yüzden Pod'ların üzerine bir Katman giydiririz.
 
----
+- **ReplicaSet (Kopya Kümesi):** Tek görevi, "Bana söylenen sayıda Pod ayakta duruyor mu?" diye nöbet tutmaktır (Örn: Replicas=3). 3'ten 2'ye düşerse, 1 tane daha yaratır.
+- **Deployment (Dağıtım):** Modern K8s'te ReplicaSet'i de içine alan en yetkili "Uygulama yöneticisidir." Geliştiriciler YAML dosyasına **Deployment** yazar.
+  - Deployment'ın asıl gücü **Rolling Update (Kesintisiz Güncelleme)** dir. Uygulamanın v1.0 sürümünden v2.0 sürümüne geçerken, K8s eski Pod'ları bir anda ÖLDÜRMEZ! Önce yeni versiyondan 1 tane yaratır (Müşteriye test ettirir), başarılı olursa eskiden 1 tane siler. Müşteri web sitesine girerken arkaplanda sistemin güncellendiğini RUHU BİLE DUYMAZ (Zero-Downtime).
 
-## 2. Deployment (Yönetici)
-Eğer Pod'lar ölümlüyse, sitemizin ayakta kalmasını kim garanti ediyor? **Deployment**.
-Deployment, Pod'ların yöneticisidir (Patronu). 
+## 3. Service (Servis / Santral) Modülü
 
-- **Replikasyon (Replica):** Deployment'a "Bana her zaman aynı Nginx uygulamasından 3 adet Pod (kopya) ver" derseniz, o her saniye sayar. Biri çökerse, hemen 3'e tamamlamak için yeni bir Pod yaratır.
-- **Sıfır Kesintili Güncelleme (Rolling Update):** Uygulamanızın v2 versiyonu çıktığında, Deployment eski Pod'ları tek tek silerken, yenilerini yavaş yavaş ayağa kaldırır. Müşteri hiçbir kesinti hissetmez.
+**Büyük Problem:** Pod'lar ölümlü olduğu için, bir Pod çöküp yerine yenisi doğduğunda onun IP ADRESİ DEĞİŞİR. IP'si sürekli değişen arka plandaki 5 adet web sunucusuna, ön taraftaki kullanıcılar "Hangi IP'den" bağlanacak? Sürekli IP ezberlemek imkansızdır.
 
-*Örnek: "Nginx uygulamasının v1.0 versiyonunu çalıştır ve her zaman 3 kopyası (Pod) hayatta olsun."* (Bunu Deployment sağlar).
-
----
-
-## 3. Service (Trafik Polisi)
-Pod'lar öldüğünde yerine gelen yeni Pod'ların IP adresleri farklıdır. Peki kullanıcılar sitemize (veri tabanımıza) hangi IP'den bağlanacak? IP sürekli değişirse iletişim nasıl kurulacak?
-İşte burada **Service** devreye girer.
-
-Service, arkasında kaç tane Pod olursa olsun, o Pod grubuna (Deployment'a) **sabit, hiç değişmeyen bir IP adresi** verir. Ayrıca gelen yükü arkadaki 3 Pod'a eşit dağıtır (Load Balancer).
-
-Service Tipleri:
-1. **ClusterIP (Varsayılan):** Sadece K8s içindeki uygulamaların birbiriyle konuşmasını sağlar (Dışarıdan girilemez). *Örn: Backend'in Veritabanına bağlanması.*
-2. **NodePort:** Uygulamayı K8s sunucusunun (Node) belirli bir IP'si ve Port'u (30000-32767 arası) üzerinden dış dünyaya açar. Geliştirme ortamlarında kullanılır.
-3. **LoadBalancer:** Uygulamayı (AWS, Google Cloud gibi) bulut servislerinin yük dengeleyicisi (gerçek bir dış IP) üzerinden tüm internete açar.
-
----
-
-### Akılda Kalıcı Bir Metafor
-- **Container (Docker):** Sahnede şarkı söyleyen sanatçı.
-- **Pod:** Sanatçının durduğu sahne ve mikrofon sistemi.
-- **Deployment:** Menajer. Sanatçı hastalanırsa anında yerine aynısından yeni bir sanatçı bulup sahneye koyar.
-- **Service:** Tiyatronun gişesi. Seyirciler (Kullanıcılar) içeride hangi sanatçının (IP'nin) olduğuna bakmaz, doğrudan gişeye gider, gişe seyirciyi doğru sahneye yönlendirir.
+**Çözüm:** Araya bir **Service (Sanal Sabit Santral)** objesi konur. 
+Service'in SIFIRLANMAYAN ve SABİT (Statik) bir IP'si (ve DNS adı) vardır. 
+İnsanlar `Siparis-Servisi` adresine bağlanır. Servis o isteği alır, arka tarafta IP'si ne olursa olsun o an hayatta olan 5 Pod'dan en müsait olanına "Yük Dağıtımı (Load Balancing)" yaparak aktarır. Pod'lar ölse de dirilse de Servis'in IP'si hep aynı kalır. Tüketici mağdur olmaz.

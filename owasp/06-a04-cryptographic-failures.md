@@ -1,20 +1,19 @@
-# A04:2025 - Cryptographic Failures (Kriptografik Hatalar)
+# Bölüm 06: A02 - Cryptographic Failures (Kriptografik Hatalar)
 
-Eski adıyla "Hassas Veri İfşası (Sensitive Data Exposure)". Parolalar, kredi kartı numaraları, TC kimlik numaraları veya sağlık kayıtları gibi paha biçilemez verilerin "Kötü Şifrelenmesi" veya "Hiç Şifrelenmemesi" sorunudur.
+Eski adıyla "Hassas Veri İfşası (Sensitive Data Exposure)". Kredi kartı numaraları, Şifreler, TC Kimlik Numaraları veya Hastane kayıtları gibi verilerin Veritabanında (Data at Rest) veya İnternet üzerinden iletilirken (Data in Transit) açık metin (Düz Yazı) halinde bırakılması veya yanlış şifreleme algoritmalarının kullanılmasıdır.
 
----
+## 1. Veri İletimi (Data in Transit) Hatası
+- **Problem:** Müşteri, web sitesine şifresini yazıp Enter'a basar. Eğer o web sitesinin adresi `http://` (S'si yok) ile başlıyorsa, müşterinin tarayıcısından çıkan şifre, evin internet kablolarından geçerken "Düz Yazı" olarak gider. Aynı kafede Wi-Fi ağına bağlı olan bir hacker, havayı koklayarak (Packet Sniffing) şifreyi aynen görebilir.
+- **Çözüm:** Tüm web siteleri zorunlu olarak **HTTPS** (TLS/SSL Sertifikası) kullanmalıdır. HTTPS sayesinde veri daha tarayıcıdan çıkarken kilitlenir, havada uçuşan veri anlamsız (Ajsdk12!3124sddsa) karakterlerdir, sadece karşıdaki sunucu bu kilidi açabilir.
 
-## 1. Zafiyetin Mantığı
-Sisteminizin veritabanı çalınırsa (ki er ya da geç çalınma ihtimali her zaman vardır), Hacker bu verileri okuyabilecek mi?
-Eğer veriler düz metin (Plain Text) veya zayıf/eski algoritmalarla (Örn: MD5) şifrelenmişse, veriler "ifşa olmuş" sayılır.
+## 2. Veri Depolama (Data at Rest) Hatası ve Şifreler (Passwords)
+Dünya üzerindeki hiçbir şirket (Banka dahil), sizin şifrenizi (Örn: `Galatasaray1905`) veritabanında düz bir yazı olarak SAKLAMAMALIDIR! Eğer saklarsa ve veritabanı çalınırsa milyonlarca insanın şifresi ifşa olur.
 
-## 2. En Sık Görülen Hatalar
-- **Transit (Yoldaki) Verinin Şifrelenmemesi:** Kullanıcının bilgisayarı ile sunucunuz arasındaki trafiğin HTTP üzerinden (HTTPS / SSL olmadan) akması. Araya giren biri (Man in the Middle) tüm parolaları okur.
-- **At Rest (Duran) Verinin Şifrelenmemesi:** Veritabanına kredi kartı veya TC Kimlik numaralarının açık bir şekilde (şifrelenmeden) yazılması.
-- **Zayıf Hashing (MD5, SHA1):** Kullanıcı şifrelerini veritabanına kaydederken çok hızlı ve kolayca geri döndürülebilen (Kırılabilen) MD5 gibi eski yöntemleri kullanmak.
-- **Kendi Kriptografini Yazmak:** Yazılımcıların, güvenliği kanıtlanmış kütüphaneleri kullanmak yerine "kendi şifreleme mantıklarını" icat etmeye çalışması (Siber güvenlikte her zaman hüsranla biter).
+**Şifreleme (Encryption) vs Hashleme (Hashing):**
+- **Şifreleme (Encryption) Çift Yönlüdür:** "Anahtar" kullanılarak `1234` verisi `Abx9` yapılır. Anahtar kimdeyse tekrar `1234` yapabilir. Kredi kartı numaraları için kullanılır (Çünkü para çekerken bize asıl numara lazım). AES-256 algoritması kullanılmalıdır.
+- **Hashleme (Tek Yönlüdür):** Şifreler İÇİN ZORUNLUDUR! Bir kelimeyi mikserden geçirip çorbaya çevirmektir. `Ilker` kelimesinin Hash değeri her zaman `9A8B7C` çıkar. Ama dünyadaki hiçbir süper bilgisayar `9A8B7C` yi geriye çevirip de bunun "Ilker" olduğunu BULAMAZ. Geri dönüş yoktur!
 
-## 3. Nasıl Korunuruz? (Mimari Savunma)
-1. **HTTPS Everywhere:** Tüm iç (mikroservisler arası) ve dış iletişim mutlaka TLS (HTTPS) üzerinden akmalıdır. HTTP kesinlikle engellenmelidir.
-2. **Güçlü Hashing ve Salting:** Parolaları kaydederken MD5 değil; **Argon2**, **Bcrypt** veya **PBKDF2** gibi yavaş (kırılması zor) algoritmalar kullanın. Parolaların sonuna mutlaka rastgele bir tuz (Salt) değeri ekleyin (Rainbow Table saldırılarına karşı).
-3. **Anahtar Yönetimi (Key Management):** Verileri şifrelediğiniz "Anahtarları (Secret/Key)" uygulamanın kaynak kodunda (`appsettings.json`, GitHub) değil; Azure Key Vault, AWS KMS veya HashiCorp Vault gibi "Özel Kasalarda" saklayın.
+**GÜVENLİ ŞİFRE SAKLAMA (Hashing ve Salt):**
+- Asla MD5 veya SHA-1 gibi çok eski algoritmaları kullanmayın. Hackerlar Rainbow Tables ile (önceden hesaplanmış milyarlarca hash listesi) bunları 5 saniyede kırar.
+- Mutlaka **Argon2, BCrypt veya PBKDF2** gibi yavaş (Kırılması çok uzun süren) algoritmalar kullanın.
+- **Salt (Tuzlama):** İki kullanıcının şifresi de "12345" ise, veritabanında Hashleri aynı görünür. Bunu önlemek için şifreyi hashlmeden önce yanına rastgele bir metin (Tuz) eklenir: `12345+xzKw21` -> Hashlenir. Böylece herkesin hash sonucu eşsiz olur.

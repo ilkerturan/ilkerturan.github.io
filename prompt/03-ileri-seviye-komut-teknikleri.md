@@ -1,35 +1,27 @@
-# Bölüm 03: İleri Seviye Etkileşim Teknikleri
+# Bölüm 03: İleri Seviye Prompt (Komut) Teknikleri
 
-Gündelik iletişim kurallarının ötesinde, yapay zekaya karmaşık matematik, kodlama veya analiz işleri yaptırmak istediğimizde, bilimsel olarak kanıtlanmış bazı **İleri Seviye (Advanced)** teknikler kullanmalıyız.
+Prompt Engineering sadece "Rol tanımlamak" değildir. Modeli belli bir analitik derinliğe zorlamak için geliştirilmiş bilimsel yöntemler vardır.
 
----
+## 1. Zero-Shot Prompting (Sıfır Örnek)
+Modele hiçbir örnek vermeden, kapasitesine güvenerek direkt görevi verdiğiniz standart yöntemdir. Sadece basit ve mantığı çok belli işlerde (Çeviri, Özetleme) çalışır.
+- *Örnek:* "Aşağıdaki metnin duygusu nedir? Metin: 'Bu film hayatımda izlediğim en berbat şeydi.' " (Model hemen "Negatif" der).
 
-## 1. Zero-Shot vs Few-Shot Prompting
-Yapay zekaya hiçbir örnek vermeden doğrudan soru sormaya **Zero-Shot** denir. Genellikle basit işlerde çalışır.
-Ancak belli bir tonda veya karmaşık bir formatta çıktı istiyorsak, **Few-Shot (Birkaç Örnekli)** tekniği mucizeler yaratır.
+## 2. Few-Shot Prompting (Az Örnekli)
+Karmaşık veya sizin kendi özel şirket formatınıza uygun çıktılar istediğinizde kullanılır. Modele önce "Benim dünyamda işler böyle yürür, şu örneklere bak" dersiniz. (Model desenleri (pattern) kapar).
+- *Örnek:* 
+  "Aşağıdaki formatı öğren ve son satırı sen doldur:
+  Girdi: Ev kredisi başvurusu -> Çıktı: Kategori_Finans
+  Girdi: Şifremi unuttum -> Çıktı: Kategori_Teknik_Destek
+  Girdi: Maaşlar ne zaman yatacak -> Çıktı: Kategori_IK
+  Girdi: İnternetim koptu -> Çıktı: ????" (Model deseni çözüp Kategori_Teknik_Destek yazar).
 
-**Few-Shot Örneği:**
-> Aşağıdaki kelimelerin duygu analizini yap:
-> 
-> *Örnek 1: "Bu ürüne bayıldım!" -> Duygu: Pozitif*
-> *Örnek 2: "Kargom 10 gün gecikti, rezalet." -> Duygu: Negatif*
-> *Örnek 3: "Sipariş elime ulaştı." -> Duygu: Nötr*
-> 
-> **Şimdi bunu sen yap:** "Müşteri hizmetleri ilgisizdi ama ürün idare eder." -> Duygu:
+## 3. Chain of Thought - CoT (Düşünce Zinciri)
+LLM'ler zeki değildir, direkt "Sonucu" vermeye çalıştıklarında matematik ve mantık sorularında çuvallarlar. Onları "Adım Adım Düşünmeye" zorladığınızda başarı oranları %40'tan %90'lara çıkar! Modele, sonuca giden yolu hesaplaması için "Düşünme Vakti (Kelime alanı)" vermiş olursunuz.
+- *Kötü:* "Ahmet'in 5 elması var, Ayşe 3 verdi, Mehmet yarısını yedi, kaç kaldı?" (Direkt sormak hataya yol açar).
+- *İyi (CoT Eklentisi):* "Ahmet'in 5 elması var... vs. **Lütfen cevabı vermeden önce ADIM ADIM SESLİ DÜŞÜNEREK hesapla (Let's think step by step).**"
 
-## 2. Chain of Thought (Düşünce Zinciri)
-Yapay Zeka (LLM'ler) matematik problemlerini kafadan çözemezler, çünkü bir hesap makinesi değillerdir (Sadece sıradaki kelimeyi tahmin ederler). Ondan sonucu doğrudan isterseniz hata yapar. Ona **"Adım Adım Düşün"** komutunu verirseniz, tahmin zinciri uzadığı için doğru cevaba ulaşma ihtimali katlanarak artar.
-
-**Nasıl Yapılır?**
-Komutunuzun en sonuna her zaman şu sihirli cümleyi ekleyin:
-*👉 "Sonucu vermeden önce lütfen adım adım düşün ve mantığını açıkla."*
-
-## 3. RAG (Retrieval-Augmented Generation) Mantığı
-LLM'ler sadece 2023'e (veya eğitildikleri tarihe) kadar olan bilgileri bilirler. Sizin özel şirket verilerinizi veya bugün çıkan bir haberi bilemezler. Halüsinasyon görmelerini (uydurmalarını) engellemek için **RAG** tekniği kullanılır.
-
-**Nasıl Çalışır?**
-1. Yapay zekaya doğrudan soruyu sormazsınız.
-2. Önce elinizdeki PDF dosyasını, uzun metni veya güncel haberi sisteme yüklersiniz (Context / Bağlam).
-3. Modele şu emri verirsiniz: *"Aşağıdaki metni oku. Soruma **SADECE** bu metindeki bilgilere dayanarak cevap ver. Metinde yoksa 'Bilmiyorum' de."*
-
-Bu sayede yapay zekanın uydurma ihtimali %99 oranında ortadan kalkar ve şirketler için güvenli bir asistan haline gelir.
+## 4. Model Parametreleri (Temperature ve Top-P)
+API kullanırken bu ayarları değiştirebilirsiniz.
+- **Temperature (Sıcaklık) (0.0 ile 2.0 arası):** Modelin ne kadar "Yaratıcı (Çılgın)" olacağını belirler. 
+  - `0.0 veya 0.1` (Soğuk): Aşırı robotiktir. Her sorduğunuzda tamamen aynı, garantici ve sıkıcı cevabı verir. (Kod yazdırırken, Hukuk, Tıp metni yazdırırken zorunludur! Halüsinasyonu sıfırlar).
+  - `0.8 veya 1.0` (Sıcak): Yaratıcılık zirvededir. Şiir, senaryo veya pazarlama metni yazdırırken kullanılır. Çok fazla halüsinasyon riski vardır.

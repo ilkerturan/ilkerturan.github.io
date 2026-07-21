@@ -1,21 +1,23 @@
-# A06:2025 - Insecure Design (Güvensiz Tasarım)
+# Bölüm 08: A04 - Insecure Design (Güvensiz Tasarım)
 
-**"Hatasız kod yazabilirsiniz, ancak tasarımınız (mantığınız) kusurluysa hacklenirsiniz."** 
-OWASP'ın güvenlik yaklaşımında "Sola Kaydır (Shift-Left)" felsefesini temsil eden en önemli maddedir. Güvenlik, kod yazıldıktan sonra değil, Mimari Tasarım aşamasında başlar.
+2021 yılında OWASP Top 10 listesine "Patron" olarak direkt 4. sıradan giren yepyeni bir kategoridir.
 
----
+**Felsefesi:** Bir kodun mükemmel (hatasız) yazılması, o yazılımın "Güvenli" olduğu anlamına gelmez. Eğer o yazılımın iş kuralları ve mimarisi MASADA (Tasarlanırken) yanlış düşünülmüşse, yazılımcı ne kadar iyi kod yazarsa yazsın o sistem hacklenecektir.
 
-## 1. Zafiyetin Mantığı
-Bir koda dışarıdan yama (Patch) yaparak "Güvensiz Tasarımı" düzeltemezsiniz. 
-Örneğin; bir e-ticaret sitesinde ürünleri sepete eklerken fiyatı istemciden (Kullanıcının tarayıcısından) alıyorsanız, kodunuzda açık yoktur, ancak tasarımınız faciadır. Kullanıcı sepetteki ürünün fiyatını 1 TL yapıp gönderebilir.
+> "Güvenli tasarım, kodlama hatalarını engellemek değildir; MANTIK hatalarını engellemektir."
 
-## 2. En Sık Görülen Hatalar
-- **Sınırsız Deneme Hakkı:** Parola ekranında veya OTP (SMS Şifresi) ekranında kullanıcıya sınırsız deneme hakkı (Rate Limiting yokluğu) sunulması (Brute Force saldırılarına kapı açar).
-- **Gizli Sorular:** Şifre sıfırlama mekanizmasında "En sevdiğiniz renk?" gibi sosyal mühendislikle (Instagram'a bakarak) çok kolay bulunabilecek sorular sormak.
-- **Toplu Veri İndirme:** Sistemde bir kullanıcının günde 100 işlem yapması normalken, saniyede 10.000 veri çekmesine mimari olarak (İş mantığı) izin vermek (Botlarla veri hırsızlığı / Scraping).
-- **Business Logic Flaws:** Promosyon kodunu aynı anda 5 farklı sekmeden gönderip, kodun Race Condition (Yarış Durumu) yaratarak 5 kez kullandırılması.
+## 1. Güvensiz Tasarıma Örnekler (Mantık Hataları)
 
-## 3. Nasıl Korunuruz? (Mimari Savunma)
-1. **Threat Modeling (Tehdit Modelleme):** Kod yazmaya başlamadan önce beyaz tahta üzerinde "Bir hacker bu sisteme nasıl saldırır? En zayıf halkamız neresi?" sorularını sormak (STRIDE metodolojisi).
-2. **Rate Limiting (Hız Sınırlandırma):** API'lere ve login ekranlarına mutlaka kişi, IP veya Token bazlı istek sınırı (Örn: Dakikada 10 istek) koymak.
-3. **Kritik İşlemlerde Çift Onay:** Para transferi veya parola değişimi gibi hassas iş mantıklarında her zaman sunucu tarafında ekstra güvenlik kontrolleri (Örn: Eski şifreyi tekrar sormak) sağlamak.
+- **Sinema Bileti Satış Mantığı:**
+  Sitenizde aynı anda maksimum "5 Bilet" alınabiliyor. Geliştirici kodu kusursuz yazdı. Ancak mimar, biletleri sepete atarken bir "Süre Sınırı (10 Dakika içinde almazsan sepetten düşer)" TASARLAMAYI UNUTTU. Hacker bir yazılım yazar, saniyede binlerce istek atarak sinemadaki tüm koltukları (Satın almadan) 5'er 5'er kendi sepetine (Sonsuza dek) kitler. Film gişesi kilitlenir, şirket para kaybeder. (Tasarım hatası).
+  
+- **Şifremi Unuttum Senaryosu:**
+  Tasarımcı, Şifremi Unuttum için sadece "Gizli Soru (Annenizin kızlık soyadı)" sorulmasını tasarlamıştır. Güvenlik dünyasında gizli sorular 10 yıl önce çöpe atılmıştır (Facebook/Sosyal Mühendislik ile çok kolay bulunur). Tasarım en baştan yanlıştır, kodun suçu yoktur.
+
+## 2. Nasıl Engellenir (Savunma)?
+
+Geliştiriciler kod yazmaya BAŞLAMADAN AYLAR ÖNCE, sistemin Mimarı veya Analistleri masada toplanıp şu pratikleri uygulamalıdır:
+
+- **Threat Modeling (Tehdit Modelleme):** Bir özellik tasarlanırken tahtaya şu yazılır: "Birisi bu sistemi kötüye kullanmak istese ne yapardı?" Mimariler buna göre oluşturulur.
+- **Business Logic Defense:** İş kurallarında boşluk bırakılmamalıdır (Örn: Sepetteki ürüne 10 dakika süre limiti koy, Şifremi unuttum için Gizli soru değil E-mail veya SMS onayı (OTP) gönder).
+- **Zayıf Parola Politikaları:** Sistem tasarlanırken şifrenin "En az 8 karakter, Büyük Harf, Sayı ve Özel Karakter" içermesi kuralı (Password Complexity) en baştan mimariye oturtulmalıdır.

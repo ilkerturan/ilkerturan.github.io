@@ -1,36 +1,24 @@
-# Bölüm 01: Kubernetes (K8s) Nedir ve Temel Mimarisi
+# Bölüm 01: Kubernetes (K8s) Nedir ve Neden İhtiyacımız Var?
 
-Docker ile uygulamalarımızı izole kutulara (konteynerlere) koymayı öğrendik. Ancak gerçek dünyada (Production), Amazon veya Google sunucularında binlerce konteyner aynı anda çalışır. Bu binlerce konteynerin çökmemesini, ağ ayarlarını, güncellemelerini ve yük dağılımını kim yönetecek?
+Docker kullanarak uygulamamızı bir "Konteyner (Kutu)" içine hapsederiz. Bu harika bir şeydir; geliştiricinin bilgisayarında çalışan şey, sunucuda da tıkır tıkır çalışır. (Bkz: `Benim makinemde çalışıyordu` efsanesinin sonu).
 
-İşte bu sorunun cevabı: **Kubernetes (Kısaca K8s)**.
+Peki ya projeniz büyürse? Dünyaca ünlü bir E-Ticaret sitesisiniz (Amazon, Trendyol) ve Cuma İndirimleri başladı. Sunucudaki 1 adet Docker konteyneri gelen 1 milyon müşteriyi kaldıramaz! Sizin acilen, o küçük kutudan arka arkaya 500 tane daha üretmeniz (Scale/Ölçekleme) gerekir. Eğer o sunuculardan birinin donanımı yanarsa (çökerse), oradaki 50 kutuyu anında silip sağlam sunucuda o kutuları SIFIRDAN BAŞLATMANIZ gerekir.
 
-> *K8s kısaltması, "K" ile "s" harfleri arasındaki 8 harften (ubernete) gelir.*
+İşte binlerce Docker konteynerini İNSAN ELİYLE yönetmenin imkansız olduğu o noktada, sahneye **Kubernetes (Kısaca K8s)** çıkar.
 
----
+## 1. Kubernetes'in Görevi (Orkestra Şefi)
+Google tarafından yaratılmış açık kaynaklı bir **Konteyner Orkestrasyon** (Yönetim) sistemidir.
+Siz Kubernetes'e (Şefe) bir "Beyanname/Dilekçe (YAML dosyası)" verirsiniz: *"Sevgili K8s, ben e-ticaret sitemin ana sayfa kutusundan SÜREKLİ OLARAK AYAKTA 10 TANE İSTİYORUM. Bunu nasıl yapacağın beni ilgilendirmez."*
 
-## 1. Neden Kubernetes'e İhtiyaç Duyarız? (Docker vs K8s)
+- K8s bakar, 10 tane kutuyu çalıştırır.
+- Gece saat 3'te sunucunun biri alev alır ve içindeki 3 kutu ölür. K8s bunu *saniyeler içinde* fark eder.
+- K8s, hiçbir insan müdahalesi olmadan, otomatik olarak başka bir sağlam sunucuda o 3 kutuyu saniyesinde yeniden yaratır ve sayıyı hep 10'da (İstediğiniz durumda) tutar. Buna **Self-Healing (Kendi Kendini İyileştirme)** denir.
 
-- **Docker:** Tek bir konteyner oluşturur ve çalıştırır (Örn: Arabanın motorunu üretir).
-- **Kubernetes:** Yüzlerce konteyneri aynı anda yöneten orkestra şefidir (Örn: Otonom sürüş sistemi, trafik lambaları, tamirci). 
-  - Bir konteyner çökerse (Crash), K8s anında yenisini başlatır (Self-healing).
-  - Web sitenize aniden 10.000 kişi girerse, K8s otomatik olarak 5 yeni konteyner daha açıp yükü dağıtır (Auto-scaling).
-  - Kullanıcılar fark etmeden (sıfır kesintiyle) uygulamanızın yeni versiyonunu günceller (Rolling Updates).
+## 2. Cluster (Küme) Mimarisi: Master ve Worker Düğümler
 
----
+Kubernetes'in kurulu olduğu tüm sunucuların (bilgisayarların) toplamına **Cluster (Küme)** denir. Bir cluster iki farklı tür bilgisayardan oluşur:
 
-## 2. Kubernetes Mimarisi (Nasıl Çalışır?)
-
-Kubernetes temel olarak iki ana donanım/sunucu grubundan oluşur: **Master Node** (Patron) ve **Worker Node** (İşçiler).
-
-### A. Master Node (Control Plane)
-Sistemin beynidir. Kararları verir, işçileri yönetir, uygulamanın sağlıklı çalışıp çalışmadığını denetler. İçinde kendi bileşenleri vardır:
-- **Kube-apiserver:** K8s'in kalbidir. Bizim (veya diğer bileşenlerin) K8s ile konuşmasını sağlayan kapıdır.
-- **Etcd:** Cluster'ın tüm verilerinin (durum, konfigürasyon) tutulduğu yüksek erişilebilirliğe sahip anahtar-değer (Key-Value) veritabanıdır. K8s'in hafızasıdır.
-- **Kube-scheduler:** Yeni oluşturulacak bir uygulamanın (konteynerin) hangi işçi (Worker) sunucuda çalışacağına karar verir (RAM/CPU durumuna göre).
-- **Kube-controller-manager:** Sistemin istediğimiz durumda olup olmadığını sürekli kontrol eder. (Örn: "3 konteyner açık olmalı" dedik ama biri çöktü. Controller Manager bunu fark edip Scheduler'a yenisini açmasını emreder).
-
-### B. Worker Node (İşçi Sunucular)
-Asıl yükü çeken, uygulamalarımızın (konteynerlerimizin) fiziksel olarak çalıştığı sunuculardır.
-- **Kubelet:** Master Node ile konuşan ve Worker'ın içinde çalışan ajandır (ajan yazılım). Master'dan "Şu uygulamayı çalıştır" emrini alır ve uygular. Durumu Master'a raporlar.
-- **Kube-proxy:** Sunucular içindeki ağ ve IP trafiğini yönlendiren trafik polisidir. İnternetten gelen bir isteğin doğru konteynere gitmesini sağlar.
-- **Container Runtime:** Konteyneri çalıştıran motor (Örn: Docker, containerd).
+1. **Master Node (Kontrol Düzlemi / Yönetici Beyin):** 
+   Sistemin beynidir. İş yüklerini dağıtır, karar verir, durumları izler. İçinde iş (Konteyner) çalışmaz. Sadece yönetir. (API Server, Scheduler gibi parçaları vardır). Müşteriler Master'a bağlanmaz.
+2. **Worker Node (İşçi Düğümler):** 
+   Gerçek yükü çeken, asıl uygulamanızın (Web sitenizin, veritabanınızın) kutularının çalıştığı amele bilgisayarlardır. (Genelde Node 1, Node 2, Node 3 diye sıralanırlar).
