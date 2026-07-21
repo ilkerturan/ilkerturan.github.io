@@ -1,24 +1,36 @@
-# Bölüm 05: Fonksiyonlar, *args ve Scope (Kapsam)
+# Bölüm 05: Fonksiyonlar, *args, Lambda ve LEGB Kapsam Kuralları
 
-Aynı kodu programın içinde 5 kere kopyala-yapıştır yapıyorsanız, kötü kod (DRY İhlali) yazıyorsunuz demektir. O işlemi tek bir pakete (Kutuya) hapsedip, ismine **Fonksiyon** denir.
+Aynı kodu programın içinde 5 kere kopyala-yapıştır yapıyorsanız, **DRY (Don't Repeat Yourself)** prensibini vahşice ihlal ediyorsunuz demektir. O işlemi tek bir pakete (Kutuya) hapsedip, isim vermeye **Fonksiyon** denir.
+Python'da fonksiyonlar **First-Class Citizen (Birinci Sınıf Vatandaş)** dır. Yani bir fonksiyonu değişkene atayabilir, listeye ekleyebilir veya başka bir fonksiyona parametre olarak gönderebilirsiniz!
 
-## 1. Fonksiyon Tanımlama (def)
-Python'da bir fonksiyon `def` (Define / Tanımla) anahtar kelimesiyle başlar.
+## 1. Fonksiyon Tanımlama ve Pass by Object Reference
+Python'da bir fonksiyon `def` (Define) ile başlar.
+C++ gibi dillerde parametreler "Pass by Value (Değer ile)" veya "Pass by Reference (Referans ile)" gönderilir. Python'da ise durum **"Pass by Object Reference"** olarak adlandırılır.
+
+Eğer fonksiyona **Immutable (Değiştirilemez - int, string)** bir veri gönderirseniz, fonksiyon içeride onu değiştirse bile DIŞARIDAKİ orijinal değişken etkilenmez. 
+Eğer fonksiyona **Mutable (Değiştirilebilir - list, dict)** bir veri gönderirseniz ve fonksiyon içeride listeye `.append()` yaparsa, DIŞARIDAKİ ORİJİNAL LİSTE DE değişir! (Çünkü aynı RAM adresini paylaşırlar).
+
 ```python
-def selamlama(isim="Misafir"): # 'isim' gönderilmezse varsayılan 'Misafir' olur
-    mesaj = f"Merhaba {isim}, hoş geldin!"
-    return mesaj # Sonucu dış dünyaya (çağrıldığı yere) fırlatır
+def bilgileri_guncelle(isim, liste):
+    isim = "Mehmet"          # String Immutable. Dışarıdaki İsim etkilenmez!
+    liste.append("YeniVeri") # Liste Mutable! Dışarıdaki liste KALICI OLARAK BOZULUR!
 
-# Kullanımı:
-gelen_cevap = selamlama("İlker")
-print(gelen_cevap)
+benim_adim = "İlker"
+benim_listem = ["EskiVeri"]
+
+bilgileri_guncelle(benim_adim, benim_listem)
+
+print(benim_adim)   # Çıktı: "İlker" (Korumada kaldı)
+print(benim_listem) # Çıktı: ["EskiVeri", "YeniVeri"] (Eyvah! Değişti)
 ```
 
-## 2. Esnek Parametreler: *args ve **kwargs
-Bazen bir fonksiyona kaç tane parametre (sayı) gönderileceğini baştan BİLEMEYİZ. (Örn: Toplama fonksiyonu, adam 2 sayı da yollayabilir, 100 sayı da yollayabilir).
-- **`*args` (Yıldızlı argümanlar):** Sonsuz sayıda isimsiz parametre almanızı sağlar. Fonksiyonun içinde bunları bir Tuple (Demet) haline getirir.
+## 2. Esnek Parametreler: *args ve **kwargs Mimarisi
+Bazen bir fonksiyona kaç tane parametre gönderileceğini baştan BİLEMEYİZ. (Örn: `print()` fonksiyonuna 10 tane şey de verebiliriz). Python bu esnekliği Tuple ve Dictionary altyapısı kullanarak çözer.
+
+- **`*args` (Positional Arguments):** Sonsuz sayıda isimsiz parametre almanızı sağlar. Python fonksiyona gelen tüm fazlalık parametreleri toplar ve bir `Tuple` (Demet) haline getirip `args` değişkenine koyar.
 ```python
 def topla(*args):
+    # args içeride bir Tuple'dır: (5, 10, 15, 20)
     toplam = 0
     for sayi in args:
         toplam += sayi
@@ -26,29 +38,45 @@ def topla(*args):
 
 print(topla(5, 10, 15, 20)) # Hepsini alır ve toplar!
 ```
-- **`**kwargs` (Çift yıldız - Keyword Args):** Sonsuz sayıda İSİMLİ parametre almanızı sağlar. İçeride bunları bir Sözlüğe (Dictionary) çevirir. `kullanici_kaydet(ad="Ali", yas=25, sehir="Ankara")` gibi yollayabilirsiniz.
+- **`**kwargs` (Keyword Arguments):** Sonsuz sayıda İSİMLİ parametre almanızı sağlar. Python bunları toplar ve içeride bir Sözlüğe (Dictionary) çevirir. 
+```python
+def ogrenci_kaydet(**kwargs):
+    # kwargs içeride bir Sözlüktür: {"ad": "Ali", "yas": 25, "sehir": "Ankara"}
+    for anahtar, deger in kwargs.items():
+        print(f"{anahtar.upper()}: {deger}")
+
+ogrenci_kaydet(ad="Ali", yas=25, sehir="Ankara")
+```
 
 ## 3. Lambda (Anonim) Fonksiyonlar
-Sadece bir kez kullanılacak, çok basit ve tek satırlık bir iş için koskoca `def` bloğu açmak kalabalıktır. İsimsiz (Kullan-At) fonksiyonlara Lambda denir.
+Sadece bir kez kullanılacak, çok basit ve tek satırlık bir iş için koskoca `def` bloğu açıp isim vermek kalabalıktır. İsimsiz (Kullan-At) fonksiyonlara Lambda denir. Genellikle `map()`, `filter()`, `sort()` gibi diğer fonksiyonların İÇİNDE kullanılırlar.
 ```python
-# KARE ALAN UZUN FONKSIYON:
-# def kare_al(x): return x * x
-
-# KISA LAMBDA HALI:
-kare_al = lambda x: x * x
-
-print(kare_al(5)) # 25
+# Bir listeyi ismin UZUNLUĞUNA göre sıralamak:
+isimler = ["Ali", "Abdulmuttalip", "Zeynep"]
+isimler.sort(key=lambda x: len(x)) 
+# Normalde Alfabetik sıralardı. Biz dedik ki: Kuralımız x'in len(x) uzunluğudur!
 ```
 
-## 4. Değişken Kapsamı (Scope - LEGB Kuralı)
-Bir değişkenin "Ömrü" ve "Nereden erişilebileceği" konusudur.
-- **Local (Yerel):** Bir fonksiyonun GÖBEĞİNDE tanımlanan değişken, sadece o fonksiyona aittir. Dışarıdan (`print()`) ile ona ulaşamazsınız. Fonksiyon bitince değişken ölür ve bellekten silinir.
-- **Global (Küresel):** Sayfanın en üstünde, hiçbir boşluğun (girintinin) içinde olmadan tanımlanan değişkendir. Herkes görebilir.
+## 4. Scope (Kapsam) ve Meşhur LEGB Kuralı
+Bir değişkeni çağırdığınızda, Python o değişkeni bulmak için dışarıya doğru büyüyen 4 farklı çemberde arama yapar. Buna **LEGB Kuralı** denir:
+1. **L (Local - Yerel):** Önce bulunduğun Fonksiyonun GÖBEĞİNE bak. Orada yaratılmış mı?
+2. **E (Enclosing - Kapsayan):** Eğer bir fonksiyonun içinde başka bir İç İçe Fonksiyon (Nested) varsa, bir dıştaki fonksiyona bak.
+3. **G (Global - Küresel):** Sayfanın en üstünde, hiçbir boşluğun (girintinin) içinde olmadan tanımlanmış ana değişkenlere bak.
+4. **B (Built-in - Dahili):** Python'un kendi yarattığı çekirdek kelimelere bak (Örn: `len`, `print`).
+
 ```python
-mesaj = "Ben Globalim"
+mesaj = "Ben Globalim" # (G)
 
 def test():
-    gizli_mesaj = "Ben Localim" # Dışarıdan erişilemez!
-    print(mesaj) # Fonksiyon, kendinden dışarıdaki (üstteki) Global'i GÖREBİLİR ve OKUYABİLİR.
+    gizli_mesaj = "Ben Localim" # (L) Dışarıdan erişilemez!
+    
+    # Kural: İçeriden Dışarıyı OKUYABİLİRSİN. 
+    print(mesaj) # Gidip Local'e bakar yok, Enclosing'e bakar yok, Global'de bulur ve "Ben Globalim" yazar.
+
+    # Kural: İçeriden Dışarıyı DEĞİŞTİREMEZSİN (Varsayılan olarak)
+    # mesaj = "Yeni Global" yazarsanız, Global'i ezmez! Local'de aynı isimle yeni bir kopya yaratır.
+    
+    # EĞER İLLA GLOBALİ EZECEĞİM DİYORSANIZ YETKİ ALMALISINIZ:
+    global mesaj
+    mesaj = "Artık Globali kalıcı olarak değiştirdim!"
 ```
-> **ÖNEMLİ:** Fonksiyon içinden Global bir değişkeni SADECE OKUYABİLİRSİNİZ. Onu DEĞİŞTİRMEYE (Örn: `mesaj = "Yeni"` demeye) kalkarsanız, Python gidip global'i ezmez! Aynı isimle İÇERİDE (Local) yepyeni bir kopya değişken yaratır. Eğer illa dışarıdakini ezeceğim diyorsanız kodun içine `global mesaj` yazarak yetki almanız gerekir.
