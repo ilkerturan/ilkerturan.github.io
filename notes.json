@@ -549,6 +549,52 @@
       ]
     },
     {
+      "name": "Python ile Programlama",
+      "description": "Yapay Zeka ve Veri Biliminin dili Python: Temeller, OOP, Modüller ve İleri Seviye (Generators, Decorators).",
+      "notes": [
+        {
+          "title": "Python a Giriş ve Felsefesi",
+          "path": "python/01-python-giris-ve-felsefesi.md"
+        },
+        {
+          "title": "Değişkenler ve Veri Tipleri",
+          "path": "python/02-degiskenler-ve-veri-tipleri.md"
+        },
+        {
+          "title": "Veri Yapıları (List, Tuple, Set, Dict)",
+          "path": "python/03-veri-yapilari-ve-koleksiyonlar.md"
+        },
+        {
+          "title": "Kontrol Yapıları ve Döngüler",
+          "path": "python/04-kontrol-yapilari-ve-donguler.md"
+        },
+        {
+          "title": "Fonksiyonlar ve Kapsam",
+          "path": "python/05-fonksiyonlar-ve-kapsam.md"
+        },
+        {
+          "title": "Nesne Yönelimli Programlama (OOP)",
+          "path": "python/06-nesne-yonelimli-programlama.md"
+        },
+        {
+          "title": "Hata Yönetimi ve İstisnalar",
+          "path": "python/07-hata-yonetimi-ve-istisnalar.md"
+        },
+        {
+          "title": "Modüller ve Paket Yönetimi (venv)",
+          "path": "python/08-moduller-ve-paket-yonetimi.md"
+        },
+        {
+          "title": "Dosya İşlemleri ve JSON",
+          "path": "python/09-dosya-islemleri-ve-json.md"
+        },
+        {
+          "title": "Ustalığa Geçiş: Decorators ve Generators",
+          "path": "python/10-ileri-seviye-yapilar.md"
+        }
+      ]
+    },
+    {
       "name": "Teknik Terimler Sözlüğü (Glossary)",
       "description": "Yazılım dünyasındaki tüm jargon, kelime ve mühendislik terimlerinin açıklamalı başucu sözlüğü",
       "notes": [
