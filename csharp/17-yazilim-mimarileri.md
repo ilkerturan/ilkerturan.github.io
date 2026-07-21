@@ -58,18 +58,18 @@ Klasik N-Tier mimaride herkes Veritabanına bağımlıyken, Clean Architecture'd
 
 ```mermaid
 graph TD
-    subgraph id1 ["Dış Dünya (Infrastructure & Presentation)"]
+    subgraph "Dış Dünya (Infrastructure & Presentation)"
         Web["Web API"]
         UI["Blazor / MVC"]
         SQL["SQL Server / MongoDB"]
         Mail["Mail / SMS Servisleri"]
     end
     
-    subgraph id2 ["Uygulama (Application)"]
+    subgraph "Uygulama (Application)"
         App["Application Layer - Servisler / DTOs"]
     end
 
-    subgraph id3 ["Çekirdek (Domain)"]
+    subgraph "Çekirdek (Domain)"
         Core["Domain Layer - Entityler / Interfaces"]
     end
 
