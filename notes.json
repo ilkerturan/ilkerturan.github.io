@@ -120,6 +120,26 @@
         {
           "title": "Makine Öğrenmesi Türleri",
           "path": "ml/01-makine-ogrenmesi-turleri.md"
+        },
+        {
+          "title": "Veri Ön İşleme ve Hazırlık",
+          "path": "ml/02-veri-onisleme-ve-hazirlik.md"
+        },
+        {
+          "title": "Regresyon Algoritmaları",
+          "path": "ml/03-regresyon-algoritmalari.md"
+        },
+        {
+          "title": "Sınıflandırma Algoritmaları",
+          "path": "ml/04-siniflandirma-algoritmalari.md"
+        },
+        {
+          "title": "Kümeleme ve Boyut İndirgeme",
+          "path": "ml/05-kumeleme-ve-boyut-indirgeme.md"
+        },
+        {
+          "title": "Model Değerlendirme Metrikleri",
+          "path": "ml/06-model-degerlendirme-metrikleri.md"
         }
       ]
     },
@@ -137,6 +157,18 @@
         {
           "title": "Derin Öğrenme ile Iris Veri Seti Sınıflandırması",
           "path": "dl/03-iris-veri-seti-siniflandirma.md"
+        },
+        {
+          "title": "Optimizasyon ve Regularization",
+          "path": "dl/04-optimizasyon-ve-regularization.md"
+        },
+        {
+          "title": "CNN ve Görüntü İşleme",
+          "path": "dl/05-cnn-ve-goruntu-isleme.md"
+        },
+        {
+          "title": "RNN ve Doğal Dil İşleme",
+          "path": "dl/06-rnn-ve-dogal-dil-isleme.md"
         }
       ]
     },
@@ -235,6 +267,14 @@
         {
           "title": "Entity Framework Core",
           "path": "csharp/15-entity-framework-core.md"
+        },
+        {
+          "title": "Proje Türleri",
+          "path": "csharp/16-proje-turleri.md"
+        },
+        {
+          "title": "Yazılım Mimarileri",
+          "path": "csharp/17-yazilim-mimarileri.md"
         }
       ]
     },
