@@ -1,21 +1,25 @@
-# Bölüm 01: Yazılım Nedir? (Donanım ve Ruh Analojisi)
+# Bölüm 01: Yazılım Nedir? (Beden ve Ruh Felsefesi)
 
-Teknoloji dünyasına adım attığınızda sürekli iki kelime duyarsınız: **Donanım (Hardware)** ve **Yazılım (Software)**. Bu iki kavramın birbirinden ayrılmaz bütünlüğünü anlamak, teknoloji vizyonunuzun temelini oluşturur.
+Bilgisayar bilimlerini anlamak için öncelikle donanım (Hardware) ve yazılım (Software) arasındaki felsefi ayrımı kavramak gerekir. 
 
----
+## 1. Donanım (Beden) ve Yazılım (Ruh)
+Bir bilgisayarı (veya akıllı telefonu) satın aldığınızda, kutudan çıkan fiziksel parçaların tamamı **Donanım (Hardware)** olarak adlandırılır. Anakart, işlemci (CPU), bellek (RAM) ve ekran kartı (GPU) bu donanımların en önemlileridir. Ancak donanım, kendi başına cansız bir bedendir. Ne yapacağını, ekranda hangi pikselleri yakacağını bilmez.
 
-## 1. Donanım (Beden)
-Donanım, elinizle dokunabildiğiniz, yere düşürdüğünüzde kırılan her şeydir. Bilgisayarınızın ekranı, klavyesi, işlemcisi (CPU) ve anakartı donanımdır. 
-Ancak donanım tek başına **cansız ve aptal** bir beton yığınıdır. Dünyanın en pahalı, en güçlü bilgisayarını alın; içine bir yazılım yüklemezseniz, sadece pahalı bir elektrik sobasından farksızdır. Hiçbir işinize yaramaz.
+İşte bu donanım parçalarına "elektrik sinyalleri" aracılığıyla ne yapması gerektiğini söyleyen, onlara hayat veren komutlar bütününe **Yazılım (Software)** denir. Yazılım, bilgisayarın ruhudur.
 
-## 2. Yazılım (Ruh)
-Yazılım ise elinizle dokunamadığınız, ekranın arkasında akan mantık silsilesidir.
-Bir evi düşünün: 
-- Evin tuğlaları, kolonları, elektrik kabloları **Donanımdır**.
-- O evde nerede uyuyacağınız, nerede yemek yiyeceğiniz, elektrik düğmesine bastığınızda hangi lambanın yanacağına dair koyduğunuz **kurallar ve yaşanmışlık ise Yazılımdır.**
+## 2. Yazılımın Temel Katmanları
 
-Yazılım, o cansız silikon ve metal yığınına **Ruh üfleme** sanatıdır. 
+Yazılımlar da kendi içinde bir hiyerarşiye (hiyerarşik katmanlara) sahiptir. En alt tabakadan en üst (kullanıcıya dokunan) tabakaya doğru şu şekilde sıralanır:
 
-## 3. Neden Yazılım?
-Bir fabrikadaki robotik kol (Donanım) tonlarca ağırlığı kaldırabilir. Ancak o kola "Saat 08:00'de uyan, kırmızı arabayı al, sola 30 derece dön ve bırak" diyen beyin (Yazılım) olmadan, o robotik kol hareket edemez.
-İşte bir yazılımcı olarak sizin göreviniz, bu makinelere **nasıl davranmaları gerektiğini söyleyen beyni ve ruhu** inşa etmektir.
+### A. BIOS / UEFI (Sistem Yazılımları)
+Bilgisayarın güç tuşuna bastığınız an çalışan ilk yazılımdır. Görevi sadece donanımların (RAM, Klavye, Ekran Kartı vb.) sağlam olup olmadığını kontrol etmek (POST işlemi) ve ardından bayrağı İşletim Sistemine devretmektir.
+
+### B. İşletim Sistemleri (Operating Systems - OS)
+Windows, macOS, Linux, Android ve iOS birer işletim sistemidir. **İşletim sistemi, donanım ile kullanıcı programları (Uygulamalar) arasındaki büyük çevirmendir.** 
+Örneğin siz Spotify'dan şarkı açtığınızda, Spotify doğrudan hoparlöre gidemez. Önce İşletim Sistemine rica eder, İşletim Sistemi hoparlöre "ses ver" emrini iletir. OS olmadan hiçbir modern uygulama çalışamaz.
+
+### C. Uygulama Yazılımları (Application Software)
+Kullanıcının belirli bir işi yapmak (oyun oynamak, yazı yazmak, internette gezinmek) için çalıştırdığı yazılımlardır. Chrome, Word, Photoshop veya cep telefonunuzdaki Instagram birer uygulama yazılımıdır. Bunlar işletim sisteminin üzerine kurulan, en üst katmandaki programlardır.
+
+## 3. Yazılımcı Kime Denir?
+Yazılımcı (Developer/Programmer), bilgisayarın "Ruhunu" inşa eden kişidir. Ancak yazılımcının asıl işi klavyede saniyede 100 kelime kod yazmak değildir. Yazılımcının yegane görevi **"Gerçek dünyadaki bir problemi, bilgisayarın anlayabileceği matematiksel ve mantıksal adımlara bölmektir."** Kod yazmak, problemin çözümünü (algoritmayı) kağıt üzerinde bulduktan sonraki en kolay aşamadır.

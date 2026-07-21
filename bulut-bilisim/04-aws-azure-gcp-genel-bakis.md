@@ -1,31 +1,33 @@
-# Bölüm 04: Bulutun Devleri (AWS, Azure, GCP)
+# Bölüm 04: Büyük Üçlü (AWS, Azure, GCP) ve Kavram Haritası
 
-Dünyadaki şirketlerin uygulamaları (Netflix'ten tutun da kullandığınız bankalara kadar) büyük oranda üç büyük teknoloji devinin bulut sisteminde (Veri Merkezlerinde) barınır.
-
----
+Bulut bilişim pazarında trilyon dolarlık rekabet, aslen üç büyük dev (The Big Three) arasında döner. Hepsi birbirinin aynısı çözümler sunar, sadece isimleri farklıdır. (Tıpkı BMW, Mercedes ve Audi'nin hepsinin araba olması, ancak direksiyon düğmelerinin yerinin farklı olması gibi).
 
 ## 1. Amazon Web Services (AWS)
-Pazarın açık ara lideridir (Bulut kavramını başlatan şirkettir). Hizmet çeşitliliği en fazla olandır. Netflix, Twitch, Epic Games gibi devler tamamen AWS altyapısında çalışır.
-
-*   **Sanal Sunucu (IaaS) Adı:** EC2 (Elastic Compute Cloud)
-*   **Depolama Alanı Adı:** S3 (Simple Storage Service - Sonsuz dosya yükleme havuzu)
-*   **Serverless Adı:** AWS Lambda
-*   **Veritabanı:** RDS (Relational Database Service)
+Pazarın %32 ile açık ara lideridir (Bulutu ilk icat eden ve pazara sokan firmadır, ilk giren avantajı vardır).
+Dünyadaki en büyük şirketlerin, Netflix, Twitch ve Airbnb gibi devlerin altyapısını oluşturur. Sunulan hizmet sayısı o kadar fazladır ki içinde kaybolursunuz.
+**Kritik AWS Terimleri Sözlüğü:**
+- **EC2 (Elastic Compute Cloud):** Amazon'daki "Sanal Sunucu (IaaS)" kiralama hizmetinin adıdır. (Buluttaki bilgisayarınız).
+- **S3 (Simple Storage Service):** Bulutun harddiskidir. Fotoğrafların, videoların, dosyaların depolandığı sınırsız depolama deposudur.
+- **RDS (Relational Database Service):** SQL tabanlı (MySQL, PostgreSQL vb.) veritabanlarını bulutta barındırma hizmetidir.
+- **Lambda:** Amazon'un Serverless (Sunucusuz) mimari servisidir.
 
 ## 2. Microsoft Azure
-Microsoft'un bulut hizmetidir ve pazarda ikinci sıradadır. Özellikle büyük kurumsal (Enterprise) şirketler, bankalar ve .NET/C# ekosistemi kullanan firmalar tarafından çok sevilir. (Çünkü C# kodu Azure ile kusursuz uyum sağlar).
-
-*   **Sanal Sunucu (IaaS) Adı:** Azure Virtual Machines
-*   **Depolama Alanı Adı:** Azure Blob Storage
-*   **Serverless Adı:** Azure Functions
-*   **Veritabanı:** Azure SQL Database
+Pazarın ikincisidir (%22). Amazon kadar esnek olmasa da, gücünü **Microsoft Ekosisteminden** alır.
+Dünyadaki kurumsal şirketlerin %80'i zaten bilgisayarlarında Windows Server, Office 365, Active Directory gibi Microsoft ürünleri kullanır. Azure, bu şirketlerin sistemlerini kusursuz ve en güvenilir şekilde buluta entegre etmek için tasarlanmıştır. C# (.NET) ile geliştirilen kurumsal projelerin bir numaralı evidir.
+**Kritik Azure Terimleri Sözlüğü:**
+- **Azure Virtual Machines (VM):** Azure'un "Sanal Sunucu" servisidir (AWS EC2'nin rakibi).
+- **Azure Blob Storage:** Resim ve belgelerin depolandığı dev alan (AWS S3'ün rakibi).
+- **Azure Functions:** Azure'un Serverless hizmetidir (AWS Lambda'nın rakibi).
 
 ## 3. Google Cloud Platform (GCP)
-Pazarın üçüncü büyüğüdür. Google'ın kendi arama motorunu ve YouTube'u barındırdığı inanılmaz hızlı fiber altyapısını kullanır. Özellikle Kubernetes'i (K8s) icat eden firma oldukları için, konteyner mimarilerinde (GKE) ve Makine Öğrenmesi (Big Data, TensorFlow) alanında eşsiz bir güce sahiptir. Spotify ve X (Twitter) bazı hizmetlerini burada barındırır.
+Pazarın üçüncüsüdür (%11). Pazar payı küçük görünse de, dünyanın en iyi mühendislik felsefesine sahip bulutudur.
+Google'ın alametifarikası **Big Data (Büyük Veri), Yapay Zeka (AI) ve Machine Learning (Makine Öğrenmesi)** araçlarındaki tartışılmaz liderliğidir. Ayrıca Kubernetes denilen ve dünyayı kasıp kavuran mimariyi Google icat ettiği için, Konteyner sistemlerini en iyi ve en ucuz çalıştıran bulut sağlayıcısıdır. Spotify gibi veri analizi saniyede petabyteları bulan devler GCP kullanır.
+**Kritik GCP Terimleri Sözlüğü:**
+- **Compute Engine:** GCP'nin sanal sunucusu.
+- **Cloud Storage:** Dosya deposu.
+- **BigQuery:** Devasa verileri milisaniyeler içinde SQL ile analiz etmeye yarayan, rakiplerinin çok ötesinde Google'ın harika veri ambarı (Data Warehouse) sistemidir.
 
-*   **Sanal Sunucu (IaaS) Adı:** Compute Engine
-*   **Depolama Alanı Adı:** Cloud Storage
-*   **Serverless Adı:** Cloud Functions
-*   **Veritabanı:** Cloud SQL
-
-*(Hangi sağlayıcıyı seçerseniz seçin, temel mühendislik ve mimari mantığı tamamen aynıdır, sadece arayüzleri ve hizmetlere verdikleri isimler değişir.)*
+### Hangisini Seçmeli?
+- Sektör standardı, bol doküman, herkesin bilmesi ve ilk başlayan için en iyisi: **AWS**
+- Şirketiniz kurumsalsa, hali hazırda C#, Windows Server ve Microsoft mimarisi kullanıyorsa: **Azure**
+- Veri analizi, Yapay Zeka modelleri (Tensorflow vb.) eğitecekseniz veya saf Kubernetes koşturacaksanız: **GCP**

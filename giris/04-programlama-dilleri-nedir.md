@@ -1,24 +1,28 @@
-# Bölüm 04: Programlama Dilleri Nedir?
+# Bölüm 04: Programlama Dilleri ve Seviyeleri
 
-Madem bilgisayarlar sadece `0` ve `1` (Elektrik var/yok) mantığıyla anlaşıyor, o zaman biz onlarla nasıl konuşabiliyoruz? Ekrana milyonlarca `10101` mi yazıyoruz? Hayır. 
+Dünya üzerinde 700'den fazla programlama dili vardır. Neden sadece mükemmel bir tek dil yapıp hepimiz onu kullanmıyoruz? Çünkü programlama dilleri tornavida, İngiliz anahtarı veya çekiç gibi birer **araçtır.** Nasıl ki her vidayı aynı aletle sökemezseniz, her yazılım projesini (Örn: Yapay zeka, Web sitesi, Otonom sürüş sistemi) aynı dille yazmak da verimsizdir.
 
-İşte burada "Programlama Dilleri" ve "Derleyiciler (Tercümanlar)" devreye giriyor.
+## 1. Dillerin Seviyeleri (Low-Level vs High-Level)
+Programlama dilleri "İnsana ne kadar yakın" veya "Makineye (Donanıma) ne kadar yakın" olduğuna göre seviyelere ayrılır.
 
----
+### A. Düşük Seviyeli Diller (Low-Level Languages)
+Makine diline (1 ve 0'lara) çok yakındır. Öğrenmesi, okunması ve yazılması insanoğlu için inanılmaz zordur.
+- **Assembly:** Donanıma doğrudan müdahale eden dildir. İşlemcinin RAM'deki veriyi hangi adresten alacağını (Örn: `MOV AL, 61h`) elle yazarsınız.
+- **Ne İçin Kullanılır?** Çamaşır makinesi çipleri, savaş uçağı radarları, füzeler gibi milisaniyenin bile milyonda birinin hayati olduğu, maksimum hız ve donanım kontrolü gerektiren sistemlerde kullanılır.
 
-## 1. Tercümanlık Sistemi
-Siz Türkçe biliyorsunuz, bilgisayar ise Makine Dili (0 ve 1) biliyor. Anlaşamazsınız.
-Programlama Dilleri (C#, Python, Java vb.), İngilizceye benzeyen kelimelerle `Eğer (If) Hava Yağmurluysa -> Şemsiye Al` şeklinde kurallar yazmanızı sağlayan **aracı dillerdir.**
+### B. Orta Seviyeli Diller
+Hem donanıma doğrudan müdahale edebilen (Pointer'lar sayesinde RAM'e dokunabilen) hem de insana kısmen anlaşılır gelen dillerdir.
+- **C ve C++:** İşletim sistemleri (Windows, Linux kerneli), yüksek grafikli oyun motorları (Unreal Engine) ve gömülü sistemlerin şahıdır. Dünyadaki diğer birçok dil (Python, PHP vb.) aslında C diliyle yazılmıştır!
 
-Siz kodu yazarsınız, **Derleyici (Compiler)** adındaki tercüman gelir, sizin İngilizceye benzeyen kodunuzu saniyeler içinde bilgisayarın anlayacağı `1011001` lere çevirir ve işlemciye yollar.
+### C. Yüksek Seviyeli Diller (High-Level Languages)
+İngilizce kelimelere çok yakın, okunması ve öğrenmesi kolay dillerdir. Yazılımcı RAM yönetimi, bellek temizliği (Garbage Collection) gibi donanım dertleriyle uğraşmaz, sistem bunları otomatik yapar.
+- **Python:** Veri bilimi ve Yapay Zeka için 1 numaradır. "Yazması en kolay" dildir.
+- **Java / C#:** Büyük şirketlerin (Bankalar, e-ticaret devleri) güvenli ve devasa Backend sistemlerini (Sunucularını) yazdıkları en kurumsal dillerdir.
+- **JavaScript:** İnternet tarayıcılarının (Web sitelerinin) tek hakimidir. Web dünyasında JS olmadan bir buton bile çalışmaz.
 
-## 2. Neden Bu Kadar Çok Dil Var?
-Nasıl ki dünyada Türkçe, İngilizce, Japonca gibi diller varsa ve hepsi temelde "İletişim Kurmaya" yarıyorsa, yazılım dünyasında da aynı amaca hizmet eden onlarca dil vardır. Neden tek bir dil yok?
-Çünkü her dilin "Güçlü olduğu uzmanlık alanları" farklıdır:
-
-- **Python:** Öğrenmesi en kolay (İngilizce konuşur gibi) dildir. Yapay zeka ve Veri Bilimi için 1 numaradır.
-- **C# / Java:** Çok katı kuralları olan, inanılmaz güçlü dillerdir. Bankalar, E-Ticaret siteleri ve devasa kurumsal projeler için kullanılır. (Büyük şirketlerin omurgasıdır).
-- **JavaScript:** İnternet tarayıcılarının (Chrome, Safari) dilidir. Web sitelerini hareketli ve canlı kılan dildir.
-- **C / C++:** Makineye en yakın dillerdir. Otomobil beyinleri, çamaşır makineleri veya yüksek performans gerektiren oyun motorlarında kullanılırlar.
-
-Siz bir dili (Algoritma kurmayı) öğrendiğinizde, diğer dilleri öğrenmeniz (Tıpkı İspanyolca bilen birinin İtalyancayı kolayca öğrenmesi gibi) çok kolaylaşacaktır.
+## 2. Hangi Dili Seçmeliyim?
+- Amacınız **Web Sitesi yapmak** (Frontend) ise: HTML, CSS ve JavaScript (Tartışmasız).
+- Amacınız **Yapay Zeka ve Veri Analizi** ise: Python.
+- Amacınız **Kurumsal Sunucu Sistemleri** (Backend) ise: C# veya Java.
+- Amacınız **Mobil Uygulama** ise: Swift (iOS), Kotlin (Android) veya Flutter/React Native (Çapraz Platform).
+- Amacınız **Oyun Geliştirmek** ise: C++ (Unreal Engine) veya C# (Unity).

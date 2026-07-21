@@ -1,21 +1,34 @@
-# Bölüm 04: Evrensel Yazılım Prensipleri (Senior Vizyonu)
+# Bölüm 04: Evrensel Yazılım Felsefeleri (KISS, YAGNI, DRY)
 
-SOLID dışında, bir yazılımcının tecrübesini (Junior vs Senior) ortaya koyan, gündelik hayatı kurtaran efsanevi kısaltmalar vardır.
-
----
+Yazılım sektöründe SOLID kadar resmi ve katı olmasa da, deneyimli yazılımcıların (Senior) sohbetlerinde sürekli kullandıkları, projeleri hantallıktan kurtaran harika kısaltma ve felsefeler vardır.
 
 ## 1. KISS (Keep It Simple, Stupid)
-*"Aptalca olacak kadar basit tut."*
-Yazılımcılar genellikle karmaşık (aşırı mühendislik - over-engineering) çözümler üretmeyi "Zeka göstergesi" sanırlar. Aslında zeka, en karmaşık problemi en okunabilir, en basit koda indirebilmektir. Eğer basit bir `if` ile çözülecek bir soruna 3 tane Design Pattern yazıyorsanız, KISS prensibini ihlal ediyorsunuz demektir.
+*Anlamı: Onu basit (aptalca olacak kadar basit) tut!*
+
+Yazılımcıların (özellikle ara seviye Mid-Level geliştiricilerin) en büyük hastalığı, çok şey bildiklerini kanıtlamak için basit bir problemi çözerken aşırı karmaşık (Over-engineering), 5 farklı tasarım kalıbı içeren, kimsenin okuyamayacağı soyut yapılar kurmalarıdır.
+
+KISS prensibi bağırır: **"Bir problemi çözmenin en iyi yolu, çalışan EN BASİT koddur."** 
+Karmaşık kod yazmak zeka göstergesi değildir; karmaşık problemi basit (Junior birinin bile 5 dakikada okuyup anlayabileceği) koda dökebilmek gerçek ustalığın göstergesidir. Basit kodun hatası çabuk bulunur ve bakımı kolaydır.
 
 ## 2. YAGNI (You Aren't Gonna Need It)
-*"Buna ihtiyacın olmayacak."*
-Geliştiriciler kod yazarken genellikle *"Belki seneye buraya SMS sistemi de ekleriz"* deyip, SMS altyapısını kodlamaya başlarlar. YAGNI der ki: **Gelecekte olabilecek (ama şu an istenmeyen) hiçbir şey için bugünden kod yazma.** Geleceği tahmin edemezsiniz, yazdığınız kod ölü koda (Dead Code) dönüşür ve sistemi boşuna karmaşıklaştırır. Sadece bugünün problemini çözün.
+*Anlamı: Ona (İleride) İhtiyacın Olmayacak!*
+
+"Şimdi bu sepete ürün ekleme fonksiyonunu yazdım ama, ileride kesin müşteri 'sepetteki ürünü favorilere alalım' da der. Dur ben o fonksiyonun altyapısını da şimdiden koda ekleyeyim, veritabanına boş alan açayım ki 6 ay sonra işim kolaylaşsın."
+
+Bunu yazılım hayatınızda yapabileceğiniz EN BÜYÜK ZAMAN İSRAFI olarak nitelendiren YAGNI kuralı der ki:
+**"Şu an sizden İSTENMEYEN ve şu an İHTİYAÇ OLMAYAN hiçbir satır kodu 'İleride lazım olur' mantığıyla projenize E-KLE-ME-YİN!"**
+Çünkü %99 ihtimalle o özellik sizden hiçbir zaman istenmeyecek ve o ölü/kullanılmayan kodlar projenin mimarisini hantallaştıran, başka yazılımcıların kafasını karıştıran bir hayalete dönüşecektir. Lazım olduğunda, o günün şartlarına göre eklersiniz.
 
 ## 3. DRY (Don't Repeat Yourself)
-*"Kendini tekrar etme."*
-Yazılımda kopyala-yapıştır en büyük düşmandır. Aynı mantığı (örneğin TC Kimlik numarası doğrulama algoritmasını) projenin iki farklı yerine yazdıysanız, sisteminiz saatli bir bombadır. O mantık bir gün değiştiğinde, diğer yeri güncellemeyi unutursanız sistem patlar. Mantığı tekilleştirin (Fonksiyon/Sınıf).
+*Anlamı: Kendini Tekrar Etme!*
 
-## 4. Fail-Fast (Hızlı Çök) ve Defensive Programming
-Kötü bir sistem hatayı yutar (Gizler) ve çalışmaya devam etmeye çalışır (Örn: Null referanslarla ilerlemek). Bu, hatanın çok alakasız bir yerde (Örn: Veritabanına kayıt atarken) patlamasına neden olur ve sorunu bulmak günlerinizi alır.
-**Fail-Fast** der ki: Sistemde ters bir şey (Gelen veri null veya yanlış tipte) gördüğün an, **EN BAŞTA SİSTEMİ ÇÖKERT (Exception Fırlat).** Hatayı olduğu yerde, anında yakalamak (Savunmacı Programlama), yazılımın sağlamlığını (Robustness) artırır.
+Kod kokularında (Code Smells) da bahsettiğimiz gibi, yazılım dünyasındaki en kutsal günahlardan biri **Kopyala-Yapıştır** (Copy-Paste) yapmaktır.
+Eğer bir formülü veya kuralı (Örn: Vergi hesaplama oranı) projenizin içinde 2'den fazla yerde yazdıysanız, DRY kuralını çiğniyorsunuz demektir.
+- Çözüm her zaman Merkezileştirmektir (Centralization). O kuralı tek bir ortak fonksiyona veya sınıfa taşıyıp, diğer yerlerden sadece çağırmanız gerekir. Bu sayede vergi kuralı değiştiğinde sadece o 1 satırı değiştirerek 50 farklı ekranı aynı anda güncelleyebilirsiniz.
+
+## 4. Boy Scout Rule (İzci Kuralı)
+*Anlamı: Kamp alanını, bulduğundan daha temiz bırak.*
+
+Bir dosyaya hata çözmek veya yeni bir özellik eklemek için girdiğinizde, kendi işinizi yapıp çıkmakla yetinmeyin. Etrafta saçma sapan bir değişken adı mı var? Düzeltin. Uzamış bir metot mu gördünüz? İkiye bölün. Açıklama satırları eskiyip yalan mı söylüyor? Silin.
+
+Eğer şirketteki her yazılımcı, girdiği her dosyada kendi işine ek olarak koddaki ufak bir pisliği temizlerse, zamanla kod tabanı harika bir yere dönüşür (Sürekli Refactoring). Aksi halde kod çürümeye (Code Rot) ve "Kırık Cam Teorisine" kurban giderek kimsenin dokunmak istemediği bir canavara dönüşür.
