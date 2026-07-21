@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="tr" data-bs-theme="light">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.12.0/mermaid.min.js"></script>
@@ -23,94 +23,89 @@
 </head>
 <body>
 
-<!-- Navbar (Sadece mobilde veya karanlık mod butonu için tepede) -->
-<nav class="navbar glass-navbar fixed-top w-100 border-bottom border-light">
-  <div class="container-fluid px-3 px-md-4">
-    <div class="d-flex align-items-center">
-      <button class="btn btn-sm d-lg-none me-2 sidebar-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
-        <i class="bi bi-list fs-4"></i>
-      </button>
-      <a class="navbar-brand fw-bold brand-font text-gradient" href="#/">
-        <i class="bi bi-rocket-takeoff text-primary me-2"></i>Akademi
-      </a>
-    </div>
-    
-    <div class="d-flex align-items-center">
-      <!-- Search Input in Navbar (Desktop) -->
-      <div class="search-box d-none d-md-flex align-items-center rounded-pill px-3 py-1 me-3 border bg-body-tertiary">
-        <i class="bi bi-search text-muted small"></i>
-        <input type="text" id="searchInputDesktop" class="form-control form-control-sm border-0 bg-transparent shadow-none ms-2 search-input" placeholder="Notlarda ara..." style="width: 200px;">
-      </div>
+<!-- Mobile Header -->
+<div class="mobile-header d-lg-none d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+  <div class="fw-bold fs-5 text-brand">Akademi</div>
+  <button class="btn btn-sm btn-light border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas">
+    <i class="bi bi-list fs-4"></i>
+  </button>
+</div>
 
-      <button id="themeToggle" class="btn btn-outline-secondary btn-sm rounded-circle theme-btn" aria-label="Toggle Dark Mode">
-        <i class="bi bi-moon-stars"></i>
-      </button>
-    </div>
-  </div>
-</nav>
-
-<!-- Sidebar Offcanvas (Mobil) & Fixed Sidebar (Masaüstü) Birleşimi -->
-<div class="offcanvas-lg offcanvas-start custom-sidebar border-end" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
-  <div class="offcanvas-header border-bottom d-lg-none">
-    <h5 class="offcanvas-title fw-bold brand-font" id="sidebarOffcanvasLabel">Kategoriler</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas" aria-label="Close"></button>
+<!-- Sidebar Offcanvas (Mobil) & Fixed Sidebar (Masaüstü) -->
+<div class="offcanvas-lg offcanvas-start custom-sidebar" tabindex="-1" id="sidebarOffcanvas">
+  <div class="offcanvas-header d-lg-none border-bottom">
+    <h5 class="offcanvas-title fw-bold text-brand">İçindekiler</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
   </div>
   
-  <div class="offcanvas-body d-flex flex-column p-0 h-100">
-    <div class="p-3 d-md-none border-bottom">
-      <!-- Search Input in Sidebar (Mobile) -->
-      <div class="search-box d-flex align-items-center rounded-pill px-3 py-1 border bg-body-tertiary">
-        <i class="bi bi-search text-muted small"></i>
-        <input type="text" id="searchInputMobile" class="form-control form-control-sm border-0 bg-transparent shadow-none ms-2 search-input" placeholder="Ara...">
+  <div class="d-flex flex-column h-100">
+    <div class="p-4 d-none d-lg-block">
+      <a href="#/" class="text-decoration-none text-brand fw-bold fs-5">
+        <i class="bi bi-book-half me-2"></i>Mühendislik Kitabı
+      </a>
+    </div>
+
+    <!-- Arama Kutusu -->
+    <div class="px-3 pb-3">
+      <div class="search-wrapper">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" id="searchInput" class="form-control form-control-sm search-input" placeholder="Dokümanda ara...">
       </div>
     </div>
-    <div class="sidebar-scroll p-3 flex-grow-1 overflow-y-auto" id="category-sidebar-list">
-      <!-- Kategoriler JS ile buraya basılacak -->
+
+    <!-- Menü Ağacı (Accordion) -->
+    <div class="sidebar-scroll px-2 flex-grow-1 overflow-y-auto" id="category-sidebar-list">
+      <!-- Accordion JS ile buraya basılacak -->
     </div>
+    
   </div>
 </div>
 
 <!-- Main Content Area -->
-<main class="main-content pt-5 mt-4">
-  <div class="container-fluid px-3 px-md-5 pb-5">
+<main class="main-content">
+  <div class="container-fluid content-container py-4 py-lg-5">
     
-    <!-- HOME VIEW (Not Listesi) -->
-    <div id="home-view" class="view-container active">
-      <div class="mb-5 mt-3 animate-slide-up">
-        <h2 class="fw-bold brand-font mb-2" id="currentCategoryTitle">Tüm Notlar</h2>
-        <p class="text-muted" id="currentCategoryDesc">Kütüphanedeki tüm dokümanları inceliyorsunuz.</p>
-      </div>
-
-      <div id="notes-grid" class="row g-4">
-        <!-- Not kartları JS ile buraya basılacak -->
-      </div>
-    </div>
-
-    <!-- NOTE VIEW (Not Okuma Ekranı) -->
-    <div id="note-view" class="view-container d-none">
+    <div class="row justify-content-center">
       
-      <div class="mb-4 mt-3">
-        <button onclick="goBack()" class="btn btn-sm btn-glass px-3 rounded-pill hover-lift">
-          <i class="bi bi-arrow-left me-2"></i>Geri Dön
-        </button>
-      </div>
-
-      <div class="row g-4">
-        <div class="col-xl-9 col-lg-8">
-          <article class="p-4 p-md-5 rounded-4 shadow-sm border glass-card note-article" id="note-content-area">
-             <!-- Markdown içeriği buraya basılacak -->
+      <!-- Okuma Alanı -->
+      <div class="col-12 col-xl-9 col-lg-10">
+        
+        <!-- HOME VIEW (Karşılama Ekranı) -->
+        <div id="home-view" class="view-container active">
+          <article class="note-article">
+            <h1 class="text-brand">Hoş Geldiniz</h1>
+            <p class="lead mt-3 text-muted">Sol taraftaki menüyü kullanarak notlar arasında gezinebilirsiniz. Bu alan, yazılım mühendisliğini sıfırdan uzmanlık seviyesine kadar kitap tadında okumanız için tasarlanmıştır.</p>
+            <hr class="my-5 opacity-25">
+            <h3>Nasıl Okunmalı?</h3>
+            <p>Bu platform, aşırı kontrastlı renklerin ve dikkat dağıtıcı animasyonların zihni yormaması için tamamen <strong>okuma odaklı (okuyucu dostu)</strong> bir "Dijital Kitap" yapısında kurgulanmıştır.</p>
+            <ul>
+              <li><strong>Sıralı Okuma:</strong> Sol menüdeki kategoriler, öğrenme sırasına göre dizilmiştir.</li>
+              <li><strong>Hızlı Arama:</strong> Menünün üstündeki arama çubuğu ile herhangi bir konuya saniyeler içinde ulaşabilirsiniz.</li>
+            </ul>
           </article>
         </div>
-        
-        <div class="col-xl-3 col-lg-4 d-none d-lg-block">
-          <div class="sticky-top pt-3" style="top: 4.5rem; max-height: calc(100vh - 6rem); overflow-y: auto;">
-            <div class="glass-card p-4 rounded-4 border shadow-sm">
-              <h6 class="fw-bold text-uppercase tracking-wider mb-3 ps-2 text-primary" style="font-size:0.8rem; letter-spacing:1px;">Bu Sayfada</h6>
-              <nav id="toc-area" class="nav flex-column toc-nav">
-                <!-- TOC JS ile buraya basılacak -->
-              </nav>
-            </div>
+
+        <!-- NOTE VIEW (Not Okuma Ekranı) -->
+        <div id="note-view" class="view-container d-none">
+          <article class="note-article" id="note-content-area">
+             <!-- Markdown içeriği buraya basılacak -->
+          </article>
+          
+          <div class="mt-5 pt-4 border-top d-flex justify-content-between">
+            <a href="#/" class="text-muted text-decoration-none small"><i class="bi bi-arrow-left me-1"></i> Başlangıca Dön</a>
+            <span class="text-muted small">Son Güncelleme: 2026</span>
           </div>
+        </div>
+        
+      </div>
+      
+      <!-- TOC (Sadece Büyük Ekranda, Silik) -->
+      <div class="col-xl-3 d-none d-xl-block">
+        <div class="sticky-top toc-wrapper" style="top: 3rem;">
+          <h6 class="toc-title">Bu Sayfada</h6>
+          <nav id="toc-area" class="nav flex-column toc-nav">
+            <!-- TOC JS ile buraya basılacak -->
+          </nav>
         </div>
       </div>
 
