@@ -29,13 +29,13 @@ Yazılımcılar bu adımları koda dökmeden önce, kağıt üzerinde şekillerl
 
 ```mermaid
 graph TD
-    Start([Başla]) --> S1[Suyu Ocağa Koy]
+    Start("[Başla]") --> S1["Suyu Ocağa Koy"]
     S1 --> S2{Su Kaynadı mı?}
     
-    S2 -->|Hayır| S3[1 Dakika Daha Bekle]
+    S2 -->|"Hayır"| S3["1 Dakika Daha Bekle"]
     S3 --> S2
     
-    S2 -->|Evet| S4[Çayı Demliğe Ekle]
-    S4 --> End([Afiyet Olsun])
+    S2 -->|"Evet"| S4["Çayı Demliğe Ekle"]
+    S4 --> End("[Afiyet Olsun]")
 ```
 Algoritma zihniyeti, karmaşık bir kaosu, aptala anlatır gibi minik ve mantıklı adımlara bölme sanatıdır.

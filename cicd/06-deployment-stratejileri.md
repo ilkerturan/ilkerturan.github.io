@@ -16,11 +16,11 @@ En güvenli ama en pahalı sistemdir. Çünkü mevcut canlı sunucuların (Mavi)
 
 ```mermaid
 graph TD
-    User(Müşteriler / Load Balancer) --> |Trafik %100| Blue[Mavi Sistem - Eski Versiyon v1.0]
-    User -.-> |Trafik %0| Green[Yeşil Sistem - YENİ Versiyon v2.0]
+    User("Müşteriler / Load Balancer") --> |"Trafik %100"| Blue["Mavi Sistem - Eski Versiyon v1.0"]
+    User -.-> |"Trafik %0"| Green["Yeşil Sistem - YENİ Versiyon v2.0"]
     
-    subgraph Değişim Anı (Switch)
-        Note(Testler bittikten sonra Load Balancer <br>tek tuşla tüm trafiği Yeşil'e aktarır)
+    subgraph "Değişim Anı (Switch)"
+        Note("Testler bittikten sonra Load Balancer <br>tek tuşla tüm trafiği Yeşil'e aktarır")
     end
 ```
 
@@ -31,8 +31,8 @@ Adını eski madencilerin zehirli gazı önden test etmek için madene kanarya k
 
 ```mermaid
 graph TD
-    User(Load Balancer / Yönlendirici) --> |%95 Eski Trafik| Old[V1.0 Eski Sürüm]
-    User --> |%5 Yeni Trafik| New[V2.0 YENİ Sürüm - Kanaryalar]
+    User("Load Balancer / Yönlendirici") --> |"%95 Eski Trafik"| Old["V1.0 Eski Sürüm"]
+    User --> |"%5 Yeni Trafik"| New["V2.0 YENİ Sürüm - Kanaryalar"]
 ```
 
 **Süreç:** Sisteme giren müşterilerin %5'i (veya sadece İzmir'den bağlananlar) şans eseri yeni tasarıma (v2.0) düşerler. Arka planda loglar (hatalar) incelenir. Eğer o %5'lik kesimde çökmeler artmazsa oran %10'a, %50'ye ve sonunda %100'e çekilerek yavaş ve aşırı güvenli bir geçiş sağlanır. (Instagram ve YouTube arayüz güncellemelerini hep böyle yapar).

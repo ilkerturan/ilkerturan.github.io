@@ -30,9 +30,9 @@ En temel yapay sinir ağı türüdür. Bilgi, giriş katmanından çıkış katm
 
 ```mermaid
 graph LR
-    A[Giriş Katmanı<br/>x₁, x₂, x₃] --> B[Gizli Katman 1<br/>●●●●]
-    B --> C[Gizli Katman 2<br/>●●●]
-    C --> D[Çıkış Katmanı<br/>y₁, y₂]
+    A["Giriş Katmanı<br/>x₁, x₂, x₃"] --> B["Gizli Katman 1<br/>●●●●"]
+    B --> C["Gizli Katman 2<br/>●●●"]
+    C --> D["Çıkış Katmanı<br/>y₁, y₂"]
     
     style A fill:#e1f5ff
     style B fill:#fff9e1
@@ -82,12 +82,12 @@ Görsel verileri işlemek için özel olarak tasarlanmış sinir ağlarıdır. E
 
 ```mermaid
 graph LR
-    A[Girdi<br/>28×28] --> B[Konvolüsyon<br/>Filtreler]
-    B --> C[Aktivasyon<br/>ReLU]
-    C --> D[Havuzlama<br/>MaxPool]
-    D --> E[Düzleştirme<br/>Flatten]
-    E --> F[Tam Bağlı<br/>FC]
-    F --> G[Çıktı<br/>10 sınıf]
+    A["Girdi<br/>28×28"] --> B["Konvolüsyon<br/>Filtreler"]
+    B --> C["Aktivasyon<br/>ReLU"]
+    C --> D["Havuzlama<br/>MaxPool"]
+    D --> E["Düzleştirme<br/>Flatten"]
+    E --> F["Tam Bağlı<br/>FC"]
+    F --> G["Çıktı<br/>10 sınıf"]
     
     style A fill:#e1f5ff
     style B fill:#fff3e0
@@ -143,17 +143,17 @@ Zamansal veya sıralı veriyi işlemek için tasarlanmış ağlardır. Döngüse
 
 ```mermaid
 graph TD
-    X1[x₁] --> R1[RNN Hücresi<br/>t=1]
-    X2[x₂] --> R2[RNN Hücresi<br/>t=2]
-    X3[x₃] --> R3[RNN Hücresi<br/>t=3]
+    X1["x₁"] --> R1["RNN Hücresi<br/>t=1"]
+    X2["x₂"] --> R2["RNN Hücresi<br/>t=2"]
+    X3["x₃"] --> R3["RNN Hücresi<br/>t=3"]
     
-    R1 --> H1[h₁]
-    R2 --> H2[h₂]
-    R3 --> H3[h₃]
+    R1 --> H1["h₁"]
+    R2 --> H2["h₂"]
+    R3 --> H3["h₃"]
     
-    H1 --> Y1[y₁]
-    H2 --> Y2[y₂]
-    H3 --> Y3[y₃]
+    H1 --> Y1["y₁"]
+    H2 --> Y2["y₂"]
+    H3 --> Y3["y₃"]
     
     R1 -.gizli durum.-> R2
     R2 -.gizli durum.-> R3
@@ -227,7 +227,7 @@ graph TD
         FG --> CS
         IG --> CS
         CS --> OG
-        OG --> Output[Çıkış]
+        OG --> Output["Çıkış"]
     end
     
     style Input fill:#e1f5ff

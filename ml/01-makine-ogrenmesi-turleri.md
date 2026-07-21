@@ -18,23 +18,23 @@ Makine öğrenmesi (ML), bilgisayarların açıkça programlanmadan verilerden �
 
 ```mermaid
 graph TD
-    A[Makine Öğrenmesi] --> B[Denetimli Öğrenme]
-    A --> C[Denetimsiz Öğrenme]
-    A --> D[Pekiştirmeli Öğrenme]
-    A --> E[Yarı-Denetimli Öğrenme]
+    A["Makine Öğrenmesi"] --> B["Denetimli Öğrenme"]
+    A --> C["Denetimsiz Öğrenme"]
+    A --> D["Pekiştirmeli Öğrenme"]
+    A --> E["Yarı-Denetimli Öğrenme"]
     
-    B --> B1[Sınıflandırma]
-    B --> B2[Regresyon]
+    B --> B1["Sınıflandırma"]
+    B --> B2["Regresyon"]
     
-    C --> C1[Kümeleme]
-    C --> C2[Boyut İndirgeme]
-    C --> C3[İlişki Kuralları]
+    C --> C1["Kümeleme"]
+    C --> C2["Boyut İndirgeme"]
+    C --> C3["İlişki Kuralları"]
     
-    D --> D1[Model-Tabanlı]
-    D --> D2[Model-Bağımsız]
+    D --> D1["Model-Tabanlı"]
+    D --> D2["Model-Bağımsız"]
     
-    E --> E1[Aktif Öğrenme]
-    E --> E2[Transfer Öğrenme]
+    E --> E1["Aktif Öğrenme"]
+    E --> E2["Transfer Öğrenme"]
 ```
 
 ---
@@ -47,10 +47,10 @@ Denetimli öğrenme, etiketli veri setleri kullanılarak modelin eğitildiği bi
 
 ```mermaid
 flowchart LR
-    A[Etiketli Veri] --> B[Model Eğitimi]
-    B --> C[Eğitilmiş Model]
-    D[Yeni Veri] --> C
-    C --> E[Tahmin]
+    A["Etiketli Veri"] --> B["Model Eğitimi"]
+    B --> C["Eğitilmiş Model"]
+    D["Yeni Veri"] --> C
+    C --> E["Tahmin"]
 ```
 
 ### Alt Türleri
@@ -106,11 +106,11 @@ Denetimsiz öğrenme, etiketlenmemiş verilerden model eğitimi yapılan bir mak
 
 ```mermaid
 flowchart LR
-    A[Etiketlenmemiş Veri] --> B[Model Eğitimi]
-    B --> C[Kalıp Keşfi]
-    C --> D[Gruplar/Yapılar]
-    C --> E[Özellik Çıkarımı]
-    C --> F[Anomali Tespiti]
+    A["Etiketlenmemiş Veri"] --> B["Model Eğitimi"]
+    B --> C["Kalıp Keşfi"]
+    C --> D["Gruplar/Yapılar"]
+    C --> E["Özellik Çıkarımı"]
+    C --> F["Anomali Tespiti"]
 ```
 
 ### Alt Türleri
@@ -171,10 +171,10 @@ Pekiştirmeli öğrenme, bir ajanın bir ortamda etkileşimde bulunarak deneme-y
 
 ```mermaid
 flowchart LR
-    A[Ajan] -->|Eylem| B[Ortam]
-    B -->|Durum + Ödül| A
-    A -->|Politika Güncelleme| C[Öğrenme]
-    C -->|Gelişmiş Strateji| A
+    A["Ajan"] -->|"Eylem"| B["Ortam"]
+    B -->|"Durum + Ödül"| A
+    A -->|"Politika Güncelleme"| C["Öğrenme"]
+    C -->|"Gelişmiş Strateji"| A
     
     style A fill:#e1f5ff
     style B fill:#fff4e1
@@ -236,14 +236,14 @@ Yarı-denetimli öğrenme, hem etiketli hem de etiketlenmemiş verileri birlikte
 
 ```mermaid
 flowchart TD
-    A[Veri Seti] --> B[Az Etiketli Veri]
-    A --> C[Çok Etiketlenmemiş Veri]
-    B --> D[Model Eğitimi]
+    A["Veri Seti"] --> B["Az Etiketli Veri"]
+    A --> C["Çok Etiketlenmemiş Veri"]
+    B --> D["Model Eğitimi"]
     C --> D
-    D --> E[Etiketleri Tahmin Et]
-    E --> F[Güvenli Tahminleri Ekle]
+    D --> E["Etiketleri Tahmin Et"]
+    E --> F["Güvenli Tahminleri Ekle"]
     F --> D
-    D --> G[Nihai Model]
+    D --> G["Nihai Model"]
 ```
 
 ### Yaklaşımlar
