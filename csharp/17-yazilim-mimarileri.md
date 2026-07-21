@@ -18,14 +18,14 @@ Her bir iş biriminin (Ürün Servisi, Ödeme Servisi, Kullanıcı Servisi) **ay
 
 ```mermaid
 graph TD
-    Client(Mobil / Web İstemci) --> API_Gateway[API Gateway]
-    API_Gateway --> ServiceA[Kullanıcı Servisi - .NET]
-    API_Gateway --> ServiceB[Ürün Servisi - GoLang]
-    API_Gateway --> ServiceC[Ödeme Servisi - Node.js]
+    Client("Mobil / Web İstemci") --> API_Gateway["API Gateway"]
+    API_Gateway --> ServiceA["Kullanıcı Servisi - .NET"]
+    API_Gateway --> ServiceB["Ürün Servisi - GoLang"]
+    API_Gateway --> ServiceC["Ödeme Servisi - Node.js"]
     
-    ServiceA --> DB1[(SQL Server)]
-    ServiceB --> DB2[(MongoDB)]
-    ServiceC --> DB3[(PostgreSQL)]
+    ServiceA --> DB1[("SQL Server")]
+    ServiceB --> DB2[("MongoDB")]
+    ServiceC --> DB3[("PostgreSQL")]
 ```
 
 - **Avantaj:** Sadece çok yorulan servisi ölçekleyebilirsiniz (Örn: Sadece Ürün servisini 5 bilgisayarda çalıştır). Her servis farklı bir dille (C#, Python, Go) yazılabilir.
@@ -39,14 +39,14 @@ Katmanlar **sadece bir altındaki katmanla** iletişim kurabilir. UI doğrudan D
 
 ```mermaid
 graph TD
-    UI[Presentation Layer - Web/API]
-    BLL[Business Logic Layer - İş Kuralları]
-    DAL[Data Access Layer - Veritabanı İşlemleri]
-    DB[(Veritabanı)]
+    UI["Presentation Layer - Web/API"]
+    BLL["Business Logic Layer - İş Kuralları"]
+    DAL["Data Access Layer - Veritabanı İşlemleri"]
+    DB[("Veritabanı")]
     
-    UI -->|İstek Yapar| BLL
-    BLL -->|Sorgu Gönderir| DAL
-    DAL -->|Data Çeker| DB
+    UI -->|"İstek Yapar"| BLL
+    BLL -->|"Sorgu Gönderir"| DAL
+    DAL -->|"Data Çeker"| DB
 ```
 
 ---
@@ -58,19 +58,19 @@ Klasik N-Tier mimaride herkes Veritabanına bağımlıyken, Clean Architecture'd
 
 ```mermaid
 graph TD
-    subgraph Dış Dünya (Infrastructure & Presentation)
-        Web[Web API]
-        UI[Blazor / MVC]
-        SQL[SQL Server / MongoDB]
-        Mail[Mail / SMS Servisleri]
+    subgraph id1 ["Dış Dünya (Infrastructure & Presentation)"]
+        Web["Web API"]
+        UI["Blazor / MVC"]
+        SQL["SQL Server / MongoDB"]
+        Mail["Mail / SMS Servisleri"]
     end
     
-    subgraph Uygulama (Application)
-        App[Application Layer - Servisler / DTOs]
+    subgraph id2 ["Uygulama (Application)"]
+        App["Application Layer - Servisler / DTOs"]
     end
 
-    subgraph Çekirdek (Domain)
-        Core[Domain Layer - Entityler / Interfaces]
+    subgraph id3 ["Çekirdek (Domain)"]
+        Core["Domain Layer - Entityler / Interfaces"]
     end
 
     Web --> App
