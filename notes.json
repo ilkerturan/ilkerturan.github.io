@@ -27,68 +27,84 @@
       ]
     },
     {
-      "name": "HTML Temelleri ve Semantik Yapı",
-      "description": "Web'in iskeleti, Div çöplüğünden kurtuluş ve SEO uyumlu etiketleme",
+      "name": "HTML Temelleri ve Etkileşim",
+      "description": "Webin iskeleti, etiketler, tablolar, formlar ve SEO uyumlu semantik yapı.",
       "notes": [
         {
-          "title": "HTML Nedir ve Temelleri",
-          "path": "html/01-html-nedir-ve-temeller.md"
+          "title": "HTML Temelleri ve İskelet Yapısı",
+          "path": "html/01-html-temelleri.md"
+        },
+        {
+          "title": "Kullanıcı ile Etkileşim (Form ve Tablo)",
+          "path": "html/02-tablolar-ve-formlar.md"
+        },
+        {
+          "title": "Medya (Video, Ses, Harita)",
+          "path": "html/03-medya-ve-multimedya.md"
         },
         {
           "title": "Semantik HTML ve SEO",
-          "path": "html/02-semantik-html-ve-seo.md"
-        },
-        {
-          "title": "Formlar ve Etkileşim",
-          "path": "html/03-formlar-ve-girdiler.md"
+          "path": "html/04-semantik-html-ve-seo.md"
         }
       ]
     },
     {
       "name": "CSS ile Modern Web Tasarımı",
-      "description": "Kutu modeli (Box Model), Flexbox, CSS Grid ve Mobil Uyumluluk (Responsive)",
+      "description": "Kutu modeli (Box Model), Flexbox, CSS Grid, Animasyonlar ve Mobil Uyumluluk.",
       "notes": [
         {
-          "title": "CSS Nedir ve Box Model",
-          "path": "css/01-css-nedir-ve-kutu-modeli.md"
+          "title": "CSS Temelleri ve Seçiciler",
+          "path": "css/01-css-temelleri.md"
         },
         {
-          "title": "Modern Yerleşim: Flexbox",
-          "path": "css/02-modern-yerlesim-flexbox.md"
+          "title": "Kutu Modeli (Box Model)",
+          "path": "css/02-kutu-modeli-box-model.md"
         },
         {
-          "title": "İleri Yerleşim: CSS Grid",
-          "path": "css/03-modern-yerlesim-grid.md"
+          "title": "Esnek Kutu (Flexbox)",
+          "path": "css/03-modern-yerlesim-flexbox.md"
+        },
+        {
+          "title": "CSS Grid ve Pozisyonlar",
+          "path": "css/04-ileri-yerlesim-ve-pozisyonlar.md"
+        },
+        {
+          "title": "Animasyonlar ve Geçişler",
+          "path": "css/05-animasyonlar-ve-gecisler.md"
         },
         {
           "title": "Mobil Uyumluluk (Responsive)",
-          "path": "css/04-mobil-uyumluluk-responsive.md"
+          "path": "css/06-mobil-uyumluluk-responsive.md"
         }
       ]
     },
     {
       "name": "JavaScript ve Asenkron Mimari",
-      "description": "Tarayıcıların kas ve sinir sistemi: ES6, DOM Manipülasyonu, Async/Await ve Fetch API",
+      "description": "Tarayıcıların beyni: Değişkenler, Döngüler, Diziler, DOM ve Fetch API.",
       "notes": [
         {
-          "title": "JS Nedir ve ES6 Temelleri",
-          "path": "javascript/01-js-nedir-ve-temeller.md"
+          "title": "JavaScript Temelleri",
+          "path": "javascript/01-js-temelleri.md"
         },
         {
-          "title": "DOM Manipülasyonu ve Olaylar",
-          "path": "javascript/02-dom-manipulasyonu.md"
+          "title": "Karar Yapıları ve Döngüler",
+          "path": "javascript/02-karar-ve-donguler.md"
         },
         {
-          "title": "Ok Fonksiyonları ve Array Metotları",
-          "path": "javascript/03-modern-fonksiyonlar-ve-array.md"
+          "title": "Diziler ve Nesneler",
+          "path": "javascript/03-diziler-ve-nesneler.md"
         },
         {
-          "title": "Asenkron Programlama (Async/Await)",
-          "path": "javascript/04-asenkron-programlama.md"
+          "title": "Fonksiyonlar (Ok Fonksiyonları)",
+          "path": "javascript/04-fonksiyonlar.md"
         },
         {
-          "title": "Backend ile İletişim (Fetch API)",
-          "path": "javascript/05-backend-ile-iletisim-fetch.md"
+          "title": "DOM Manipülasyonu (HTMLe Müdahale)",
+          "path": "javascript/05-dom-manipulasyonu.md"
+        },
+        {
+          "title": "Asenkron Programlama ve Fetch API",
+          "path": "javascript/06-asenkron-ve-fetch.md"
         }
       ]
     },
